@@ -39,6 +39,7 @@ npm run typecheck
 npm run test                  # unit tests (engine + shared)
 npm run build
 npm run e2e -w apps/web       # Playwright smoke tests
+E2E_BASE_URL=https://gambling-gobbies.vercel.app npm run e2e -w apps/web  # production smoke
 ```
 
 Requires Node >= 22.
