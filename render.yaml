@@ -1,11 +1,14 @@
 services:
   - type: web
     name: gambling-gobbies-server
-    runtime: node
+    runtime: docker
+    dockerfilePath: ./Dockerfile.server
     plan: free
-    buildCommand: npm ci && npm run build -w apps/server
-    startCommand: npm run start -w apps/server
     healthCheckPath: /api/health
+    disk:
+      name: gobbies-data
+      mountPath: /app/apps/server/.data
+      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production

@@ -44,6 +44,8 @@ E2E_BASE_URL=https://gambling-gobbies.vercel.app npm run e2e -w apps/web  # prod
 
 Requires Node >= 22.
 
+**Live web:** [gambling-gobbies.vercel.app](https://gambling-gobbies.vercel.app) · **Server:** [Deploy to Render](https://render.com/deploy?repo=https://github.com/itmedotday/gambling-gobbies) (see [DEPLOY.md](docs/verification/DEPLOY.md))
+
 ### Appearance
 
 Monochrome black-and-white UI with **light/dark toggle** in the header or Settings → Appearance. Phaser canvases remount on theme change to stay in sync.
@@ -76,11 +78,9 @@ npm run build -w apps/server   # typecheck
 npm run start -w apps/server   # PORT from env, default 2567
 ```
 
-Required env: `TOKEN_SIGNING_SECRET`, `CORS_ORIGIN` (your Vercel URL). Optional `DATABASE_URL` for Postgres; file store used when unset.
+### Optional GitHub Actions deploy
 
-See [docs/verification/DEPLOY.md](docs/verification/DEPLOY.md) for release checklist.
-
-**Live:** [gambling-gobbies.vercel.app](https://gambling-gobbies.vercel.app) (web). API server deploys separately via `render.yaml`.
+Set repository **variable** `ENABLE_VERCEL_DEPLOY=true` and secrets listed in [docs/verification/DEPLOY.md](docs/verification/DEPLOY.md).
 
 ## Credits
 
