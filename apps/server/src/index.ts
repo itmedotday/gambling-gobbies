@@ -1,5 +1,9 @@
-import { loadEnv } from './env';
+import { listen } from '@colyseus/tools';
+import app from './app.js';
+import { loadEnv } from './env.js';
 
-// Colyseus + Express app lands here in milestone M5.
 const env = loadEnv();
-console.log(`[gobbies-server] configured for port ${env.port} (server implementation arrives in M5)`);
+
+listen(app, env.port).then(() => {
+  console.log(`[gobbies-server] listening on http://localhost:${env.port}`);
+});

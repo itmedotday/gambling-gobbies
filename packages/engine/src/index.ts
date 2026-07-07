@@ -8,3 +8,4 @@ export * from './games/wheel';
 export * from './games/d20';
 export * from './games/crash';
 export * from './games/mines';
+export * from './resolveBet';

@@ -7,6 +7,20 @@ export interface GobbieEventMap {
   'scene-ready': { scene: string };
   /** The mascot was poked (landing easter egg). */
   'mascot-poked': Record<string, never>;
+  /** Crash round phase change (React game logic -> Phaser presentation). */
+  'crash-phase': { phase: 'idle' | 'running' | 'cashed' | 'busted' };
+  /** Live multiplier while a crash round runs. */
+  'crash-tick': { multiplier: number };
+  /** Mines round phase change (React game logic -> Phaser presentation). */
+  'mines-phase': { phase: 'idle' | 'playing' | 'cashed' | 'busted' };
+  /** Reset the mines grid for a new round. */
+  'mines-reset': Record<string, never>;
+  /** Reveal a single tile. */
+  'mines-reveal': { index: number; kind: 'safe' | 'mine' };
+  /** Reveal the full board (cash-out or bust). */
+  'mines-reveal-all': { mines: number[] };
+  /** Player clicked a tile in the Phaser grid. */
+  'mines-pick': { index: number };
 }
 
 export type GobbieEventName = keyof GobbieEventMap;

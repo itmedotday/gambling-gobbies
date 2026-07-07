@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@colyseus/schema": "^4.0.27",
+    "@colyseus/tools": "^0.17.19",
     "@gobbies/engine": "*",
     "@gobbies/shared": "*",
     "colyseus": "^0.17.10",
