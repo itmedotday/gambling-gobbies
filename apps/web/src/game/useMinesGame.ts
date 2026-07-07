@@ -12,6 +12,7 @@ import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
 import { validateBet } from '@/components/game/BetControls';
 import { EventBus } from '@/phaser/events';
+import { playSfx } from '@/audio/sfx';
 
 export type MinesPhase = 'idle' | 'playing' | 'cashed' | 'busted';
 
@@ -66,10 +67,12 @@ export function useMinesGame() {
       EventBus.emit('mines-reveal-all', { mines: [...round.mines] });
       emitPhase(kind);
       if (isWin) {
+        playSfx('win');
         toast.success(
           `Cashed out at ${effective.toFixed(2)}x — won ${(payout - round.amount).toLocaleString()} GG!`,
         );
       } else {
+        playSfx('lose');
         toast.error(`Boom! Lost ${round.amount.toLocaleString()} GG.`);
       }
     },
@@ -85,6 +88,7 @@ export function useMinesGame() {
       return;
     }
     wallet.settle(-amount);
+    playSfx('bet');
     const seed = useFairnessStore.getState().consumeNonce();
     const floats = await generateFloats(webHasher, seed, mineCount);
     const mines = new Set(resolveMinePositions({ mineCount }, floats));

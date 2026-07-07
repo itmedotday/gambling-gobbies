@@ -48,7 +48,7 @@ export function LedgerTable({ game, limit = 10 }: LedgerTableProps) {
               {entry.multiplier > 0 ? `${entry.multiplier.toFixed(2)}x` : '—'}
             </TableCell>
             <TableCell
-              className={`text-right text-xs ${entry.isWin ? 'text-gold' : 'text-destructive'}`}
+              className={`text-right text-xs ${entry.isWin ? 'text-primary' : 'text-destructive'}`}
             >
               {entry.isWin ? `+${(entry.payout - entry.bet).toLocaleString()}` : `-${entry.bet.toLocaleString()}`}
             </TableCell>

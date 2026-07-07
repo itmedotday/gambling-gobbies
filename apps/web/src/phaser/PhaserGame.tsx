@@ -12,6 +12,8 @@ export interface PhaserGameProps {
   className?: string;
   /** Optional data passed to the first scene's init(). */
   sceneData?: Record<string, unknown>;
+  /** Remount Phaser when theme changes so canvas colors match. */
+  themeKey?: string;
 }
 
 /**
@@ -26,12 +28,13 @@ export function PhaserGame({
   backgroundColor,
   className,
   sceneData,
+  themeKey,
 }: PhaserGameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current || gameRef.current) return;
+    if (!containerRef.current) return;
 
     const game = new Phaser.Game({
       type: Phaser.AUTO,
@@ -58,14 +61,14 @@ export function PhaserGame({
     };
     // Scenes/dimensions are fixed for the lifetime of a mount by design.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [themeKey]);
 
   return (
     <div
       ref={containerRef}
       data-phaser-container
       className={className}
-      style={{ width: '100%', maxWidth: width }}
+      style={{ width: '100%', maxWidth: width, marginInline: 'auto' }}
     />
   );
 }

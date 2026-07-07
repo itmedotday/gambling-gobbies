@@ -8,6 +8,7 @@ import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
 import { validateBet } from '@/components/game/BetControls';
 import { EventBus } from '@/phaser/events';
+import { playSfx } from '@/audio/sfx';
 
 export type CrashPhase = 'idle' | 'running' | 'cashed' | 'busted';
 
@@ -79,8 +80,10 @@ export function useCrashGame() {
       setPhase(kind);
       EventBus.emit('crash-phase', { phase: kind });
       if (isWin) {
+        playSfx('win');
         toast.success(`Cashed out at ${atMultiplier.toFixed(2)}x — won ${(payout - round.amount).toLocaleString()} GG!`);
       } else {
+        playSfx('lose');
         toast.error(`Busted at ${round.crashPoint.toFixed(2)}x — lost ${round.amount.toLocaleString()} GG.`);
       }
     },
@@ -112,6 +115,7 @@ export function useCrashGame() {
       return;
     }
     wallet.settle(-amount);
+    playSfx('bet');
     const seed = useFairnessStore.getState().consumeNonce();
     const floats = await generateFloats(webHasher, seed, 1);
     const { crashPoint } = resolveCrashPoint(floats);

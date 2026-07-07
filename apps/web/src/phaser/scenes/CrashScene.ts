@@ -74,6 +74,7 @@ export class CrashScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       for (const unsubscribe of this.unsubscribes) unsubscribe();
       this.unsubscribes = [];
+      EventBus.emit('scene-unload', { scene: 'crash' });
     });
 
     EventBus.emit('scene-ready', { scene: 'crash' });

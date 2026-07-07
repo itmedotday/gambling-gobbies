@@ -3,6 +3,8 @@ import { Volume2, VolumeX, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/8bit/button';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { WalletHud } from './WalletHud';
+import { useAudioUnlock } from '@/audio/useAudioUnlock';
+import { ThemeToggleIcon } from '@/components/theme/ThemeToggle';
 
 const NAV_ITEMS = [
   { to: '/lobby', label: 'Lobby' },
@@ -11,6 +13,7 @@ const NAV_ITEMS = [
 ] as const;
 
 export function SiteLayout() {
+  useAudioUnlock();
   const muted = useSettingsStore((s) => s.muted);
   const setMuted = useSettingsStore((s) => s.setMuted);
 
@@ -48,6 +51,7 @@ export function SiteLayout() {
           </nav>
           <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
             <WalletHud />
+            <ThemeToggleIcon />
             <Button
               variant="ghost"
               size="icon"
@@ -66,7 +70,7 @@ export function SiteLayout() {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8">
         <Outlet />
       </main>
       <footer className="border-t-4 border-border bg-card">

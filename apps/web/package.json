@@ -15,7 +15,6 @@
     "@fontsource-variable/geist": "^5.2.9",
     "@gobbies/engine": "*",
     "@gobbies/shared": "*",
-    "@itme.day/rng-react-components": "^0.3.0",
     "@radix-ui/react-progress": "^1.1.12",
     "@radix-ui/react-scroll-area": "^1.2.14",
     "@radix-ui/react-separator": "^1.1.11",

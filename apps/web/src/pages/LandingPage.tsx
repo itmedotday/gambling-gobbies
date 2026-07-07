@@ -4,8 +4,10 @@ import { Card, CardContent } from '@/components/ui/8bit/card';
 import { GAME_META, ALL_GAME_IDS } from '@gobbies/shared';
 import { PhaserGame } from '@/phaser/PhaserGame';
 import { MascotScene } from '@/phaser/scenes/MascotScene';
+import { useThemeKey } from '@/components/theme/useThemeKey';
 
 export default function LandingPage() {
+  const themeKey = useThemeKey();
   return (
     <div className="flex flex-col gap-14">
       <section className="grid items-center gap-8 md:grid-cols-2">
@@ -37,7 +39,7 @@ export default function LandingPage() {
           </p>
         </div>
         <div className="flex justify-center" data-testid="mascot-stage">
-          <PhaserGame scenes={[MascotScene]} width={360} height={280} transparent />
+          <PhaserGame scenes={[MascotScene]} width={360} height={280} transparent themeKey={themeKey} />
         </div>
       </section>
 

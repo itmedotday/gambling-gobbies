@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { resolveDice, diceMultiplier, diceWinChance } from '@gobbies/engine';
 import { Button } from '@/components/ui/8bit/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
@@ -8,41 +8,52 @@ import { BetControls } from '@/components/game/BetControls';
 import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
 import { useConsoleBet } from '@/game/useConsoleBet';
-
-const ROLL_ANIMATION_MS = 900;
+import { PhaserGame } from '@/phaser/PhaserGame';
+import { DiceScene } from '@/phaser/scenes/DiceScene';
+import { EventBus } from '@/phaser/events';
+import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
+import { useThemeKey } from '@/components/theme/useThemeKey';
 
 export default function DicePage() {
   const [target, setTarget] = useState(50);
   const [rollOver, setRollOver] = useState(true);
-  const [display, setDisplay] = useState<{ roll: number; isWin: boolean } | null>(null);
-  const [rolling, setRolling] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sceneReady = usePhaserSceneReady('dice');
+  const themeKey = useThemeKey();
   const bet = useConsoleBet('dice', 1);
+  const pendingRef = useRef<{ detail: string; isWin: boolean; multiplier: number } | null>(null);
 
   const params = { target, rollOver };
   const multiplier = diceMultiplier(params);
+
+  useEffect(() => {
+    EventBus.emit('dice-preview', { target, rollOver });
+  }, [target, rollOver]);
+
+  useEffect(() => {
+    return EventBus.on('dice-anim-done', () => {
+      const pending = pendingRef.current;
+      if (!pending) return;
+      pendingRef.current = null;
+      bet.settleOutcome(pending);
+    });
+  }, [bet]);
 
   const handleBet = async () => {
     const floats = await bet.beginBet();
     if (!floats) return;
     const outcome = resolveDice(params, floats);
-    setRolling(true);
-    setDisplay(null);
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setRolling(false);
-      setDisplay({ roll: outcome.roll, isWin: outcome.isWin });
-      bet.settleOutcome({
-        detail: `Rolled ${outcome.roll.toFixed(2)}`,
-        isWin: outcome.isWin,
-        multiplier: outcome.multiplier,
-      });
-    }, ROLL_ANIMATION_MS);
+    pendingRef.current = {
+      detail: `Rolled ${outcome.roll.toFixed(2)}`,
+      isWin: outcome.isWin,
+      multiplier: outcome.multiplier,
+    };
+    EventBus.emit('dice-animate', {
+      roll: outcome.roll,
+      isWin: outcome.isWin,
+      target,
+      rollOver,
+    });
   };
-
-  const winZoneStyle = rollOver
-    ? { left: `${target}%`, width: `${100 - target}%` }
-    : { left: '0%', width: `${target}%` };
 
   return (
     <div className="flex flex-col gap-6">
@@ -50,38 +61,9 @@ export default function DicePage() {
       <GameStatsHeader game="dice" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
-          <CardContent className="flex min-h-72 flex-col justify-center gap-8 p-8">
-            <div
-              className="retro text-center text-3xl"
-              data-testid="dice-outcome"
-              aria-live="polite"
-            >
-              {rolling ? (
-                <span className="animate-pulse text-muted-foreground">??.??</span>
-              ) : display ? (
-                <span className={display.isWin ? 'text-primary' : 'text-destructive'}>
-                  {display.roll.toFixed(2)}
-                </span>
-              ) : (
-                <span className="text-muted-foreground">--.--</span>
-              )}
-            </div>
-            <div className="relative h-6 w-full border-2 border-border bg-destructive/40">
-              <div className="absolute inset-y-0 bg-primary/70" style={winZoneStyle} />
-              {display && !rolling && (
-                <div
-                  className="absolute -top-2 h-10 w-1.5 bg-gold transition-all duration-300"
-                  style={{ left: `calc(${display.roll}% - 3px)` }}
-                  data-testid="dice-marker"
-                />
-              )}
-            </div>
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>0</span>
-              <span>25</span>
-              <span>50</span>
-              <span>75</span>
-              <span>100</span>
+          <CardContent className="flex min-h-72 items-center justify-center p-4">
+            <div data-testid="dice-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
+              <PhaserGame scenes={[DiceScene]} width={520} height={300} transparent themeKey={themeKey} />
             </div>
           </CardContent>
         </Card>
@@ -93,7 +75,7 @@ export default function DicePage() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <Label htmlFor="dice-target">
-                  Roll {rollOver ? 'over' : 'under'} <span className="text-gold">{target}</span>
+                  Roll {rollOver ? 'over' : 'under'} <span className="text-primary">{target}</span>
                 </Label>
                 <span className="text-xs text-muted-foreground">
                   {diceWinChance(params).toFixed(0)}% chance
@@ -124,7 +106,7 @@ export default function DicePage() {
               onAmountChange={bet.setAmount}
               multiplier={multiplier}
               onBet={() => void handleBet()}
-              busy={bet.busy}
+              busy={bet.busy || !sceneReady}
               betLabel="Roll"
             />
           </CardContent>

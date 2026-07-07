@@ -63,6 +63,7 @@ export class MinesScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       for (const unsubscribe of this.unsubscribes) unsubscribe();
       this.unsubscribes = [];
+      EventBus.emit('scene-unload', { scene: 'mines' });
     });
 
     EventBus.emit('scene-ready', { scene: 'mines' });

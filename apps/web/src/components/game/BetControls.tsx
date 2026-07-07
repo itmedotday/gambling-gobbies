@@ -64,6 +64,12 @@ export function BetControls({
             min={MIN_BET}
             value={Number.isFinite(amount) ? amount : ''}
             onChange={(e) => onAmountChange(Number(e.target.value))}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !busy) {
+                e.preventDefault();
+                handleBet();
+              }
+            }}
             disabled={busy}
             className="flex-1"
             data-testid="bet-amount"
@@ -102,7 +108,7 @@ export function BetControls({
           Payout <span className="text-foreground">{multiplier.toFixed(4)}x</span>
         </span>
         <span className="text-muted-foreground" data-testid="potential-win">
-          Win <span className="text-gold">{potentialWin.toLocaleString()} GG</span>
+          Win <span className="text-primary">{potentialWin.toLocaleString()} GG</span>
         </span>
       </div>
       <Button
@@ -111,6 +117,7 @@ export function BetControls({
         onClick={handleBet}
         disabled={busy}
         data-testid="bet-button"
+        aria-keyshortcuts="Enter"
       >
         {busy ? '...' : betLabel}
       </Button>

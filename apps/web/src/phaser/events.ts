@@ -5,6 +5,8 @@
 export interface GobbieEventMap {
   /** A scene finished creating and is ready for input. */
   'scene-ready': { scene: string };
+  /** A scene shut down (Phaser destroy / StrictMode remount). */
+  'scene-unload': { scene: string };
   /** The mascot was poked (landing easter egg). */
   'mascot-poked': Record<string, never>;
   /** Crash round phase change (React game logic -> Phaser presentation). */
@@ -21,6 +23,20 @@ export interface GobbieEventMap {
   'mines-reveal-all': { mines: number[] };
   /** Player clicked a tile in the Phaser grid. */
   'mines-pick': { index: number };
+  /** Classic game presentation triggers (React logic -> Phaser). */
+  'coin-animate': { landed: 'gold' | 'moon'; isWin: boolean };
+  'coin-anim-done': Record<string, never>;
+  'dice-animate': { roll: number; isWin: boolean; target: number; rollOver: boolean };
+  'dice-anim-done': Record<string, never>;
+  'wheel-animate': { angle: number; isWin: boolean; winChance: number };
+  'wheel-anim-done': Record<string, never>;
+  'd20-animate': { roll: number; isCritical: boolean; isFumble: boolean };
+  'd20-anim-done': Record<string, never>;
+  /** Win-zone preview while sliders move (no bet). */
+  'dice-preview': { target: number; rollOver: boolean };
+  'wheel-preview': { winChance: number };
+  /** Light/dark theme changed (React -> Phaser palette refresh). */
+  'theme-change': { mode: 'light' | 'dark' };
 }
 
 export type GobbieEventName = keyof GobbieEventMap;
@@ -29,6 +45,11 @@ type Handler<K extends GobbieEventName> = (payload: GobbieEventMap[K]) => void;
 
 class TypedEventBus {
   private handlers = new Map<GobbieEventName, Set<Handler<GobbieEventName>>>();
+  private readyScenes = new Set<string>();
+
+  isSceneReady(scene: string): boolean {
+    return this.readyScenes.has(scene);
+  }
 
   on<K extends GobbieEventName>(event: K, handler: Handler<K>): () => void {
     let set = this.handlers.get(event);
@@ -45,6 +66,11 @@ class TypedEventBus {
   }
 
   emit<K extends GobbieEventName>(event: K, payload: GobbieEventMap[K]): void {
+    if (event === 'scene-ready') {
+      this.readyScenes.add((payload as GobbieEventMap['scene-ready']).scene);
+    } else if (event === 'scene-unload') {
+      this.readyScenes.delete((payload as GobbieEventMap['scene-unload']).scene);
+    }
     this.handlers.get(event)?.forEach((handler) => handler(payload));
   }
 }

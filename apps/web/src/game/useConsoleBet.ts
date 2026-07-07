@@ -7,6 +7,7 @@ import { useWalletStore } from '@/stores/walletStore';
 import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
 import { validateBet } from '@/components/game/BetControls';
+import { playSfx } from '@/audio/sfx';
 
 export interface SettleOptions {
   detail: string;
@@ -48,6 +49,7 @@ export function useConsoleBet(game: GameId, floatCount = 8) {
     }
     setBusy(true);
     wallet.settle(-amount);
+    playSfx('bet');
     const seed = useFairnessStore.getState().consumeNonce();
     const floats = await generateFloats(webHasher, seed, floatCount);
     pendingRef.current = { amount, nonce: seed.nonce };
@@ -83,8 +85,10 @@ export function useConsoleBet(game: GameId, floatCount = 8) {
         nonce: pending.nonce,
       });
       if (isWin) {
+        playSfx('win');
         toast.success(`${detail} — won ${(payout - pending.amount).toLocaleString()} GG!`);
       } else {
+        playSfx('lose');
         toast.error(`${detail} — lost ${pending.amount.toLocaleString()} GG.`);
       }
       setBusy(false);

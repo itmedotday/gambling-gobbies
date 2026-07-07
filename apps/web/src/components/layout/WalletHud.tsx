@@ -8,7 +8,7 @@ export function WalletHud() {
   return (
     <Badge
       variant="default"
-      className="retro flex items-center gap-1.5 bg-card px-2.5 py-1.5 text-[10px] text-gold"
+      className="retro flex items-center gap-1.5 bg-card px-2.5 py-1.5 text-[10px] text-primary"
       data-testid="wallet-balance"
     >
       <Coins className="size-3.5" aria-hidden />

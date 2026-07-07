@@ -51,46 +51,80 @@
 }
 
 /*
- * Gambling Gobbies palette — dark tavern-casino.
- * Hex values mirror src/theme/palette.ts (single source of truth for Phaser).
- * The app is dark-only: :root and .dark share the same tokens.
+ * Monochrome palette — light and dark.
+ * Hex values mirror src/theme/palette.ts (Phaser + CSS stay in sync).
  */
-:root,
-.dark {
-    --background: #0c1410;
-    --foreground: #e8dcc0;
-    --card: #16241c;
-    --card-foreground: #e8dcc0;
-    --popover: #16241c;
-    --popover-foreground: #e8dcc0;
-    --primary: #4caf50;
-    --primary-foreground: #0c1410;
-    --secondary: #2e4a38;
-    --secondary-foreground: #e8dcc0;
-    --muted: #1c2e22;
-    --muted-foreground: #8fa08a;
-    --accent: #24382c;
-    --accent-foreground: #e8dcc0;
-    --destructive: #e5484d;
-    --border: #2e4a38;
-    --input: #2e4a38;
-    --ring: #2e7d32;
-    --gold: #ffc94a;
-    --gold-dark: #c79a2a;
-    --chart-1: #ffc94a;
-    --chart-2: #5bc26a;
-    --chart-3: #58a6ff;
-    --chart-4: #e5484d;
-    --chart-5: #8fa08a;
+:root {
+    --background: #ffffff;
+    --foreground: #0a0a0a;
+    --card: #f4f4f4;
+    --card-foreground: #0a0a0a;
+    --popover: #ffffff;
+    --popover-foreground: #0a0a0a;
+    --primary: #0a0a0a;
+    --primary-foreground: #fafafa;
+    --secondary: #e5e5e5;
+    --secondary-foreground: #0a0a0a;
+    --muted: #f4f4f4;
+    --muted-foreground: #737373;
+    --accent: #e5e5e5;
+    --accent-foreground: #0a0a0a;
+    --destructive: #525252;
+    --border: #d4d4d4;
+    --input: #d4d4d4;
+    --ring: #0a0a0a;
+    --gold: #0a0a0a;
+    --gold-dark: #404040;
+    --chart-1: #0a0a0a;
+    --chart-2: #525252;
+    --chart-3: #737373;
+    --chart-4: #a3a3a3;
+    --chart-5: #d4d4d4;
     --radius: 0.25rem;
-    --sidebar: #16241c;
-    --sidebar-foreground: #e8dcc0;
-    --sidebar-primary: #4caf50;
-    --sidebar-primary-foreground: #0c1410;
-    --sidebar-accent: #24382c;
-    --sidebar-accent-foreground: #e8dcc0;
-    --sidebar-border: #2e4a38;
-    --sidebar-ring: #2e7d32;
+    --sidebar: #f4f4f4;
+    --sidebar-foreground: #0a0a0a;
+    --sidebar-primary: #0a0a0a;
+    --sidebar-primary-foreground: #fafafa;
+    --sidebar-accent: #e5e5e5;
+    --sidebar-accent-foreground: #0a0a0a;
+    --sidebar-border: #d4d4d4;
+    --sidebar-ring: #0a0a0a;
+}
+
+.dark {
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --card: #141414;
+    --card-foreground: #fafafa;
+    --popover: #141414;
+    --popover-foreground: #fafafa;
+    --primary: #fafafa;
+    --primary-foreground: #0a0a0a;
+    --secondary: #262626;
+    --secondary-foreground: #fafafa;
+    --muted: #141414;
+    --muted-foreground: #a3a3a3;
+    --accent: #262626;
+    --accent-foreground: #fafafa;
+    --destructive: #737373;
+    --border: #404040;
+    --input: #404040;
+    --ring: #fafafa;
+    --gold: #ffffff;
+    --gold-dark: #a3a3a3;
+    --chart-1: #fafafa;
+    --chart-2: #d4d4d4;
+    --chart-3: #a3a3a3;
+    --chart-4: #737373;
+    --chart-5: #525252;
+    --sidebar: #141414;
+    --sidebar-foreground: #fafafa;
+    --sidebar-primary: #fafafa;
+    --sidebar-primary-foreground: #0a0a0a;
+    --sidebar-accent: #262626;
+    --sidebar-accent-foreground: #fafafa;
+    --sidebar-border: #404040;
+    --sidebar-ring: #fafafa;
 }
 
 @layer base {
@@ -105,21 +139,20 @@
     }
 }
 
-/*
- * The rng-react-components stylesheet ships an unlayered body rule (slate +
- * indigo glow) that would beat our @layer base styles. Unlayered override
- * here wins by import order.
- */
 body {
   background: var(--background);
   color: var(--foreground);
 }
 
-/* Phaser sets inline pixel sizes on its canvas; never let it overflow its container. */
 [data-phaser-container] {
   overflow: hidden;
 }
 [data-phaser-container] canvas {
   max-width: 100% !important;
   height: auto !important;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }

@@ -3,6 +3,7 @@ import { Label } from '@/components/ui/8bit/label';
 import { Slider } from '@/components/ui/8bit/slider';
 import { Switch } from '@/components/ui/8bit/switch';
 import { useSettingsStore } from '@/stores/settingsStore';
+import { ThemeToggleSwitch } from '@/components/theme/ThemeToggle';
 
 export default function SettingsPage() {
   const settings = useSettingsStore();
@@ -10,6 +11,15 @@ export default function SettingsPage() {
   return (
     <div className="mx-auto flex w-full max-w-xl flex-col gap-8">
       <h1 className="retro text-lg text-primary">Settings</h1>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="retro text-xs">Appearance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ThemeToggleSwitch />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

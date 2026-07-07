@@ -71,7 +71,7 @@ export default function VersusArenaPage() {
         <CardHeader>
           <CardTitle className="retro text-xs flex items-center justify-between">
             <span>Timer</span>
-            <span className={view.timerRemainingMs < 30_000 ? 'text-destructive' : 'text-gold'}>
+            <span className={view.timerRemainingMs < 30_000 ? 'text-destructive' : 'text-primary'}>
               {formatTimer(view.timerRemainingMs)}
             </span>
           </CardTitle>

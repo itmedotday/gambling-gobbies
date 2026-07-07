@@ -19,7 +19,7 @@ export function GameStatsHeader({ game }: { game: GameId }) {
     { label: 'Wins', value: wins, className: 'text-primary' },
     { label: 'Losses', value: losses, className: 'text-destructive' },
     { label: 'Win Ratio', value: `${ratio}%`, className: 'text-foreground' },
-    { label: 'Win Streak', value: streak, className: 'text-gold' },
+    { label: 'Win Streak', value: streak, className: 'text-primary' },
   ] as const;
 
   return (

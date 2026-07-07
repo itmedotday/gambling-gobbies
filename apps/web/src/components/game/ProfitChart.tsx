@@ -9,7 +9,7 @@ export interface ProfitChartProps {
   names: Record<string, string>;
 }
 
-const COLORS = ['#d4a017', '#4ade80', '#60a5fa', '#f472b6'];
+const COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var(--chart-4)'];
 
 export function ProfitChart({ snapshots, playerIds, names }: ProfitChartProps) {
   const myId = useSessionStore((s) => s.player?.id);

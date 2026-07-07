@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { D20Roll, type ClickToRollD20Result } from '@itme.day/rng-react-components';
-import { d20Multiplier, d20WinChance, D20_CRIT_BONUS } from '@gobbies/engine';
+import { useEffect, useRef, useState } from 'react';
+import { resolveD20, d20Multiplier, d20WinChance, D20_CRIT_BONUS } from '@gobbies/engine';
 import { Button } from '@/components/ui/8bit/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
 import { Label } from '@/components/ui/8bit/label';
@@ -8,23 +7,47 @@ import { BetControls } from '@/components/game/BetControls';
 import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
 import { useConsoleBet } from '@/game/useConsoleBet';
+import { PhaserGame } from '@/phaser/PhaserGame';
+import { D20Scene } from '@/phaser/scenes/D20Scene';
+import { EventBus } from '@/phaser/events';
+import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
+import { useThemeKey } from '@/components/theme/useThemeKey';
 
 export default function D20Page() {
   const [dc, setDc] = useState(11);
+  const sceneReady = usePhaserSceneReady('d20');
+  const themeKey = useThemeKey();
   const bet = useConsoleBet('d20', 1);
+  const pendingRef = useRef<{ detail: string; isWin: boolean; multiplier: number } | null>(null);
   const multiplier = d20Multiplier({ dc });
 
-  const handleRollComplete = (result: ClickToRollD20Result) => {
-    const isWin = result.roll >= dc;
-    const effective = result.isCritical ? multiplier * D20_CRIT_BONUS : multiplier;
-    bet.settleOutcome({
-      detail: result.isCritical
+  useEffect(() => {
+    return EventBus.on('d20-anim-done', () => {
+      const pending = pendingRef.current;
+      if (!pending) return;
+      pendingRef.current = null;
+      bet.settleOutcome(pending);
+    });
+  }, [bet]);
+
+  const handleBet = async () => {
+    const floats = await bet.beginBet();
+    if (!floats) return;
+    const outcome = resolveD20({ dc }, floats);
+    const effective = outcome.isCritical ? multiplier * D20_CRIT_BONUS : multiplier;
+    pendingRef.current = {
+      detail: outcome.isCritical
         ? 'Nat 20! Critical!'
-        : result.isFumble
+        : outcome.isFumble
           ? 'Nat 1. Fumble.'
-          : `Rolled ${result.roll}`,
-      isWin,
+          : `Rolled ${outcome.roll}`,
+      isWin: outcome.isWin,
       multiplier: effective,
+    };
+    EventBus.emit('d20-animate', {
+      roll: outcome.roll,
+      isCritical: outcome.isCritical,
+      isFumble: outcome.isFumble,
     });
   };
 
@@ -34,9 +57,9 @@ export default function D20Page() {
       <GameStatsHeader game="d20" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
-          <CardContent className="flex min-h-72 items-center justify-center p-8">
-            <div className="pointer-events-none" data-testid="d20-visual">
-              <D20Roll rollRequest={bet.request} rng={bet.rng} onRollComplete={handleRollComplete} />
+          <CardContent className="flex min-h-72 items-center justify-center p-4">
+            <div data-testid="d20-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
+              <PhaserGame scenes={[D20Scene]} width={520} height={300} transparent themeKey={themeKey} />
             </div>
           </CardContent>
         </Card>
@@ -75,14 +98,16 @@ export default function D20Page() {
                   +
                 </Button>
               </div>
-              <span className="text-xs text-muted-foreground">Nat 20 pays {D20_CRIT_BONUS}x extra. Nat 1 always loses.</span>
+              <span className="text-xs text-muted-foreground">
+                Nat 20 pays {D20_CRIT_BONUS}x extra. Nat 1 always loses.
+              </span>
             </div>
             <BetControls
               amount={bet.amount}
               onAmountChange={bet.setAmount}
               multiplier={multiplier}
-              onBet={() => void bet.placeBet()}
-              busy={bet.busy}
+              onBet={() => void handleBet()}
+              busy={bet.busy || !sceneReady}
               betLabel="Roll"
             />
           </CardContent>

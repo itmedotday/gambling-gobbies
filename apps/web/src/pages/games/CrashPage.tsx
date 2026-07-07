@@ -8,11 +8,14 @@ import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
 import { PhaserGame } from '@/phaser/PhaserGame';
 import { CrashScene } from '@/phaser/scenes/CrashScene';
+import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
+import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useCrashGame } from '@/game/useCrashGame';
 
 export default function CrashPage() {
-  const game = useCrashGame();
-  const running = game.phase === 'running';
+  const sceneReady = usePhaserSceneReady('crash');
+  const themeKey = useThemeKey();
+  const game = useCrashGame();  const running = game.phase === 'running';
 
   return (
     <div className="flex flex-col gap-6">
@@ -21,7 +24,9 @@ export default function CrashPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
           <CardContent className="flex flex-col items-center gap-4 p-6">
-            <PhaserGame scenes={[CrashScene]} width={640} height={340} transparent />
+            <div data-testid="crash-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
+              <PhaserGame scenes={[CrashScene]} width={640} height={340} transparent themeKey={themeKey} />
+            </div>
             {game.history.length > 0 && (
               <div className="flex w-full flex-wrap gap-2" data-testid="crash-history">
                 {game.history.map((round, i) => (
@@ -60,7 +65,7 @@ export default function CrashPage() {
             </div>
             {running ? (
               <div className="flex flex-col gap-3">
-                <div className="retro text-center text-2xl text-gold" data-testid="crash-multiplier">
+                <div className="retro text-center text-2xl text-primary" data-testid="crash-multiplier">
                   {game.multiplier.toFixed(2)}x
                 </div>
                 <Button
@@ -78,8 +83,7 @@ export default function CrashPage() {
                 onAmountChange={game.setAmount}
                 multiplier={1}
                 onBet={() => void game.start()}
-                busy={running}
-                betLabel="Start the run"
+                busy={running || !sceneReady}                betLabel="Start the run"
               />
             )}
           </CardContent>

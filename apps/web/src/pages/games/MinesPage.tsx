@@ -7,10 +7,14 @@ import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
 import { PhaserGame } from '@/phaser/PhaserGame';
 import { MinesScene } from '@/phaser/scenes/MinesScene';
+import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
+import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useMinesGame } from '@/game/useMinesGame';
 import { MINES_MAX, MINES_MIN } from '@gobbies/engine';
 
 export default function MinesPage() {
+  const sceneReady = usePhaserSceneReady('mines');
+  const themeKey = useThemeKey();
   const game = useMinesGame();
   const playing = game.phase === 'playing';
 
@@ -21,11 +25,13 @@ export default function MinesPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
           <CardContent className="flex flex-col items-center gap-4 p-6">
-            <PhaserGame scenes={[MinesScene]} width={340} height={360} transparent />
+            <div data-testid="mines-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
+              <PhaserGame scenes={[MinesScene]} width={340} height={360} transparent themeKey={themeKey} />
+            </div>
             {playing && (
               <div className="flex w-full flex-col items-center gap-1 text-center">
                 <span className="retro text-xs text-muted-foreground">Current multiplier</span>
-                <span className="retro text-xl text-gold" data-testid="mines-multiplier">
+                <span className="retro text-xl text-primary" data-testid="mines-multiplier">
                   {game.currentMultiplier.toFixed(2)}x
                 </span>
                 {game.nextMultiplier !== null && (
@@ -79,7 +85,7 @@ export default function MinesPage() {
                 onAmountChange={game.setAmount}
                 multiplier={1}
                 onBet={() => void game.start()}
-                busy={playing}
+                busy={playing || !sceneReady}
                 betLabel="Enter the minefield"
               />
             )}

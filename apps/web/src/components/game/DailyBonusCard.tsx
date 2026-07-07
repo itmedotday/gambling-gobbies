@@ -26,9 +26,9 @@ export function DailyBonusCard() {
     <Card>
       <CardContent className="flex flex-col items-start justify-between gap-4 p-5 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
-          <Gift className="size-6 text-gold" aria-hidden />
+          <Gift className="size-6 text-primary" aria-hidden />
           <div className="flex flex-col">
-            <span className="retro text-[11px] text-gold">Daily bonus</span>
+            <span className="retro text-[11px] text-primary">Daily bonus</span>
             <span className="text-sm text-muted-foreground">
               {DAILY_BONUS_AMOUNT} GG of goblin generosity, every 20 hours.
             </span>
