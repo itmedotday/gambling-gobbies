@@ -77,7 +77,9 @@ npm run start -w apps/server   # PORT from env, default 2567
 
 Required env: `TOKEN_SIGNING_SECRET`, `CORS_ORIGIN` (your Vercel URL). Optional `DATABASE_URL` for Postgres; file store used when unset.
 
-See [docs/verification/M7-GATE.md](docs/verification/M7-GATE.md) for release checklist.
+See [docs/verification/DEPLOY.md](docs/verification/DEPLOY.md) for release checklist.
+
+**Live:** [gambling-gobbies.vercel.app](https://gambling-gobbies.vercel.app) (web). API server deploys separately via `render.yaml`.
 
 ## Credits
 

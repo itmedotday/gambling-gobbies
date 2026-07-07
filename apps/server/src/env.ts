@@ -17,9 +17,7 @@ export function loadEnv(): ServerEnv {
     throw new Error('TOKEN_SIGNING_SECRET is required in production');
   }
   const databaseUrl = process.env.DATABASE_URL ?? null;
-  if (isProd && !databaseUrl) {
-    throw new Error('DATABASE_URL is required in production');
-  }
+  // Postgres store not wired yet — file-backed MemoryStore is allowed in production.
   return {
     port,
     corsOrigin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',

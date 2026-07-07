@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: gambling-gobbies-server
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build -w apps/server
+    startCommand: npm run start -w apps/server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TOKEN_SIGNING_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://gambling-gobbies.vercel.app
