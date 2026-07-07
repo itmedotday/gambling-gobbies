@@ -1,0 +1,26 @@
+{
+  "name": "@gobbies/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@colyseus/schema": "^4.0.27",
+    "@gobbies/engine": "*",
+    "@gobbies/shared": "*",
+    "colyseus": "^0.17.10",
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@colyseus/testing": "^0.17.11",
+    "@types/express": "^5.0.6",
+    "tsx": "^4.23.0"
+  }
+}

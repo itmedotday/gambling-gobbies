@@ -1,0 +1,25 @@
+SpriteCook - Pixel Art Characters sample pack
+=============================================
+
+These assets are released under Creative Commons Zero (CC0 1.0).
+You can copy, modify, and use them in commercial and non-commercial
+projects, with no attribution required.
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/
+
+Made with SpriteCook - https://www.spritecook.ai
+
+Contents
+--------
+15 pixel-art characters, one folder each. Per character:
+
+- <anim>.webp        the looping animation preview
+- <anim>_sheet.png   the sprite sheet (square frames, left to right)
+
+Animations vary per character (idle, walk, run, jump, attack, hurt,
+death). Every sheet is a row of square frames; most are 8 frames, a
+few are longer. Drop a sheet into your engine and slice it by its
+frame width.
+
+Made with the default SpriteCook pixel-art preset. Type any character
+and get a matching one in the same style.
