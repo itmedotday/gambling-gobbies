@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/8bit/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/8bit/card';
 import { GAME_META, ALL_GAME_IDS } from '@gobbies/shared';
+import { DailyBonusCard } from '@/components/game/DailyBonusCard';
 
 export default function LobbyPage() {
   return (
@@ -12,6 +13,7 @@ export default function LobbyPage() {
           Pick a game. The house edge is 1% everywhere — the goblins are greedy, not unfair.
         </p>
       </div>
+      <DailyBonusCard />
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-testid="game-grid">
         {ALL_GAME_IDS.map((id) => {
           const meta = GAME_META[id];

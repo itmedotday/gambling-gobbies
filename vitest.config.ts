@@ -20,15 +20,7 @@ export default defineConfig({
           passWithNoTests: true,
         },
       },
-      {
-        test: {
-          name: 'web',
-          root: './apps/web',
-          environment: 'jsdom',
-          passWithNoTests: true,
-          include: ['src/**/*.test.{ts,tsx}'],
-        },
-      },
+      './apps/web/vitest.config.ts',
     ],
   },
 });
