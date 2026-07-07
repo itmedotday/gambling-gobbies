@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Client, Room } from 'colyseus.js';
 import { create } from 'zustand';
-import type { VersusClientMessage, VersusRoomView } from '@gobbies/shared';
+import type { PlayerProfile, VersusClientMessage, VersusRoomView } from '@gobbies/shared';
 import { wsUrl } from '@/net/apiClient';
 import { useSessionStore } from '@/stores/sessionStore';
 
@@ -13,6 +13,15 @@ interface VersusStore {
   connectJoin: (code: string) => Promise<void>;
   send: (message: VersusClientMessage) => void;
   leave: () => void;
+}
+
+function generateRoomCode(): string {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let code = '';
+  for (let i = 0; i < 4; i++) {
+    code += alphabet[Math.floor(Math.random() * alphabet.length)] ?? 'G';
+  }
+  return code;
 }
 
 function mapRoom(room: Room): VersusRoomView {
@@ -39,16 +48,18 @@ function mapRoom(room: Room): VersusRoomView {
     eventFeed: { length: number; [i: number]: string };
     snapshots: { length: number; [i: number]: string };
   };
-  const players = [...state.players.values()].map((p) => ({
-    sessionId: p.sessionId,
-    playerId: p.playerId,
-    name: p.name,
-    avatar: p.avatar as VersusRoomView['players'][0]['avatar'],
-    balance: p.balance,
-    startingBalance: p.startingBalance,
-    ready: p.ready,
-    disconnected: p.disconnected,
-  }));
+  const players = [...state.players.values()]
+    .filter((p): p is NonNullable<typeof p> => p != null)
+    .map((p) => ({
+      sessionId: p.sessionId,
+      playerId: p.playerId,
+      name: p.name || 'Goblin',
+      avatar: p.avatar as VersusRoomView['players'][0]['avatar'],
+      balance: p.balance,
+      startingBalance: p.startingBalance,
+      ready: p.ready,
+      disconnected: p.disconnected,
+    }));
   const events = Array.from({ length: state.eventFeed.length }, (_, i) => {
     const msg = state.eventFeed[i] ?? '';
     return { at: Date.now(), playerId: '', name: '', message: msg };
@@ -78,15 +89,28 @@ function mapRoom(room: Room): VersusRoomView {
   };
 }
 
+async function resolvePlayer(): Promise<PlayerProfile> {
+  const session = useSessionStore.getState();
+  let player = session.player;
+  if (!player?.id || !player?.name) {
+    player = await session.ensureSession();
+  }
+  if (!player?.id || !player?.name) {
+    throw new Error('Could not load your goblin profile');
+  }
+  return player;
+}
+
 export const useVersusStore = create<VersusStore>((set, get) => ({
   room: null,
   view: null,
   error: null,
   connectCreate: async (opts) => {
-    const session = useSessionStore.getState();
-    const player = session.player ?? (await session.ensureSession());
+    const player = await resolvePlayer();
+    const code = generateRoomCode();
     const client = new Client(wsUrl());
     const room = await client.create('versus', {
+      code,
       playerId: player.id,
       name: player.name,
       avatar: player.avatar,
@@ -96,11 +120,11 @@ export const useVersusStore = create<VersusStore>((set, get) => ({
     room.onStateChange(() => set({ view: mapRoom(room) }));
     room.onMessage('error', (payload: { message: string }) => set({ error: payload.message }));
     set({ room, view: mapRoom(room), error: null });
-    return room.state.code as string;
+    const view = mapRoom(room);
+    return view.code || code;
   },
   connectJoin: async (code) => {
-    const session = useSessionStore.getState();
-    const player = session.player ?? (await session.ensureSession());
+    const player = await resolvePlayer();
     const client = new Client(wsUrl());
     const room = await client.joinOrCreate('versus', {
       code: code.toUpperCase(),

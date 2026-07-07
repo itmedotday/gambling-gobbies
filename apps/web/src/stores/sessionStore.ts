@@ -20,11 +20,14 @@ export const useSessionStore = create<SessionState>()(
       ready: false,
       ensureSession: async () => {
         const { token, player } = get();
-        if (token && player) {
+        if (token && player?.id && player?.name) {
           set({ ready: true });
           return player;
         }
         const auth = await apiGuestAuth();
+        if (!auth.player?.id) {
+          throw new Error('Guest auth failed');
+        }
         set({ token: auth.token, player: auth.player, ready: true });
         return auth.player;
       },

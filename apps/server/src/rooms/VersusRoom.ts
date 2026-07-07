@@ -62,8 +62,8 @@ export class VersusRoom extends Room {
     const player = new VersusPlayerState();
     player.sessionId = client.sessionId;
     player.playerId = options.playerId;
-    player.name = options.name;
-    player.avatar = options.avatar;
+    player.name = options.name ?? 'Goblin';
+    player.avatar = options.avatar ?? 'royal-goblin';
     player.balance = options.startingBankroll ?? 1000;
     player.startingBalance = player.balance;
     this.s.players.set(client.sessionId, player);
