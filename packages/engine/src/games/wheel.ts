@@ -38,3 +38,25 @@ export function resolveWheel(params: WheelParams, floats: readonly number[]): Wh
   const isWin = position < params.winChance;
   return { position, isWin, multiplier: isWin ? wheelMultiplier(params) : 0 };
 }
+
+export interface WheelSpinOutcome {
+  /** Landing angle in degrees [0, 360); the win arc is centered on the pointer at 0°. */
+  angle: number;
+  isWin: boolean;
+  multiplier: number;
+}
+
+/**
+ * Angle-form resolution used by the wheel visual: the win arc spans
+ * winChance% of the circle centered on the pointer. Same float, same win
+ * probability as resolveWheel — just a different geometric presentation.
+ */
+export function resolveWheelSpin(params: WheelParams, floats: readonly number[]): WheelSpinOutcome {
+  validateWheelParams(params);
+  const float = floats[0];
+  if (float === undefined) throw new Error('wheel requires 1 float');
+  const angle = float * 360;
+  const halfArc = (params.winChance / 100) * 180;
+  const isWin = angle <= halfArc || angle >= 360 - halfArc;
+  return { angle, isWin, multiplier: isWin ? wheelMultiplier(params) : 0 };
+}

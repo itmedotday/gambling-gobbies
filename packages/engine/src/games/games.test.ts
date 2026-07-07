@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { HOUSE_EDGE } from '@gobbies/shared';
 import { resolveCoinFlip, COINFLIP_WIN_MULTIPLIER } from './coinflip';
 import { resolveDice, diceMultiplier, diceWinChance } from './dice';
-import { resolveWheel, wheelMultiplier } from './wheel';
+import { resolveWheel, resolveWheelSpin, wheelMultiplier } from './wheel';
 import { resolveD20, d20Multiplier, D20_CRIT_BONUS } from './d20';
 import { resolveCrashPoint, crashPayoutMultiplier } from './crash';
 import { resolveMinePositions, minesMultiplier, MINES_GRID_SIZE } from './mines';
@@ -81,6 +81,22 @@ describe('wheel', () => {
     expect(() => resolveWheel({ winChance: 0 }, [0.5])).toThrow();
     expect(() => resolveWheel({ winChance: 99 }, [0.5])).toThrow();
     expect(() => resolveWheel({ winChance: 50.5 }, [0.5])).toThrow();
+  });
+
+  it('spin form wins inside the pointer-centered arc with the same probability', () => {
+    // winChance 50 -> arc is ±90° around 0°.
+    expect(resolveWheelSpin({ winChance: 50 }, [0.2]).isWin).toBe(true); // 72°
+    expect(resolveWheelSpin({ winChance: 50 }, [0.4]).isWin).toBe(false); // 144°
+    expect(resolveWheelSpin({ winChance: 50 }, [0.8]).isWin).toBe(true); // 288°
+    // Exhaustive probability check on a fine grid.
+    for (const chance of [1, 25, 50, 98]) {
+      let wins = 0;
+      const n = 100_000;
+      for (let i = 0; i < n; i++) {
+        if (resolveWheelSpin({ winChance: chance }, [(i + 0.5) / n]).isWin) wins++;
+      }
+      expect(wins / n).toBeCloseTo(chance / 100, 3);
+    }
   });
 });
 
