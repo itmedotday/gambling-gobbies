@@ -1,0 +1,25 @@
+{
+  "name": "gambling-gobbies",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Gambling Gobbies - a goblin-themed, provably-fair virtual casino with solo and versus modes",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/shared",
+    "packages/engine",
+    "apps/web",
+    "apps/server"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w apps/web",
+    "dev:server": "npm run dev -w apps/server",
+    "lint": "eslint .",
+    "typecheck": "tsc --build",
+    "test": "vitest run",
+    "e2e": "npm run e2e -w apps/web",
+    "build": "npm run build --workspaces --if-present"
+  }
+}
