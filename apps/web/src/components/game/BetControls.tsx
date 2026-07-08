@@ -8,6 +8,7 @@ import { useWalletStore } from '@/stores/walletStore';
 import { validateBet } from '@/game/validateBet';
 import type { GameAccent } from '@/game/accent';
 import { accentTokens } from '@/game/accent';
+import { DebtLoanControls } from '@/components/game/DebtLoanControls';
 import { cn } from '@/lib/utils';
 
 export interface BetControlsProps {
@@ -64,17 +65,20 @@ export function BetControls({
           </span>
         </div>
         {inDebt ? (
-          <p
-            className="flex items-start gap-2 rounded-sm border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
-            role="status"
-          >
-            <AlertTriangle className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-            <span>
-              You&apos;re in debt — max bet is lowered to{' '}
-              <span className="font-medium tabular-nums">{maxBet.toLocaleString()} GG</span> until
-              your balance recovers.
-            </span>
-          </p>
+          <>
+            <DebtLoanControls />
+            <p
+              className="flex items-start gap-2 rounded-sm border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+              role="status"
+            >
+              <AlertTriangle className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+              <span>
+                Max bet is lowered to{' '}
+                <span className="font-medium tabular-nums">{maxBet.toLocaleString()} GG</span> while
+                you owe the house.
+              </span>
+            </p>
+          </>
         ) : null}
         <div className="flex items-stretch gap-2.5">
           <Input

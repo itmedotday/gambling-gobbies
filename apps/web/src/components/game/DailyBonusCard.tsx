@@ -2,20 +2,31 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Gift } from 'lucide-react';
 import { Button } from '@/components/kit';
-import { DAILY_BONUS_AMOUNT } from '@gobbies/shared';
+import { DAILY_BONUS_AMOUNT, isInDebt } from '@gobbies/shared';
 import { useWalletStore } from '@/stores/walletStore';
 import { useThemeStyle } from '@/stores/settingsStore';
+import { DebtLoanControls } from '@/components/game/DebtLoanControls';
 import { NeonCard } from '@/components/game/NeonCard';
 import { cn } from '@/lib/utils';
 
 export function DailyBonusCard() {
   const themeStyle = useThemeStyle();
+  const balance = useWalletStore((s) => s.balance);
   const claimDailyBonus = useWalletStore((s) => s.claimDailyBonus);
   const canClaimDailyBonus = useWalletStore((s) => s.canClaimDailyBonus);
   const [, setClaimCount] = useState(0);
   const claimable = canClaimDailyBonus();
+  const inDebt = isInDebt(balance);
   const isEmerald = themeStyle === 'emeraldDen';
   const isMarquee = themeStyle === 'highRollerMarquee';
+
+  if (inDebt) {
+    return (
+      <div data-testid="debt-loan-card" className="w-full">
+        <DebtLoanControls className="p-4 sm:p-5" />
+      </div>
+    );
+  }
 
   const handleClaim = () => {
     if (claimDailyBonus()) {

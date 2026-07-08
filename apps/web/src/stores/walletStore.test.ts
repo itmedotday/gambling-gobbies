@@ -4,6 +4,8 @@ import {
   DAILY_BONUS_AMOUNT,
   DAILY_BONUS_COOLDOWN_MS,
   BAILOUT_AMOUNT,
+  DEBT_LOAN_AMOUNT,
+  DEBT_LOAN_COOLDOWN_MS,
   MAX_DEBT,
 } from '@gobbies/shared';
 import { useWalletStore } from './walletStore';
@@ -11,7 +13,12 @@ import { validateBet } from '@/game/validateBet';
 
 describe('walletStore', () => {
   beforeEach(() => {
-    useWalletStore.setState({ balance: STARTING_BALANCE, lastBonusAt: null, lastBailoutAt: null });
+    useWalletStore.setState({
+      balance: STARTING_BALANCE,
+      lastBonusAt: null,
+      lastBailoutAt: null,
+      lastLoanAt: null,
+    });
     vi.useFakeTimers();
   });
 
@@ -42,13 +49,42 @@ describe('walletStore', () => {
     expect(useWalletStore.getState().claimDailyBonus()).toBe(true);
   });
 
-  it('bailout only fires when nearly broke', () => {
+  it('blocks daily bonus while in debt', () => {
+    useWalletStore.setState({ balance: -20 });
+    expect(useWalletStore.getState().canClaimDailyBonus()).toBe(false);
+    expect(useWalletStore.getState().claimDailyBonus()).toBe(false);
+  });
+
+  it('bailout only fires when nearly broke but not in debt', () => {
     expect(useWalletStore.getState().claimBailout()).toBe(false);
     useWalletStore.setState({ balance: 5 });
     expect(useWalletStore.getState().claimBailout()).toBe(true);
     expect(useWalletStore.getState().balance).toBe(5 + BAILOUT_AMOUNT);
     useWalletStore.setState({ balance: 3 });
     expect(useWalletStore.getState().claimBailout()).toBe(false); // cooldown
+    useWalletStore.setState({ balance: -5, lastBailoutAt: null });
+    expect(useWalletStore.getState().claimBailout()).toBe(false);
+  });
+
+  it('debt loan only works while in debt, 150 GG every 15 seconds', () => {
+    expect(useWalletStore.getState().takeDebtLoan()).toBe(false);
+    useWalletStore.setState({ balance: -40 });
+    expect(useWalletStore.getState().takeDebtLoan()).toBe(true);
+    expect(useWalletStore.getState().balance).toBe(-40 + DEBT_LOAN_AMOUNT);
+    expect(useWalletStore.getState().takeDebtLoan()).toBe(false); // out of debt now
+    useWalletStore.getState().settle(-160); // back into debt
+    expect(useWalletStore.getState().balance).toBe(-50);
+    expect(useWalletStore.getState().takeDebtLoan()).toBe(false); // cooldown
+    vi.advanceTimersByTime(DEBT_LOAN_COOLDOWN_MS + 1);
+    expect(useWalletStore.getState().takeDebtLoan()).toBe(true);
+    expect(useWalletStore.getState().balance).toBe(100);
+  });
+
+  it('stops debt loans once balance is no longer negative', () => {
+    useWalletStore.setState({ balance: -10, lastLoanAt: null });
+    expect(useWalletStore.getState().takeDebtLoan()).toBe(true);
+    expect(useWalletStore.getState().balance).toBe(140);
+    expect(useWalletStore.getState().canTakeDebtLoan()).toBe(false);
   });
 });
 
