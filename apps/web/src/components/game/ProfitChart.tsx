@@ -26,7 +26,10 @@ export function ProfitChart({ snapshots, playerIds, names }: ProfitChartProps) {
   const config = Object.fromEntries(
     playerIds.map((id, index) => [
       id,
-      { label: names[id] ?? id.slice(0, 6), color: id === myId ? COLORS[0] : COLORS[(index + 1) % COLORS.length] },
+      {
+        label: names[id] ?? id.slice(0, 6),
+        color: id === myId ? COLORS[0] : COLORS[(index + 1) % COLORS.length],
+      },
     ]),
   );
 
@@ -39,7 +42,14 @@ export function ProfitChart({ snapshots, playerIds, names }: ProfitChartProps) {
         <ReferenceLine y={0} stroke="hsl(var(--muted-foreground))" strokeDasharray="4 4" />
         <ChartTooltip content={<ChartTooltipContent />} />
         {playerIds.map((id) => (
-          <Line key={id} type="monotone" dataKey={id} stroke={`var(--color-${id})`} dot={false} strokeWidth={2} />
+          <Line
+            key={id}
+            type="monotone"
+            dataKey={id}
+            stroke={`var(--color-${id})`}
+            dot={false}
+            strokeWidth={2}
+          />
         ))}
       </LineChart>
     </ChartContainer>

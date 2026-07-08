@@ -22,7 +22,13 @@ export interface RngWheelBoardProps {
  * stays the source of truth (win chance + engine outcome); this component only
  * animates to the already-resolved angle so the display always matches the payout.
  */
-export function RngWheelBoard({ winChance, angle, isWin, request, onComplete }: RngWheelBoardProps) {
+export function RngWheelBoard({
+  winChance,
+  angle,
+  isWin,
+  request,
+  onComplete,
+}: RngWheelBoardProps) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinStatus, setSpinStatus] = useState<'idle' | 'win' | 'loss'>('idle');
 
@@ -30,7 +36,9 @@ export function RngWheelBoard({ winChance, angle, isWin, request, onComplete }: 
   const cumulativeRotation = useRef(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   const [wheelStyles, wheelApi] = useSpring(() => ({
     rotate: 0,
@@ -58,6 +66,7 @@ export function RngWheelBoard({ winChance, angle, isWin, request, onComplete }: 
     if (angle === null) return;
 
     clearTimer();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional state reset per request
     setIsSpinning(true);
     setSpinStatus('idle');
 
@@ -85,13 +94,11 @@ export function RngWheelBoard({ winChance, angle, isWin, request, onComplete }: 
           to: [
             {
               scale: 1.15,
-              boxShadow:
-                '0 0 25px rgba(16, 185, 129, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.3)',
+              boxShadow: '0 0 25px rgba(16, 185, 129, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.3)',
             },
             {
               scale: 1,
-              boxShadow:
-                '0 0 15px rgba(16, 185, 129, 0.2), inset 0 0 4px rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 0 15px rgba(16, 185, 129, 0.2), inset 0 0 4px rgba(255, 255, 255, 0.1)',
             },
           ],
           config: { tension: 350, friction: 12 },
@@ -101,13 +108,11 @@ export function RngWheelBoard({ winChance, angle, isWin, request, onComplete }: 
           to: [
             {
               scale: 0.95,
-              boxShadow:
-                '0 0 10px rgba(225, 29, 72, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 0 10px rgba(225, 29, 72, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)',
             },
             {
               scale: 1,
-              boxShadow:
-                '0 0 15px rgba(99, 102, 241, 0.1), inset 0 0 4px rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 0 15px rgba(99, 102, 241, 0.1), inset 0 0 4px rgba(255, 255, 255, 0.1)',
             },
           ],
           config: { tension: 200, friction: 15 },

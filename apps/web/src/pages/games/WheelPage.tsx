@@ -1,20 +1,22 @@
 import { useState } from 'react';
 import { resolveWheelSpin, wheelMultiplier } from '@gobbies/engine';
-import { Card, CardContent, CardHeader, CardTitle, Label, Slider } from '@/components/kit';
+import { Label, Slider } from '@/components/kit';
 import { BetControls } from '@/components/game/BetControls';
-import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
 import { RngWheelBoard } from '@/components/game/RngWheelBoard';
 import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
+import { NeonCard } from '@/components/game/NeonCard';
+import { accentForGame } from '@/game/accent';
 
 export default function WheelPage() {
   const [winChance, setWinChance] = useState(50);
   const [lastAngle, setLastAngle] = useState<number | null>(null);
   const [lastIsWin, setLastIsWin] = useState(false);
   const bet = useConsoleBet('wheel', 1);
+  const accent = accentForGame('wheel');
 
   const params = { winChance };
   const multiplier = wheelMultiplier(params);
@@ -37,64 +39,54 @@ export default function WheelPage() {
   return (
     <GamePageFrame game="wheel" title="Wheel">
       <VersusPlayBanner />
-      <GameStatsHeader game="wheel" />
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-        <Card>
-          <CardContent className="flex min-h-72 items-center justify-center p-4">
-            <div data-testid="wheel-visual">
-              <RngWheelBoard
-                winChance={winChance}
-                angle={lastAngle}
-                isWin={lastIsWin}
-                request={bet.request}
-                onComplete={handleComplete}
-              />
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="retro text-xs">Win zone</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="wheel-chance">
-                  Win chance <span className="text-primary">{winChance}%</span>
-                </Label>
-                <span className="text-xs text-muted-foreground">{multiplier.toFixed(2)}x payout</span>
-              </div>
-              <Slider
-                id="wheel-chance"
-                min={1}
-                max={98}
-                step={1}
-                value={[winChance]}
-                onValueChange={([v]) => setWinChance(v ?? 50)}
-                disabled={bet.busy}
-                data-testid="wheel-chance"
-              />
-            </div>
-            <BetControls
-              amount={bet.amount}
-              onAmountChange={bet.setAmount}
-              multiplier={multiplier}
-              onBet={() => void handleBet()}
-              busy={bet.busy}
-              betLabel="Spin"
-              balance={bet.versusBetting ? bet.balance : undefined}
+      <div className="grid gap-[18px] lg:grid-cols-[1fr_380px]">
+        <NeonCard accent={accent} stage className="p-4">
+          <div data-testid="wheel-visual">
+            <RngWheelBoard
+              winChance={winChance}
+              angle={lastAngle}
+              isWin={lastIsWin}
+              request={bet.request}
+              onComplete={handleComplete}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </NeonCard>
+        <NeonCard className="flex flex-col gap-[18px] p-6">
+          <span className="retro text-[10px] text-foreground">Win zone</span>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="wheel-chance" className="text-[13px] text-muted-foreground">
+                Win chance <span className="text-primary">{winChance}%</span>
+              </Label>
+              <span className="text-xs text-muted-foreground">{multiplier.toFixed(2)}x payout</span>
+            </div>
+            <Slider
+              id="wheel-chance"
+              min={1}
+              max={98}
+              step={1}
+              value={[winChance]}
+              onValueChange={([v]) => setWinChance(v ?? 50)}
+              disabled={bet.busy}
+              data-testid="wheel-chance"
+            />
+          </div>
+          <BetControls
+            amount={bet.amount}
+            onAmountChange={bet.setAmount}
+            multiplier={multiplier}
+            onBet={() => void handleBet()}
+            busy={bet.busy}
+            betLabel="Spin"
+            balance={bet.versusBetting ? bet.balance : undefined}
+            accent={accent}
+          />
+        </NeonCard>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="retro text-xs">History</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <LedgerTable game="wheel" />
-        </CardContent>
-      </Card>
+      <NeonCard className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center">
+        <span className="retro shrink-0 text-[9px] text-muted-foreground">History</span>
+        <LedgerTable game="wheel" variant="chips" />
+      </NeonCard>
     </GamePageFrame>
   );
 }

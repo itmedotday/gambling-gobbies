@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import type { SettleOptions } from '@/game/useConsoleBet';
 
 type ConsoleBetApi = {
@@ -22,8 +22,10 @@ export function useConsoleBetFlow(
   const pendingRef = useRef<SettleOptions | null>(null);
   const versusParamsRef = useRef(versusParams);
   const resolveRef = useRef(resolve);
-  versusParamsRef.current = versusParams;
-  resolveRef.current = resolve;
+  useEffect(() => {
+    versusParamsRef.current = versusParams;
+    resolveRef.current = resolve;
+  }, [versusParams, resolve]);
 
   const handleBet = useCallback(async () => {
     if (bet.versusBetting) {

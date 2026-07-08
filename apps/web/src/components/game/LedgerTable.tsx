@@ -1,60 +1,86 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/8bit/table';
 import { GAME_META, type GameId } from '@gobbies/shared';
 import { useLedgerStore } from '@/stores/ledgerStore';
+import { cn } from '@/lib/utils';
 
 export interface LedgerTableProps {
-  /** Restrict to a single game's entries (game pages); omit for all games. */
   game?: GameId;
   limit?: number;
+  variant?: 'table' | 'chips';
 }
 
-export function LedgerTable({ game, limit = 10 }: LedgerTableProps) {
+export function LedgerTable({ game, limit = 10, variant = 'table' }: LedgerTableProps) {
   const entries = useLedgerStore((s) => s.entries);
   const rows = (game ? entries.filter((e) => e.game === game) : entries).slice(0, limit);
 
   if (rows.length === 0) {
     return (
-      <p className="py-6 text-center text-sm text-muted-foreground" data-testid="ledger-empty">
+      <p className="py-4 text-center text-sm text-muted-foreground" data-testid="ledger-empty">
         No bets yet. The goblins are waiting.
       </p>
     );
   }
 
-  return (
-    <Table data-testid="ledger-table">
-      <TableHeader>
-        <TableRow>
-          {!game && <TableHead>Game</TableHead>}
-          <TableHead>Outcome</TableHead>
-          <TableHead className="text-right">Bet</TableHead>
-          <TableHead className="text-right">Mult</TableHead>
-          <TableHead className="text-right">Payout</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((entry) => (
-          <TableRow key={entry.id} data-testid="ledger-row">
-            {!game && <TableCell className="text-xs">{GAME_META[entry.game].name}</TableCell>}
-            <TableCell className="text-xs">{entry.detail}</TableCell>
-            <TableCell className="text-right text-xs">{entry.bet.toLocaleString()}</TableCell>
-            <TableCell className="text-right text-xs">
-              {entry.multiplier > 0 ? `${entry.multiplier.toFixed(2)}x` : '—'}
-            </TableCell>
-            <TableCell
-              className={`text-right text-xs ${entry.isWin ? 'text-primary' : 'text-destructive'}`}
+  if (variant === 'chips') {
+    return (
+      <div className="flex flex-wrap gap-2 font-mono text-xs" data-testid="ledger-table">
+        {rows.map((entry) => {
+          const delta = entry.isWin ? entry.payout - entry.bet : -entry.bet;
+          const up = delta > 0;
+          return (
+            <span
+              key={entry.id}
+              data-testid="ledger-row"
+              className={cn(
+                'border px-2.5 py-1',
+                up
+                  ? 'border-[color:var(--chart-3)]/40 text-[color:var(--chart-3)] [text-shadow:0_0_6px_rgba(16,185,129,.6)]'
+                  : 'border-destructive/40 text-destructive',
+              )}
             >
-              {entry.isWin ? `+${(entry.payout - entry.bet).toLocaleString()}` : `-${entry.bet.toLocaleString()}`}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+              {up ? '+' : ''}
+              {delta.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+            </span>
+          );
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-x-auto" data-testid="ledger-table">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="border-b border-border text-muted-foreground">
+            {!game && <th className="py-2 text-left font-normal">Game</th>}
+            <th className="py-2 text-left font-normal">Outcome</th>
+            <th className="py-2 text-right font-normal">Bet</th>
+            <th className="py-2 text-right font-normal">Mult</th>
+            <th className="py-2 text-right font-normal">Payout</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((entry) => (
+            <tr key={entry.id} className="border-b border-border/60" data-testid="ledger-row">
+              {!game && <td className="py-2">{GAME_META[entry.game].name}</td>}
+              <td className="py-2">{entry.detail}</td>
+              <td className="py-2 text-right tabular-nums">{entry.bet.toLocaleString()}</td>
+              <td className="py-2 text-right tabular-nums">
+                {entry.multiplier > 0 ? `${entry.multiplier.toFixed(2)}x` : '—'}
+              </td>
+              <td
+                className={cn(
+                  'py-2 text-right tabular-nums',
+                  entry.isWin ? 'text-[color:var(--chart-3)]' : 'text-destructive',
+                )}
+              >
+                {entry.isWin
+                  ? `+${(entry.payout - entry.bet).toLocaleString()}`
+                  : `-${entry.bet.toLocaleString()}`}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

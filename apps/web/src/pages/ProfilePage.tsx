@@ -4,12 +4,25 @@ import { Button } from '@/components/ui/8bit/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
 import { Input } from '@/components/ui/8bit/input';
 import { Label } from '@/components/ui/8bit/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/8bit/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/8bit/select';
 import { ALL_AVATAR_IDS, AVATAR_NAMES } from '@gobbies/shared';
 import { useSessionStore, avatarSpriteUrl } from '@/stores/sessionStore';
 import { apiGetBets, apiPatchProfile } from '@/net/apiClient';
 import type { BetRecord } from '@gobbies/shared';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/8bit/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/8bit/table';
 
 export default function ProfilePage() {
   const token = useSessionStore((s) => s.token);
@@ -61,8 +74,8 @@ export default function ProfilePage() {
               value={player.avatar}
               onValueChange={(avatar) => {
                 if (!token) return;
-                void apiPatchProfile(token, { avatar: avatar as typeof player.avatar }).then(({ player: p }) =>
-                  setPlayer(p),
+                void apiPatchProfile(token, { avatar: avatar as typeof player.avatar }).then(
+                  ({ player: p }) => setPlayer(p),
                 );
               }}
             >

@@ -28,9 +28,13 @@ export function SiteLayout() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-40 border-b border-border bg-background/60 backdrop-blur">
-        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 sm:min-h-12 sm:flex-nowrap sm:gap-6 sm:px-10 sm:py-3">
-          <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Gambling Gobbies home">
+      <header className="sticky top-0 z-40 border-b border-border bg-[rgba(24,24,27,.6)] backdrop-blur-md">
+        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 sm:min-h-12 sm:flex-nowrap sm:gap-6 sm:px-10 sm:py-3.5">
+          <Link
+            to="/"
+            className="flex shrink-0 items-center gap-2"
+            aria-label="Gambling Gobbies home"
+          >
             <img
               src="/assets/sprites/royal-goblin/idle.webp"
               alt=""
@@ -38,7 +42,7 @@ export function SiteLayout() {
               height={36}
               className="pixelated h-9 w-9 drop-shadow-[0_0_8px_var(--gg-logo-glow)]"
             />
-            <span className="retro hidden text-[9px] leading-tight text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block">
+            <span className="retro hidden text-[9px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block">
               Gambling
               <br />
               Gobbies
@@ -98,10 +102,7 @@ export function SiteLayout() {
           </div>
         </div>
       </header>
-      <main
-        id="main"
-        className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8"
-      >
+      <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8">
         <Outlet />
       </main>
       <LiveStatsPanel open={statsOpen} onClose={() => setStatsOpen(false)} />

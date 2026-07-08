@@ -49,7 +49,11 @@ export default function FairnessPage() {
       const params = JSON.parse(paramsJson) as Record<string, unknown>;
       const game = typeof params.game === 'string' ? params.game : 'coinflip';
       const gameId = game as import('@gobbies/shared').GameId;
-      const floats = await generateFloats(webHasher, { serverSeed, clientSeed, nonce }, floatCountFor(gameId, params));
+      const floats = await generateFloats(
+        webHasher,
+        { serverSeed, clientSeed, nonce },
+        floatCountFor(gameId, params),
+      );
       const outcome = resolveBet(gameId, amount, params, floats);
       setResult(
         `${outcome.isWin ? 'WIN' : 'LOSS'} · ${outcome.multiplier.toFixed(2)}x · payout ${outcome.payout} · ${outcome.detail}`,
@@ -71,7 +75,8 @@ export default function FairnessPage() {
             <span className="text-muted-foreground">Server seed hash:</span> {serverSeedHash || '—'}
           </p>
           <p>
-            <span className="text-muted-foreground">Revealed server seed:</span> {serverSeed || '(rotate to reveal)'}
+            <span className="text-muted-foreground">Revealed server seed:</span>{' '}
+            {serverSeed || '(rotate to reveal)'}
           </p>
           <p>
             <span className="text-muted-foreground">Client seed:</span> {clientSeed}
@@ -92,11 +97,19 @@ export default function FairnessPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <Label htmlFor="verify-seed">Server seed (revealed)</Label>
-              <Input id="verify-seed" value={serverSeed} onChange={(e) => setServerSeed(e.target.value)} />
+              <Input
+                id="verify-seed"
+                value={serverSeed}
+                onChange={(e) => setServerSeed(e.target.value)}
+              />
             </div>
             <div>
               <Label htmlFor="verify-client">Client seed</Label>
-              <Input id="verify-client" value={clientSeed} onChange={(e) => setClientSeed(e.target.value)} />
+              <Input
+                id="verify-client"
+                value={clientSeed}
+                onChange={(e) => setClientSeed(e.target.value)}
+              />
             </div>
             <div>
               <Label htmlFor="verify-nonce">Nonce</Label>
@@ -119,7 +132,11 @@ export default function FairnessPage() {
           </div>
           <div>
             <Label htmlFor="verify-params">Params (JSON)</Label>
-            <Input id="verify-params" value={paramsJson} onChange={(e) => setParamsJson(e.target.value)} />
+            <Input
+              id="verify-params"
+              value={paramsJson}
+              onChange={(e) => setParamsJson(e.target.value)}
+            />
           </div>
           <Button onClick={() => void verify()}>Recompute outcome</Button>
           {result && <p className="text-sm text-primary">{result}</p>}

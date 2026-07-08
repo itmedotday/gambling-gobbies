@@ -70,11 +70,7 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
     const values = data.map((d) => d.profit);
     const max = Math.max(...values);
     const min = Math.min(...values);
-    // Fraction of the vertical range that sits above zero → gradient split point.
-    let offset = 0.5;
-    if (max <= 0) offset = 0;
-    else if (min >= 0) offset = 1;
-    else offset = max / (max - min);
+    const offset = max <= 0 ? 0 : min >= 0 ? 1 : max / (max - min);
     return { data, offset };
   }, [rows]);
 
@@ -110,7 +106,14 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
       role="dialog"
       aria-label="Live Stats"
       className="fixed z-50 flex w-[92vw] max-w-[360px] flex-col border-4 border-border bg-card text-card-foreground shadow-2xl"
-      style={{ left: pos.x, top: pos.y, '--gg-up': PROFIT_UP, '--gg-down': PROFIT_DOWN } as React.CSSProperties}
+      style={
+        {
+          left: pos.x,
+          top: pos.y,
+          '--gg-up': PROFIT_UP,
+          '--gg-down': PROFIT_DOWN,
+        } as React.CSSProperties
+      }
     >
       {/* Drag handle / header */}
       <div
@@ -159,19 +162,28 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
         {/* Stat grid */}
         <div className="grid grid-cols-2 gap-3 border-2 border-border bg-background/50 p-3 text-sm">
           <Stat label="Profit">
-            <span className={cn('font-semibold tabular-nums', profitUp ? 'text-[color:var(--gg-up)]' : 'text-[color:var(--gg-down)]')}>
+            <span
+              className={cn(
+                'font-semibold tabular-nums',
+                profitUp ? 'text-[color:var(--gg-up)]' : 'text-[color:var(--gg-down)]',
+              )}
+            >
               {profitUp ? '+' : '-'}
               {fmt(Math.abs(stats.profit))} GG
             </span>
           </Stat>
           <Stat label="Wins">
-            <span className="font-semibold tabular-nums text-[color:var(--gg-up)]">{stats.wins}</span>
+            <span className="font-semibold tabular-nums text-[color:var(--gg-up)]">
+              {stats.wins}
+            </span>
           </Stat>
           <Stat label="Wagered">
             <span className="font-semibold tabular-nums">{fmt(stats.wagered)} GG</span>
           </Stat>
           <Stat label="Losses">
-            <span className="font-semibold tabular-nums text-[color:var(--gg-down)]">{stats.losses}</span>
+            <span className="font-semibold tabular-nums text-[color:var(--gg-down)]">
+              {stats.losses}
+            </span>
           </Stat>
         </div>
 

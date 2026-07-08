@@ -124,10 +124,8 @@ function resolvePalette(mode: PaletteMode, style: PaletteStyle): PaletteTokens {
       return mode === 'light' ? NEON_TAVERN_LIGHT : NEON_TAVERN_DARK;
     case 'emeraldDen':
       return mode === 'light' ? EMERALD_DEN_LIGHT : EMERALD_DEN_DARK;
-    default: {
-      const _exhaustive: never = style;
+    default:
       return mode === 'light' ? NEON_TAVERN_LIGHT : NEON_TAVERN_DARK;
-    }
   }
 }
 

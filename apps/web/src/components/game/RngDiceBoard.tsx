@@ -25,7 +25,14 @@ export interface RngDiceBoardProps {
  * page stays the source of truth (target + engine outcome); this component only
  * animates to the already-resolved roll so the display always matches the payout.
  */
-export function RngDiceBoard({ target, rollOver, roll, isWin, request, onComplete }: RngDiceBoardProps) {
+export function RngDiceBoard({
+  target,
+  rollOver,
+  roll,
+  isWin,
+  request,
+  onComplete,
+}: RngDiceBoardProps) {
   const [isRolling, setIsRolling] = useState(false);
   const [cyclingNumber, setCyclingNumber] = useState('50.00');
   const [displayRoll, setDisplayRoll] = useState<number | null>(null);
@@ -37,7 +44,9 @@ export function RngDiceBoard({ target, rollOver, roll, isWin, request, onComplet
   const cycleRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   const [badgeStyles, badgeApi] = useSpring(() => ({
     leftPercent: 50,
@@ -49,8 +58,7 @@ export function RngDiceBoard({ target, rollOver, roll, isWin, request, onComplet
 
   const thumbStyles = useSpring({
     scale: isRolling ? 1.1 : 1,
-    boxShadow:
-      '0 0 0 2px hsl(var(--primary) / 0.18), inset 0 0 0 1px hsl(var(--border) / 1)',
+    boxShadow: '0 0 0 2px hsl(var(--primary) / 0.18), inset 0 0 0 1px hsl(var(--border) / 1)',
     config: { tension: 300, friction: 15 },
   });
 
@@ -73,6 +81,8 @@ export function RngDiceBoard({ target, rollOver, roll, isWin, request, onComplet
     if (roll === null) return;
 
     clearTimers();
+    // Animation kickoff when a new bet request arrives.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional state reset per request
     setIsRolling(true);
     setStatus('idle');
     setDisplayRoll(null);
