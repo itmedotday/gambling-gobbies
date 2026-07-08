@@ -68,6 +68,11 @@
   --gg-section-gap: 2.5rem;
   --gg-card-gap: 1.25rem;
   --gg-font-display: 'Press Start 2P', 'Geist Variable', sans-serif;
+  --gg-ticker-height: 0px;
+}
+
+.theme-high-roller-marquee {
+  --gg-ticker-height: 2.75rem;
 }
 
 @media (min-width: 640px) {
@@ -639,10 +644,19 @@ html.motion-reduce .animate-gg-pulse {
 
 /* Page shell spacing */
 .gg-page {
-  padding-left: var(--gg-page-px);
-  padding-right: var(--gg-page-px);
+  padding-left: max(var(--gg-page-px), env(safe-area-inset-left));
+  padding-right: max(var(--gg-page-px), env(safe-area-inset-right));
   padding-top: var(--gg-page-py);
-  padding-bottom: var(--gg-page-py);
+  padding-bottom: max(var(--gg-page-py), env(safe-area-inset-bottom));
+}
+
+.gg-ticker-slot {
+  min-height: var(--gg-ticker-height);
+  overflow: hidden;
+}
+
+.gg-visual-stage {
+  contain: layout style;
 }
 
 /* Theme display fonts */
@@ -658,6 +672,7 @@ html.motion-reduce .animate-gg-pulse {
 }
 
 .gg-marquee-title {
+  min-height: 1.05em;
   background: linear-gradient(180deg, #fda4af 0%, #f43f5e 45%, #a78bfa 100%);
   -webkit-background-clip: text;
   background-clip: text;

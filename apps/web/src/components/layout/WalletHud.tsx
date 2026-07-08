@@ -11,7 +11,7 @@ export function WalletHud() {
     <Badge
       variant="default"
       className={[
-        'retro inline-flex items-center gap-2 px-3 py-2 text-[10px] leading-none',
+        'retro inline-flex min-w-[6.5rem] items-center gap-2 px-3 py-2 text-[10px] leading-none tabular-nums',
         inDebt
           ? 'border border-destructive/50 bg-destructive/10 text-destructive shadow-[0_0_14px_rgba(244,63,94,.25)]'
           : 'border border-[color:var(--chart-3)]/45 bg-[color:var(--chart-3)]/10 text-[color:var(--chart-3)] shadow-[0_0_14px_rgba(16,185,129,.3)]',

@@ -8,6 +8,7 @@ import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useCrashGame } from '@/game/useCrashGame';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
+import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame, accentTokens } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -26,7 +27,14 @@ export default function CrashPage() {
     <GamePageFrame game="crash" title="Goblin Crash">
       <GamePageGrid>
         <NeonCard accent={accent} stage stageClip className="gap-4 p-6">
-          <div data-testid="crash-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
+          <VisualStage
+            width={640}
+            height={340}
+            loading={!sceneReady}
+            loadingLabel="Loading arena…"
+            data-testid="crash-visual"
+            data-scene-ready={sceneReady ? 'true' : 'false'}
+          >
             <PhaserGame
               scenes={[CrashScene]}
               width={640}
@@ -34,12 +42,7 @@ export default function CrashPage() {
               transparent
               themeKey={themeKey}
             />
-          </div>
-          {!sceneReady && (
-            <p className="text-sm text-muted-foreground" aria-live="polite">
-              Loading arena…
-            </p>
-          )}
+          </VisualStage>
           {game.history.length > 0 && (
             <div className="flex w-full flex-wrap gap-2" data-testid="crash-history">
               {game.history.map((round, i) => (

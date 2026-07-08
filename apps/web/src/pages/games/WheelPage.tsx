@@ -9,6 +9,7 @@ import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
+import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -45,7 +46,7 @@ export default function WheelPage() {
       <VersusPlayBanner />
       <GamePageGrid>
         <NeonCard accent={accent} stage className="p-6">
-          <div data-testid="wheel-visual" className="w-full">
+          <VisualStage width={480} height={360} data-testid="wheel-visual">
             <RngWheelBoard
               winChance={winChance}
               angle={lastAngle}
@@ -53,7 +54,7 @@ export default function WheelPage() {
               request={bet.request}
               onComplete={handleComplete}
             />
-          </div>
+          </VisualStage>
         </NeonCard>
         <NeonCard className="gg-game-panel">
           <span className={cn(layout.sectionLabelClass, 'text-foreground')}>Win zone</span>

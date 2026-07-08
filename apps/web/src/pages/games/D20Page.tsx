@@ -9,6 +9,7 @@ import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
+import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -44,9 +45,11 @@ export default function D20Page() {
       <VersusPlayBanner />
       <GamePageGrid>
         <NeonCard accent={accent} stage className="p-6">
-          <div data-testid="d20-visual" className="pointer-events-none w-full [perspective:1200px]">
-            <D20Roll rng={bet.rng} rollRequest={bet.request} onRollComplete={handleComplete} />
-          </div>
+          <VisualStage width={320} height={280} data-testid="d20-visual">
+            <div className="pointer-events-none w-full [perspective:1200px]">
+              <D20Roll rng={bet.rng} rollRequest={bet.request} onRollComplete={handleComplete} />
+            </div>
+          </VisualStage>
         </NeonCard>
         <NeonCard className="gg-game-panel">
           <span className={cn(layout.sectionLabelClass, 'text-foreground')}>Difficulty</span>

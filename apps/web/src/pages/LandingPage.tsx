@@ -7,6 +7,7 @@ import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
 import { NeonMarqueeSign } from '@/components/theme/NeonMarqueeSign';
 import { GameLobbyCard } from '@/components/game/GameLobbyCard';
+import { VisualStage } from '@/components/game/VisualStage';
 import { cn } from '@/lib/utils';
 
 function MascotStage({ themeKey, variant }: { themeKey: string; variant: 'neon' | 'emerald' | 'marquee' }) {
@@ -46,7 +47,9 @@ function MascotStage({ themeKey, variant }: { themeKey: string; variant: 'neon' 
         className="relative animate-gg-float"
         style={glow.drop ? { filter: glow.drop } : undefined}
       >
-        <PhaserGame scenes={[MascotScene]} width={360} height={280} transparent themeKey={themeKey} />
+        <VisualStage width={360} height={280} data-testid="mascot-stage-inner">
+          <PhaserGame scenes={[MascotScene]} width={360} height={280} transparent themeKey={themeKey} />
+        </VisualStage>
       </div>
     </div>
   );

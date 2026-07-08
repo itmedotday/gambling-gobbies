@@ -9,6 +9,7 @@ import { useMinesGame } from '@/game/useMinesGame';
 import { MINES_MAX, MINES_MIN } from '@gobbies/engine';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
+import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -26,7 +27,14 @@ export default function MinesPage() {
     <GamePageFrame game="mines" title="Goblin Mines">
       <GamePageGrid>
         <NeonCard accent={accent} stage stageClip className="gap-4 p-6">
-          <div data-testid="mines-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
+          <VisualStage
+            width={340}
+            height={360}
+            loading={!sceneReady}
+            loadingLabel="Loading minefield…"
+            data-testid="mines-visual"
+            data-scene-ready={sceneReady ? 'true' : 'false'}
+          >
             <PhaserGame
               scenes={[MinesScene]}
               width={340}
@@ -34,12 +42,7 @@ export default function MinesPage() {
               transparent
               themeKey={themeKey}
             />
-          </div>
-          {!sceneReady && (
-            <p className="text-sm text-muted-foreground" aria-live="polite">
-              Loading minefield…
-            </p>
-          )}
+          </VisualStage>
           {playing && (
             <div className="flex w-full flex-col items-center gap-1 text-center">
               <span className={cn(layout.sectionLabelClass, 'text-muted-foreground')}>

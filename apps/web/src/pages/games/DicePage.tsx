@@ -9,6 +9,7 @@ import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
+import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -51,7 +52,7 @@ export default function DicePage() {
       <VersusPlayBanner />
       <GamePageGrid>
         <NeonCard accent={accent} stage className="p-6">
-          <div data-testid="dice-visual" className="w-full">
+          <VisualStage width={480} height={360} data-testid="dice-visual">
             <RngDiceBoard
               target={target}
               rollOver={rollOver}
@@ -60,7 +61,7 @@ export default function DicePage() {
               request={bet.request}
               onComplete={handleComplete}
             />
-          </div>
+          </VisualStage>
         </NeonCard>
         <NeonCard className="gg-game-panel">
           <div className="flex items-baseline justify-between gap-3">

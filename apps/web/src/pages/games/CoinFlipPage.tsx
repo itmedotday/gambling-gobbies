@@ -9,6 +9,7 @@ import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
+import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame, accentTokens } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -45,13 +46,11 @@ export default function CoinFlipPage() {
       <VersusPlayBanner />
       <GamePageGrid>
         <NeonCard accent={accent} stage className="p-6">
-          <div
-            data-testid="coin-visual"
-            data-scene-ready="true"
-            className="pointer-events-none [perspective:1200px]"
-          >
-            <CoinFlip rng={bet.rng} flipRequest={bet.request} onFlipComplete={handleComplete} />
-          </div>
+          <VisualStage width={320} height={280} data-testid="coin-visual" data-scene-ready="true">
+            <div className="pointer-events-none w-full [perspective:1200px]">
+              <CoinFlip rng={bet.rng} flipRequest={bet.request} onFlipComplete={handleComplete} />
+            </div>
+          </VisualStage>
           <img
             src="/assets/sprites/royal-goblin/jump.webp"
             alt=""

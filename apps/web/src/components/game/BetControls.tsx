@@ -79,8 +79,11 @@ export function BetControls({
         <div className="flex items-stretch gap-2.5">
           <Input
             id="bet-amount"
+            name="bet-amount"
             type="number"
             inputMode="numeric"
+            autoComplete="off"
+            spellCheck={false}
             min={MIN_BET}
             value={Number.isFinite(amount) ? amount : ''}
             onChange={(e) => onAmountChange(Number(e.target.value))}
@@ -91,7 +94,7 @@ export function BetControls({
               }
             }}
             disabled={busy}
-            className="retro h-10 flex-1 border-border bg-background text-[11px]"
+            className="retro h-10 flex-1 border-border bg-background text-[11px] tabular-nums"
             data-testid="bet-amount"
           />
           {(['1/2', 'x2', 'Max'] as const).map((label, i) => (
@@ -114,14 +117,13 @@ export function BetControls({
         </div>
       </div>
       <div className="flex items-center justify-between text-[13px] text-muted-foreground">
-        <span>
+        <span className="tabular-nums">
           Payout <span className="text-foreground">{multiplier.toFixed(4)}x</span>
         </span>
-        <span data-testid="potential-win">
+        <span className="tabular-nums" data-testid="potential-win">
           Win{' '}
           <span
-            className="text-[color:var(--chart-3)]"
-            style={{ textShadow: '0 0 8px rgba(16,185,129,.7)' }}
+            className="text-[color:var(--chart-3)] [text-shadow:0_0_8px_color-mix(in_srgb,var(--chart-3)_70%,transparent)]"
           >
             {potentialWin.toLocaleString()} GG
           </span>

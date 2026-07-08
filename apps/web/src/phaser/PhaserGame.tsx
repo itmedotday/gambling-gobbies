@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
+import { cn } from '@/lib/utils';
 
 export interface PhaserGameProps {
   /** Scene classes to register; the first one boots automatically. */
@@ -67,13 +68,7 @@ export function PhaserGame({
     <div
       ref={containerRef}
       data-phaser-container
-      className={className}
-      style={{
-        width: '100%',
-        maxWidth: width,
-        aspectRatio: `${width} / ${height}`,
-        marginInline: 'auto',
-      }}
+      className={cn('h-full w-full', className)}
     />
   );
 }

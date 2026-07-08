@@ -28,7 +28,7 @@ export function SiteLayout() {
   return (
     <div
       className={cn(
-        'flex min-h-screen flex-col bg-background [background-image:var(--gg-shell-bg)]',
+        'flex min-h-screen flex-col overflow-x-hidden bg-background [background-image:var(--gg-shell-bg)]',
         isMarquee && 'gg-crt-shell relative',
       )}
     >
@@ -48,7 +48,7 @@ export function SiteLayout() {
               : 'bg-[rgba(24,24,27,.6)]',
         )}
       >
-        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-[var(--gg-page-px)] py-2 sm:min-h-12 sm:flex-nowrap sm:gap-6 sm:py-3.5">
+        <div className="mx-auto grid min-h-14 w-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-2 px-[var(--gg-page-px)] py-2 sm:min-h-12 sm:grid-cols-[auto_1fr_auto] sm:gap-6 sm:py-3.5">
           <Link
             to="/"
             className="flex shrink-0 items-center gap-2"
@@ -63,20 +63,21 @@ export function SiteLayout() {
             />
             <span
               className={cn(
-                'hidden text-[9px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block',
+                'hidden min-h-[2.25rem] min-w-[5.5rem] text-[9px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block',
                 isMarquee
                   ? 'gg-marquee-display text-sm tracking-wide'
                   : isEmerald
                     ? 'gg-font-fantasy text-sm'
                     : 'retro',
               )}
+              translate="no"
             >
               Gambling
               <br />
               Gobbies
             </span>
           </Link>
-          <nav className="flex items-center gap-1 sm:gap-2" aria-label="Main">
+          <nav className="col-span-3 flex items-center gap-1 sm:col-span-1 sm:gap-2" aria-label="Main">
             {NAV_ITEMS.map((item) => (
               <Button
                 key={item.to}
@@ -106,7 +107,7 @@ export function SiteLayout() {
               </Button>
             ))}
           </nav>
-          <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
+          <div className="col-start-3 row-start-1 flex items-center gap-1.5 sm:gap-3">
             <WalletHud />
             <Button
               variant={statsOpen ? 'secondary' : 'ghost'}
@@ -138,7 +139,7 @@ export function SiteLayout() {
           </div>
         </div>
       </header>
-      {isMarquee && <MarqueeTicker />}
+      <div className="gg-ticker-slot">{isMarquee ? <MarqueeTicker /> : null}</div>
       <main id="main" className="gg-page mx-auto w-full max-w-6xl flex-1">
         <Outlet />
       </main>
