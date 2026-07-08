@@ -6,7 +6,10 @@ import type { GameId } from '@gobbies/shared';
 import { useWalletStore } from '@/stores/walletStore';
 import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
+import { useSessionStore } from '@/stores/sessionStore';
+import { useVersusView } from '@/stores/versusStore';
 import { validateBet } from '@/game/validateBet';
+import { placeVersusBet } from '@/game/versusBet';
 import { playSfx } from '@/audio/sfx';
 
 export interface SettleOptions {
@@ -34,6 +37,14 @@ export function useConsoleBet(game: GameId, floatCount = 8) {
   const [request, setRequest] = useState(0);
   const floatsRef = useRef<number[]>([]);
   const pendingRef = useRef<{ amount: number; nonce: number } | null>(null);
+  const pendingVersusRef = useRef<Awaited<ReturnType<typeof placeVersusBet>> | null>(null);
+
+  const walletBalance = useWalletStore((s) => s.balance);
+  const versusView = useVersusView();
+  const playerId = useSessionStore((s) => s.player?.id ?? null);
+  const versusBalance =
+    versusView?.players.find((p) => (playerId ? p.playerId === playerId : false))?.balance ?? null;
+  const versusBetting = (versusView?.phase ?? null) === 'live';
 
   /** Deterministic random source handed to the animation component. */
   const rng = useCallback(() => floatsRef.current.shift() ?? Math.random(), []);
@@ -55,6 +66,40 @@ export function useConsoleBet(game: GameId, floatCount = 8) {
     pendingRef.current = { amount, nonce: seed.nonce };
     return floats;
   }, [amount, floatCount]);
+
+  /**
+   * Versus bet flow: request outcome from server, then animate the returned floats.
+   * Server is the source of truth for balance + payout; we only mirror it into the ledger UI.
+   */
+  const beginVersusBet = useCallback(
+    async (params: Record<string, unknown>): Promise<number[] | null> => {
+      if (!versusBetting) return null;
+      if (busy) return null;
+      const balance = versusBalance ?? 0;
+      const error = validateBet(amount, balance);
+      if (error) {
+        toast.error(error);
+        return null;
+      }
+      setBusy(true);
+      playSfx('bet');
+      const result = await placeVersusBet({ game, amount, params, balance });
+      pendingVersusRef.current = result;
+      if (!result.ok) {
+        toast.error(result.error);
+        setBusy(false);
+        return null;
+      }
+      return result.bet.floats;
+    },
+    [amount, busy, game, versusBalance, versusBetting],
+  );
+
+  /** Arm the animation components with the float queue and bump request. */
+  const arm = useCallback((floats: readonly number[]) => {
+    floatsRef.current = [...floats];
+    setRequest((r) => r + 1);
+  }, []);
 
   /** Console-driven flow: debit, queue floats for `rng`, trigger the animation. */
   const placeBet = useCallback(async () => {
@@ -96,5 +141,47 @@ export function useConsoleBet(game: GameId, floatCount = 8) {
     [game],
   );
 
-  return { amount, setAmount, busy, request, rng, placeBet, beginBet, settleOutcome };
+  const settleVersusOutcome = useCallback(() => {
+    const pending = pendingVersusRef.current;
+    pendingVersusRef.current = null;
+    if (!pending || !pending.ok) return;
+
+    const betResult = pending.bet;
+    useLedgerStore.getState().record({
+      id: `${game}-${betResult.nonce}-${Date.now()}`,
+      game,
+      bet: betResult.amount,
+      detail: betResult.detail,
+      multiplier: betResult.isWin ? betResult.multiplier : 0,
+      payout: betResult.payout,
+      isWin: betResult.isWin,
+      timestamp: Date.now(),
+      nonce: betResult.nonce,
+    });
+
+    if (betResult.isWin) {
+      playSfx('win');
+      toast.success(`${betResult.detail} — won ${(betResult.payout - betResult.amount).toLocaleString()} GG!`);
+    } else {
+      playSfx('lose');
+      toast.error(`${betResult.detail} — lost ${betResult.amount.toLocaleString()} GG.`);
+    }
+    setBusy(false);
+  }, [game]);
+
+  return {
+    amount,
+    setAmount,
+    busy,
+    request,
+    rng,
+    placeBet,
+    beginBet,
+    settleOutcome,
+    versusBetting,
+    beginVersusBet,
+    arm,
+    settleVersusOutcome,
+    balance: versusBalance ?? walletBalance,
+  };
 }

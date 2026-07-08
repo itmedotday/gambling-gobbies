@@ -15,6 +15,8 @@ export interface BetControlsProps {
   onBet: () => void;
   busy?: boolean;
   betLabel?: string;
+  /** Optional override (e.g. versus mode uses server-provided balance). */
+  balance?: number;
 }
 
 export function BetControls({
@@ -24,8 +26,10 @@ export function BetControls({
   onBet,
   busy = false,
   betLabel = 'Place Bet',
+  balance: balanceOverride,
 }: BetControlsProps) {
-  const balance = useWalletStore((s) => s.balance);
+  const walletBalance = useWalletStore((s) => s.balance);
+  const balance = balanceOverride ?? walletBalance;
   const maxBet = getMaxBet(balance, true);
   const inDebt = isInDebt(balance);
   const potentialWin = Math.floor(amount * multiplier * 100) / 100;

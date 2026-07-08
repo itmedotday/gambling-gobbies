@@ -3,6 +3,10 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
+/* Generate the utility classes used by @itme.day/rng-react-components (its own
+ * prebuilt stylesheet ships a global reset + body override we don't want). */
+@source "../../../node_modules/@itme.day/rng-react-components/dist";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -136,6 +140,7 @@
     }
   html {
     @apply font-sans;
+    scrollbar-gutter: stable;
     }
 }
 
@@ -155,4 +160,65 @@ body {
 .pixelated {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+}
+
+/*
+ * Support classes for @itme.day/rng-react-components visuals. These are the
+ * bespoke classes/vars the components reference that Tailwind can't derive.
+ */
+:root {
+  --color-brand-red: #e11d48;
+}
+
+.glass-panel {
+  backdrop-filter: blur(24px);
+  background-color: hsl(var(--card) / 0.65);
+  border: 1px solid hsl(var(--border) / 0.8);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.glass-input {
+  background-color: hsl(var(--background) / 0.7);
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-glow-win,
+  .animate-pulse-glow-loss {
+    animation: none;
+  }
+}
+
+html.motion-reduce .animate-pulse-glow-win,
+html.motion-reduce .animate-pulse-glow-loss {
+  animation: none;
+}
+
+.animate-pulse-glow-win {
+  animation: pulseGlowWin 1.4s infinite alternate;
+}
+
+.animate-pulse-glow-loss {
+  animation: pulseGlowLoss 1.4s infinite alternate;
+}
+
+@keyframes pulseGlowWin {
+  0% {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.12);
+  }
+  100% {
+    box-shadow: 0 0 26px hsl(var(--primary) / 0.35);
+  }
+}
+
+@keyframes pulseGlowLoss {
+  0% {
+    box-shadow: 0 0 10px hsl(var(--destructive) / 0.18);
+  }
+  100% {
+    box-shadow: 0 0 26px hsl(var(--destructive) / 0.42);
+  }
 }
