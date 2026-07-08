@@ -8,8 +8,10 @@ import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
+import { GamePageGrid } from '@/components/game/GamePageGrid';
 import { NeonCard } from '@/components/game/NeonCard';
-import { accentForGame } from '@/game/accent';
+import { accentForGame, accentTokens } from '@/game/accent';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
 import { cn } from '@/lib/utils';
 
 type Pick = 'gold' | 'moon';
@@ -20,6 +22,8 @@ export default function CoinFlipPage() {
   const [prediction, setPrediction] = useState<Pick>('gold');
   const bet = useConsoleBet('coinflip', 1);
   const accent = accentForGame('coinflip');
+  const tokens = accentTokens(accent);
+  const layout = useThemeLayout();
 
   const { handleBet, handleComplete } = useConsoleBetFlow(
     bet,
@@ -39,8 +43,8 @@ export default function CoinFlipPage() {
   return (
     <GamePageFrame game="coinflip" title="Coin Flip">
       <VersusPlayBanner />
-      <div className="grid gap-[18px] lg:grid-cols-[1fr_380px]">
-        <NeonCard accent={accent} stage className="p-4">
+      <GamePageGrid>
+        <NeonCard accent={accent} stage className="p-6">
           <div
             data-testid="coin-visual"
             data-scene-ready="true"
@@ -51,11 +55,13 @@ export default function CoinFlipPage() {
           <img
             src="/assets/sprites/royal-goblin/jump.webp"
             alt=""
-            className="pointer-events-none absolute bottom-6 right-10 h-[104px] image-pixelated drop-shadow-[0_0_10px_rgba(99,102,241,.6)]"
+            width={104}
+            height={104}
+            className="pointer-events-none absolute bottom-4 right-4 hidden h-[88px] w-[88px] pixelated drop-shadow-[0_0_10px_rgba(99,102,241,.6)] sm:block sm:h-[104px] sm:w-[104px]"
           />
         </NeonCard>
-        <NeonCard className="flex flex-col gap-[18px] p-6">
-          <span className="retro text-[10px] text-foreground">Your call</span>
+        <NeonCard className="gg-game-panel">
+          <span className={cn(layout.sectionLabelClass, 'text-foreground')}>Your call</span>
           <div className="grid grid-cols-2 gap-3" data-testid="prediction-selector">
             {(['gold', 'moon'] as const).map((side) => (
               <Button
@@ -65,11 +71,20 @@ export default function CoinFlipPage() {
                 onClick={() => setPrediction(side)}
                 data-testid={`predict-${side === 'gold' ? 'orange' : 'blue'}`}
                 className={cn(
-                  'retro h-auto py-4 text-[10px]',
+                  layout.sectionLabelClass,
+                  'h-auto py-4',
                   prediction === side
-                    ? 'border-0 bg-gradient-to-b from-[#818cf8] to-[#4f46e5] text-white shadow-[0_0_22px_rgba(99,102,241,.55)]'
+                    ? 'border-0 text-white'
                     : 'border-border bg-transparent text-muted-foreground hover:border-primary hover:text-primary',
                 )}
+                style={
+                  prediction === side
+                    ? {
+                        background: `linear-gradient(180deg, ${tokens.gradientFrom}, ${tokens.gradientTo})`,
+                        boxShadow: tokens.hoverGlow,
+                      }
+                    : undefined
+                }
               >
                 {SIDE_LABELS[side]}
               </Button>
@@ -86,9 +101,11 @@ export default function CoinFlipPage() {
             accent={accent}
           />
         </NeonCard>
-      </div>
+      </GamePageGrid>
       <NeonCard className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center">
-        <span className="retro shrink-0 text-[9px] text-muted-foreground">History</span>
+        <span className={cn(layout.sectionLabelClass, 'shrink-0 text-muted-foreground')}>
+          History
+        </span>
         <LedgerTable game="coinflip" variant="chips" />
       </NeonCard>
     </GamePageFrame>

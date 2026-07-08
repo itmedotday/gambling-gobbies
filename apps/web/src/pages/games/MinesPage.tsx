@@ -8,8 +8,11 @@ import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useMinesGame } from '@/game/useMinesGame';
 import { MINES_MAX, MINES_MIN } from '@gobbies/engine';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
+import { GamePageGrid } from '@/components/game/GamePageGrid';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 
 export default function MinesPage() {
   const sceneReady = usePhaserSceneReady('mines');
@@ -17,11 +20,12 @@ export default function MinesPage() {
   const game = useMinesGame();
   const playing = game.phase === 'playing';
   const accent = accentForGame('mines');
+  const layout = useThemeLayout();
 
   return (
     <GamePageFrame game="mines" title="Goblin Mines">
-      <div className="grid gap-[18px] lg:grid-cols-[1fr_380px]">
-        <NeonCard accent={accent} className="flex flex-col items-center gap-4 p-6">
+      <GamePageGrid>
+        <NeonCard accent={accent} stage stageClip className="gap-4 p-6">
           <div data-testid="mines-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
             <PhaserGame
               scenes={[MinesScene]}
@@ -31,31 +35,41 @@ export default function MinesPage() {
               themeKey={themeKey}
             />
           </div>
+          {!sceneReady && (
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              Loading minefield…
+            </p>
+          )}
           {playing && (
             <div className="flex w-full flex-col items-center gap-1 text-center">
-              <span className="retro text-xs text-muted-foreground">Current multiplier</span>
+              <span className={cn(layout.sectionLabelClass, 'text-muted-foreground')}>
+                Current multiplier
+              </span>
               <span
-                className="retro text-xl text-[color:var(--chart-3)] drop-shadow-[0_0_14px_rgba(70,200,210,.45)]"
+                className={cn(
+                  layout.sectionLabelClass,
+                  'text-xl tabular-nums text-[color:var(--chart-3)] drop-shadow-[0_0_14px_color-mix(in_srgb,var(--chart-3)_45%,transparent)]',
+                )}
                 data-testid="mines-multiplier"
               >
                 {game.currentMultiplier.toFixed(2)}x
               </span>
               {game.nextMultiplier !== null && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs tabular-nums text-muted-foreground">
                   Next pick: {game.nextMultiplier.toFixed(2)}x
                 </span>
               )}
             </div>
           )}
         </NeonCard>
-        <NeonCard className="flex flex-col gap-[18px] p-6">
-          <span className="retro text-[10px] text-foreground">Loot the chests</span>
+        <NeonCard className="gg-game-panel">
+          <span className={cn(layout.sectionLabelClass, 'text-foreground')}>Loot the chests</span>
           <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="mine-count" className="text-[13px] text-muted-foreground">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="mine-count" className="text-sm text-muted-foreground">
                 Bombs
               </Label>
-              <span className="text-xs text-muted-foreground" data-testid="mine-count">
+              <span className="text-xs tabular-nums text-muted-foreground" data-testid="mine-count">
                 {game.mineCount}
               </span>
             </div>
@@ -72,7 +86,10 @@ export default function MinesPage() {
           {playing ? (
             <Button
               size="lg"
-              className="retro w-full border border-[color:var(--chart-3)]/45 bg-[color:var(--chart-3)]/10 py-[18px] text-xs text-[color:var(--chart-3)] shadow-[0_0_16px_rgba(70,200,210,.25)] hover:shadow-[0_0_30px_rgba(70,200,210,.45)]"
+              className={cn(
+                layout.sectionLabelClass,
+                'w-full border border-[color:var(--chart-3)]/45 bg-[color:var(--chart-3)]/10 py-4 text-xs text-[color:var(--chart-3)] shadow-[0_0_16px_color-mix(in_srgb,var(--chart-3)_25%,transparent)] hover:shadow-[0_0_30px_color-mix(in_srgb,var(--chart-3)_45%,transparent)]',
+              )}
               onClick={game.cashOut}
               disabled={game.safePicks === 0}
               data-testid="mines-cashout"
@@ -87,14 +104,16 @@ export default function MinesPage() {
               multiplier={1}
               onBet={() => void game.start()}
               busy={playing || !sceneReady}
-              betLabel="Enter the minefield"
+              betLabel={sceneReady ? 'Enter the minefield' : 'Loading minefield…'}
               accent={accent}
             />
           )}
         </NeonCard>
-      </div>
+      </GamePageGrid>
       <NeonCard className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center">
-        <span className="retro shrink-0 text-[9px] text-muted-foreground">History</span>
+        <span className={cn(layout.sectionLabelClass, 'shrink-0 text-muted-foreground')}>
+          History
+        </span>
         <LedgerTable game="mines" variant="chips" />
       </NeonCard>
     </GamePageFrame>

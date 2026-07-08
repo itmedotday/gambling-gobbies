@@ -8,8 +8,11 @@ import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
+import { GamePageGrid } from '@/components/game/GamePageGrid';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 
 export default function WheelPage() {
   const [winChance, setWinChance] = useState(50);
@@ -17,6 +20,7 @@ export default function WheelPage() {
   const [lastIsWin, setLastIsWin] = useState(false);
   const bet = useConsoleBet('wheel', 1);
   const accent = accentForGame('wheel');
+  const layout = useThemeLayout();
 
   const params = { winChance };
   const multiplier = wheelMultiplier(params);
@@ -39,9 +43,9 @@ export default function WheelPage() {
   return (
     <GamePageFrame game="wheel" title="Wheel">
       <VersusPlayBanner />
-      <div className="grid gap-[18px] lg:grid-cols-[1fr_380px]">
-        <NeonCard accent={accent} stage className="p-4">
-          <div data-testid="wheel-visual">
+      <GamePageGrid>
+        <NeonCard accent={accent} stage className="p-6">
+          <div data-testid="wheel-visual" className="w-full">
             <RngWheelBoard
               winChance={winChance}
               angle={lastAngle}
@@ -51,14 +55,17 @@ export default function WheelPage() {
             />
           </div>
         </NeonCard>
-        <NeonCard className="flex flex-col gap-[18px] p-6">
-          <span className="retro text-[10px] text-foreground">Win zone</span>
+        <NeonCard className="gg-game-panel">
+          <span className={cn(layout.sectionLabelClass, 'text-foreground')}>Win zone</span>
           <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="wheel-chance" className="text-[13px] text-muted-foreground">
-                Win chance <span className="text-primary">{winChance}%</span>
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="wheel-chance" className="text-sm text-muted-foreground">
+                Win chance{' '}
+                <span className="tabular-nums text-primary">{winChance}%</span>
               </Label>
-              <span className="text-xs text-muted-foreground">{multiplier.toFixed(2)}x payout</span>
+              <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                {multiplier.toFixed(2)}x payout
+              </span>
             </div>
             <Slider
               id="wheel-chance"
@@ -82,9 +89,11 @@ export default function WheelPage() {
             accent={accent}
           />
         </NeonCard>
-      </div>
+      </GamePageGrid>
       <NeonCard className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center">
-        <span className="retro shrink-0 text-[9px] text-muted-foreground">History</span>
+        <span className={cn(layout.sectionLabelClass, 'shrink-0 text-muted-foreground')}>
+          History
+        </span>
         <LedgerTable game="wheel" variant="chips" />
       </NeonCard>
     </GamePageFrame>

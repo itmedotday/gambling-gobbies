@@ -8,13 +8,17 @@ import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
+import { GamePageGrid } from '@/components/game/GamePageGrid';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 
 export default function D20Page() {
   const [dc, setDc] = useState(11);
   const bet = useConsoleBet('d20', 1);
   const accent = accentForGame('d20');
+  const layout = useThemeLayout();
   const multiplier = d20Multiplier({ dc });
 
   const { handleBet, handleComplete } = useConsoleBetFlow(
@@ -38,18 +42,18 @@ export default function D20Page() {
   return (
     <GamePageFrame game="d20" title="D20 Roll">
       <VersusPlayBanner />
-      <div className="grid gap-[18px] lg:grid-cols-[1fr_380px]">
-        <NeonCard accent={accent} stage className="p-4">
-          <div data-testid="d20-visual" className="pointer-events-none [perspective:1200px]">
+      <GamePageGrid>
+        <NeonCard accent={accent} stage className="p-6">
+          <div data-testid="d20-visual" className="pointer-events-none w-full [perspective:1200px]">
             <D20Roll rng={bet.rng} rollRequest={bet.request} onRollComplete={handleComplete} />
           </div>
         </NeonCard>
-        <NeonCard className="flex flex-col gap-[18px] p-6">
-          <span className="retro text-[10px] text-foreground">Difficulty</span>
+        <NeonCard className="gg-game-panel">
+          <span className={cn(layout.sectionLabelClass, 'text-foreground')}>Difficulty</span>
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between text-[13px]">
+            <div className="flex items-center justify-between gap-3 text-sm">
               <span className="text-muted-foreground">DC (roll {dc}+ to win)</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                 {(d20WinChance({ dc }) * 100).toFixed(0)}% chance
               </span>
             </div>
@@ -60,13 +64,13 @@ export default function D20Page() {
                 disabled={bet.busy || dc <= 2}
                 onClick={() => setDc((v) => Math.max(2, v - 1))}
                 aria-label="Lower DC"
-                className="retro"
+                className={layout.sectionLabelClass}
               >
                 -
               </Button>
               <span
                 id="dc-value"
-                className="retro flex-1 text-center text-lg"
+                className={cn(layout.sectionLabelClass, 'flex-1 text-center text-lg tabular-nums')}
                 data-testid="dc-value"
               >
                 {dc}
@@ -77,7 +81,7 @@ export default function D20Page() {
                 disabled={bet.busy || dc >= 20}
                 onClick={() => setDc((v) => Math.min(20, v + 1))}
                 aria-label="Raise DC"
-                className="retro"
+                className={layout.sectionLabelClass}
               >
                 +
               </Button>
@@ -97,9 +101,11 @@ export default function D20Page() {
             accent={accent}
           />
         </NeonCard>
-      </div>
+      </GamePageGrid>
       <NeonCard className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center">
-        <span className="retro shrink-0 text-[9px] text-muted-foreground">History</span>
+        <span className={cn(layout.sectionLabelClass, 'shrink-0 text-muted-foreground')}>
+          History
+        </span>
         <LedgerTable game="d20" variant="chips" />
       </NeonCard>
     </GamePageFrame>

@@ -58,7 +58,7 @@ export function RngDiceBoard({
 
   const thumbStyles = useSpring({
     scale: isRolling ? 1.1 : 1,
-    boxShadow: '0 0 0 2px hsl(var(--primary) / 0.18), inset 0 0 0 1px hsl(var(--border) / 1)',
+    boxShadow: '0 0 0 2px color-mix(in srgb, var(--primary) 18%, transparent), inset 0 0 0 1px var(--border)',
     config: { tension: 300, friction: 15 },
   });
 
@@ -122,7 +122,7 @@ export function RngDiceBoard({
 
   return (
     <div
-      className={`w-full max-w-xl glass-panel rounded-3xl p-6 flex flex-col items-center transition-all duration-300 ${glow}`}
+      className={`w-full max-w-xl glass-panel rounded-3xl p-4 sm:p-5 flex flex-col items-center transition-[box-shadow,transform] duration-300 ${glow}`}
     >
       <InteractiveTrack
         rollTarget={target}

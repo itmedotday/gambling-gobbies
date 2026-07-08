@@ -30,7 +30,7 @@ function NeonTavernCard({ gameId, className }: GameLobbyCardProps) {
     >
       <div
         className={cn(
-          'flex h-full flex-col gap-2.5 border border-border bg-card p-5 transition-all duration-200',
+          'flex h-full flex-col gap-2.5 border border-border bg-card p-5 transition-[transform,box-shadow,border-color] duration-200',
           'border-t-2 group-hover:-translate-y-1 group-hover:shadow-[0_0_26px_rgba(99,102,241,.2)]',
         )}
         style={{
@@ -67,7 +67,7 @@ function EmeraldDenCard({ gameId, className }: GameLobbyCardProps) {
       <div
         className={cn(
           'flex items-center gap-[18px] border border-[rgba(132,155,73,.28)] border-l-[3px] border-l-primary',
-          'bg-[rgba(24,27,19,.85)] px-[22px] py-[18px] transition-all duration-200',
+          'bg-[rgba(24,27,19,.85)] px-[22px] py-[18px] transition-[background-color,border-color,box-shadow] duration-200',
           'group-hover:border-[rgba(132,155,73,.6)] group-hover:bg-[rgba(33,38,25,.95)] group-hover:shadow-[0_0_22px_rgba(132,155,73,.25)]',
         )}
       >
@@ -103,7 +103,7 @@ function MarqueeTableCard({ gameId, className }: GameLobbyCardProps) {
     >
       <div
         className={cn(
-          'flex flex-col items-center gap-2 bg-[rgba(24,15,32,.85)] px-5 py-[26px] text-center transition-all duration-200',
+          'flex flex-col items-center gap-2 bg-[rgba(24,15,32,.85)] px-5 py-[26px] text-center transition-[transform,box-shadow,border-color] duration-200',
           'group-hover:-translate-y-1',
         )}
         style={{

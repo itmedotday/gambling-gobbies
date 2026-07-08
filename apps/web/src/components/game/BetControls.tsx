@@ -140,7 +140,7 @@ export function BetControls({
           boxShadow: `0 0 30px rgba(${tokens.glowRgb}, .55)`,
         }}
       >
-        {busy ? '...' : betLabel}
+        {busy ? 'Rolling…' : betLabel}
       </Button>
     </div>
   );

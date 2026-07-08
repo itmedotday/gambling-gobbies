@@ -132,7 +132,7 @@ export function RngWheelBoard({
 
   return (
     <div
-      className={`w-full max-w-xl glass-panel rounded-3xl p-6 flex flex-col items-center transition-all duration-300 ${glow}`}
+      className={`w-full max-w-xl glass-panel rounded-3xl p-4 sm:p-5 flex flex-col items-center transition-[box-shadow,transform] duration-300 ${glow}`}
     >
       <WheelVisual
         wheelStyles={wheelStyles}

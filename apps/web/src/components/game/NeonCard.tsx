@@ -10,11 +10,13 @@ export interface NeonCardProps {
   accent?: GameAccent;
   /** Visual stage panel (taller min-height, centered). */
   stage?: boolean;
+  /** Clip overflow on stage (Phaser scenes). Default false so decorations aren't clipped. */
+  stageClip?: boolean;
   'data-testid'?: string;
 }
 
 /** Flat neon-tavern card shell from the redesign (bypasses 8-bit thick borders). */
-export function NeonCard({ children, className, accent, stage, 'data-testid': testId }: NeonCardProps) {
+export function NeonCard({ children, className, accent, stage, stageClip, 'data-testid': testId }: NeonCardProps) {
   const tokens = accent ? accentTokens(accent) : null;
 
   return (
@@ -24,7 +26,8 @@ export function NeonCard({ children, className, accent, stage, 'data-testid': te
         'bg-card text-card-foreground border border-border',
         'shadow-[0_4px_20px_rgba(0,0,0,.4)]',
         accent && 'border-t-2',
-        stage && 'relative flex min-h-[340px] flex-col items-center justify-center overflow-hidden',
+        stage && 'relative flex min-h-[340px] flex-col items-center justify-center',
+        stage && (stageClip ? 'overflow-hidden' : 'overflow-visible'),
         className,
       )}
       style={

@@ -8,8 +8,11 @@ import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { GamePageFrame } from '@/components/game/GamePageFrame';
+import { GamePageGrid } from '@/components/game/GamePageGrid';
 import { NeonCard } from '@/components/game/NeonCard';
 import { accentForGame } from '@/game/accent';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 
 export default function DicePage() {
   const [target, setTarget] = useState(50);
@@ -18,6 +21,7 @@ export default function DicePage() {
   const [lastIsWin, setLastIsWin] = useState(false);
   const bet = useConsoleBet('dice', 1);
   const accent = accentForGame('dice');
+  const layout = useThemeLayout();
 
   const params = { target, rollOver };
   const multiplier = diceMultiplier(params);
@@ -45,9 +49,9 @@ export default function DicePage() {
   return (
     <GamePageFrame game="dice" title="Dice Slider">
       <VersusPlayBanner />
-      <div className="grid gap-[18px] lg:grid-cols-[1fr_380px]">
-        <NeonCard accent={accent} stage className="gap-8 p-9">
-          <div data-testid="dice-visual">
+      <GamePageGrid>
+        <NeonCard accent={accent} stage className="p-6">
+          <div data-testid="dice-visual" className="w-full">
             <RngDiceBoard
               target={target}
               rollOver={rollOver}
@@ -58,15 +62,17 @@ export default function DicePage() {
             />
           </div>
         </NeonCard>
-        <NeonCard className="flex flex-col gap-[18px] p-6">
-          <div className="flex items-baseline justify-between">
-            <span className="retro text-[10px] text-foreground">
+        <NeonCard className="gg-game-panel">
+          <div className="flex items-baseline justify-between gap-3">
+            <span className={cn(layout.sectionLabelClass, 'text-foreground')}>
               Roll {rollOver ? 'over' : 'under'}{' '}
-              <span className="text-[color:var(--chart-3)] [text-shadow:0_0_8px_rgba(16,185,129,.8)]">
+              <span className="tabular-nums text-[color:var(--chart-3)] [text-shadow:0_0_8px_color-mix(in_srgb,var(--chart-3)_80%,transparent)]">
                 {target}
               </span>
             </span>
-            <span className="text-xs text-muted-foreground">{winChance.toFixed(0)}% chance</span>
+            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+              {winChance.toFixed(0)}% chance
+            </span>
           </div>
           <Slider
             id="dice-target"
@@ -138,9 +144,11 @@ export default function DicePage() {
             accent={accent}
           />
         </NeonCard>
-      </div>
+      </GamePageGrid>
       <NeonCard className="flex flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center">
-        <span className="retro shrink-0 text-[9px] text-muted-foreground">History</span>
+        <span className={cn(layout.sectionLabelClass, 'shrink-0 text-muted-foreground')}>
+          History
+        </span>
         <LedgerTable game="dice" variant="chips" />
       </NeonCard>
     </GamePageFrame>

@@ -23,8 +23,8 @@ export function NeonMarqueeSign() {
         <h1 className="gg-marquee-title text-center text-[clamp(2rem,6vw,3.6rem)] leading-none tracking-wide">
           GAMBLING GOBBIES
         </h1>
-        <p className="gg-marquee-subtitle text-center font-mono text-[10px] uppercase tracking-[0.35em] sm:text-xs sm:tracking-[0.45em]">
-          The house of questionable repute
+        <p className="gg-marquee-subtitle text-center font-mono text-[10px] uppercase tracking-[0.35em] sm:text-[11px] sm:tracking-[0.45em]">
+          The House of Questionable Repute
         </p>
 
         <div
