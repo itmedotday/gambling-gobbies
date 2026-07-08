@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { useThemeStyle, type ThemeStyle } from '@/stores/settingsStore';
 
 export interface ThemeLayout {
@@ -9,10 +10,12 @@ export interface ThemeLayout {
   pageClass: string;
   sectionGap: string;
   heroTitleClass: string;
+  pageTitleClass: string;
   gameTitleClass: string;
   sectionLabelClass: string;
   bodyTextClass: string;
   gamesGridClass: string;
+  pageGlowStyle: CSSProperties | undefined;
 }
 
 /** Shared spacing + typography classes per theme style. */
@@ -39,6 +42,29 @@ export function useThemeLayout(): ThemeLayout {
         ? 'text-xs font-medium uppercase tracking-wide'
         : 'retro text-[10px]';
 
+  const pageTitleClass = isMarquee
+    ? 'gg-marquee-display text-2xl text-[#fda4af] [text-shadow:0_0_14px_rgba(244,63,94,.7)] sm:text-3xl'
+    : isEmerald
+      ? 'gg-font-fantasy text-2xl text-foreground [text-shadow:0_0_14px_rgba(132,155,73,.6)] sm:text-3xl'
+      : isMono
+        ? 'text-xl font-semibold text-foreground sm:text-2xl'
+        : 'gg-hero-title retro text-xl text-foreground';
+
+  const pageGlowStyle: CSSProperties | undefined = isMono
+    ? undefined
+    : isMarquee
+      ? {
+          backgroundImage:
+            'radial-gradient(at 50% 0%, rgba(244,63,94,.12) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(139,92,246,.08) 0, transparent 50%)',
+        }
+      : isEmerald
+        ? {
+            backgroundImage: 'radial-gradient(at 50% 0%, rgba(132,155,73,.14) 0, transparent 50%)',
+          }
+        : {
+            backgroundImage: 'radial-gradient(at 50% 0%, rgba(99,102,241,.16) 0, transparent 50%)',
+          };
+
   return {
     style,
     isNeon,
@@ -47,6 +73,8 @@ export function useThemeLayout(): ThemeLayout {
     isMono,
     pageClass: 'flex flex-col',
     sectionGap: isMarquee ? 'gap-8 sm:gap-10' : isEmerald ? 'gap-10' : 'gap-12',
+    pageTitleClass,
+    pageGlowStyle,
     heroTitleClass: isMarquee
       ? 'gg-marquee-title text-[clamp(2rem,5vw,3.25rem)] leading-none text-balance'
       : isEmerald

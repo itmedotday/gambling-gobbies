@@ -1,11 +1,4 @@
-import { Label } from '@/components/ui/8bit/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/8bit/select';
+import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/kit';
 import { type UiSkin, useSettingsStore } from '@/stores/settingsStore';
 
 const SKIN_OPTIONS: { value: UiSkin; label: string; description: string }[] = [

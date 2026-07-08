@@ -145,14 +145,20 @@ export function SiteLayout() {
       </main>
       <LiveStatsPanel open={statsOpen} onClose={() => setStatsOpen(false)} />
       <footer className="border-t border-border/80 bg-background/60 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-[var(--gg-page-px)] py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-[var(--gg-page-px)] py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>Gambling Gobbies — virtual Gobbie Gold only. No real money.</span>
-          <span>
-            Pixel art by{' '}
-            <a href="https://spritecook.com" className="underline hover:text-foreground">
-              SpriteCook
-            </a>
-          </span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Link to="/fairness" className="underline hover:text-foreground">
+              Provably fair
+            </Link>
+            <span aria-hidden>·</span>
+            <span>
+              Pixel art by{' '}
+              <a href="https://spritecook.com" className="underline hover:text-foreground">
+                SpriteCook
+              </a>
+            </span>
+          </div>
         </div>
       </footer>
     </div>

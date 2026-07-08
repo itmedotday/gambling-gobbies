@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/8bit/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Input } from '@/components/ui/8bit/input';
-import { Label } from '@/components/ui/8bit/label';
+import { Button } from '@/components/kit';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/kit';
+import { Input } from '@/components/kit';
+import { Label } from '@/components/kit';
 import { generateFloats } from '@gobbies/engine';
 import { webHasher } from '@gobbies/engine/web';
 import { floatCountFor, resolveBet } from '@/game/verifyBet';
 import { useSessionStore } from '@/stores/sessionStore';
 import { useFairnessStore } from '@/stores/fairnessStore';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 import { apiGetFairness, apiRotateSeed } from '@/net/apiClient';
 
 export default function FairnessPage() {
+  const layout = useThemeLayout();
   const token = useSessionStore((s) => s.token);
   const ensureSession = useSessionStore((s) => s.ensureSession);
   const localClientSeed = useFairnessStore((s) => s.clientSeed);
@@ -64,11 +67,11 @@ export default function FairnessPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="retro text-lg text-primary">Provably Fair</h1>
+    <div className="flex flex-col gap-6" style={layout.pageGlowStyle}>
+      <h1 className={cn(layout.pageTitleClass, 'text-lg sm:text-xl')}>Provably Fair</h1>
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Active seed pair</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Active seed pair</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-3 text-xs">
           <p>
@@ -91,7 +94,7 @@ export default function FairnessPage() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Verifier</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Verifier</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           <div className="grid gap-3 sm:grid-cols-2">

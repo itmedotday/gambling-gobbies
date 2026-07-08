@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/8bit/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Input } from '@/components/ui/8bit/input';
-import { Label } from '@/components/ui/8bit/label';
+import { Button } from '@/components/kit';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/kit';
+import { Input } from '@/components/kit';
+import { Label } from '@/components/kit';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/8bit/select';
+} from '@/components/kit';
 import { ALL_AVATAR_IDS, AVATAR_NAMES } from '@gobbies/shared';
 import { useSessionStore, avatarSpriteUrl } from '@/stores/sessionStore';
 import { apiGetBets, apiPatchProfile } from '@/net/apiClient';
@@ -22,9 +22,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/8bit/table';
+} from '@/components/kit';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 
 export default function ProfilePage() {
+  const layout = useThemeLayout();
   const token = useSessionStore((s) => s.token);
   const player = useSessionStore((s) => s.player);
   const ensureSession = useSessionStore((s) => s.ensureSession);
@@ -52,11 +55,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="retro text-lg text-primary">Profile</h1>
+    <div className="flex flex-col gap-6" style={layout.pageGlowStyle}>
+      <h1 className={cn(layout.pageTitleClass, 'text-lg sm:text-xl')}>Profile</h1>
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Your goblin</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Your goblin</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <img
@@ -99,7 +102,7 @@ export default function ProfilePage() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Recent bets</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Recent bets</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>

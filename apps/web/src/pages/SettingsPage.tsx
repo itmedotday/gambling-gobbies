@@ -1,22 +1,22 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Label } from '@/components/ui/8bit/label';
-import { Slider } from '@/components/ui/8bit/slider';
-import { Switch } from '@/components/ui/8bit/switch';
+import { Card, CardContent, CardHeader, CardTitle, Label, Slider, Switch } from '@/components/kit';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { ThemeToggleSwitch } from '@/components/theme/ThemeToggle';
 import { InterfaceStyleSelect } from '@/components/theme/InterfaceStyleSelect';
 import { ThemeStyleSelect } from '@/components/theme/ThemeStyleSelect';
+import { useThemeLayout } from '@/components/theme/useThemeLayout';
+import { cn } from '@/lib/utils';
 
 export default function SettingsPage() {
   const settings = useSettingsStore();
+  const layout = useThemeLayout();
 
   return (
     <div className="mx-auto flex w-full max-w-xl flex-col gap-8">
-      <h1 className="retro text-lg text-primary">Settings</h1>
+      <h1 className={cn(layout.pageTitleClass, 'text-lg sm:text-xl')}>Settings</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Appearance</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Appearance</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <InterfaceStyleSelect />
@@ -27,7 +27,7 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Audio</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Audio</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <div className="flex items-center justify-between gap-4">
@@ -68,14 +68,15 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Accessibility</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Accessibility</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col gap-1">
               <Label htmlFor="reduced-motion">Reduce motion</Label>
               <span className="text-xs text-muted-foreground">
-                Disables screen shake and particle effects.
+                Disables screen shake, particle effects, marquee ticker scroll, and Phaser mascot
+                loops.
               </span>
             </div>
             <Switch
@@ -90,7 +91,7 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="retro text-xs">Credits</CardTitle>
+          <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Credits</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-2 text-sm text-muted-foreground">
           <span>
