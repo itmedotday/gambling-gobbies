@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { Volume2, VolumeX, Settings } from 'lucide-react';
+import { Volume2, VolumeX, Settings, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/8bit/button';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { WalletHud } from './WalletHud';
 import { useAudioUnlock } from '@/audio/useAudioUnlock';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggle';
+import { LiveStatsPanel } from '@/components/stats/LiveStatsPanel';
 
 const NAV_ITEMS = [
   { to: '/lobby', label: 'Lobby' },
@@ -16,6 +18,7 @@ export function SiteLayout() {
   useAudioUnlock();
   const muted = useSettingsStore((s) => s.muted);
   const setMuted = useSettingsStore((s) => s.setMuted);
+  const [statsOpen, setStatsOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -51,6 +54,15 @@ export function SiteLayout() {
           </nav>
           <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
             <WalletHud />
+            <Button
+              variant={statsOpen ? 'secondary' : 'ghost'}
+              size="icon"
+              aria-label={statsOpen ? 'Hide live stats' : 'Show live stats'}
+              aria-pressed={statsOpen}
+              onClick={() => setStatsOpen((v) => !v)}
+            >
+              <LineChart className="size-4" />
+            </Button>
             <ThemeToggleIcon />
             <Button
               variant="ghost"
@@ -73,6 +85,7 @@ export function SiteLayout() {
       <main className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8">
         <Outlet />
       </main>
+      <LiveStatsPanel open={statsOpen} onClose={() => setStatsOpen(false)} />
       <footer className="border-t-4 border-border bg-card">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>Gambling Gobbies — virtual Gobbie Gold only. No real money.</span>
