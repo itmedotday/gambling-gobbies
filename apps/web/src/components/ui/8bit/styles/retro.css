@@ -20,6 +20,16 @@
   letter-spacing: normal;
 }
 
+.theme-emerald-den .retro,
+.theme-high-roller-marquee .retro {
+  font-family: var(--gg-font-display);
+  letter-spacing: 0.02em;
+}
+
+.theme-high-roller-marquee .retro {
+  font-family: 'OptimusPrinceps', 'Times New Roman', serif;
+}
+
 .pixelated {
   image-rendering: pixelated;
   image-rendering: crisp-edges;

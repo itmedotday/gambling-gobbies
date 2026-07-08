@@ -22,6 +22,7 @@ export function applyThemeAppearance({ mode, style, skin, reducedMotion }: Theme
   root.classList.toggle('theme-mono', style === 'mono');
   root.classList.toggle('theme-neon-tavern', style === 'neonTavern');
   root.classList.toggle('theme-emerald-den', style === 'emeraldDen');
+  root.classList.toggle('theme-high-roller-marquee', style === 'highRollerMarquee');
   root.style.colorScheme = mode;
   root.classList.toggle('motion-reduce', reducedMotion);
 

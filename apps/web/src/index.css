@@ -2,6 +2,7 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @import '@fontsource-variable/geist';
+@import './theme/fonts.css';
 
 /* Generate the utility classes used by @itme.day/rng-react-components (its own
  * prebuilt stylesheet ships a global reset + body override we don't want). */
@@ -62,6 +63,24 @@
     radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.06) 0%, transparent 50%);
   --gg-logo-glow: rgba(99, 102, 241, 0.65);
   --gg-nav-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+  --gg-page-px: 0.75rem;
+  --gg-page-py: 1.5rem;
+  --gg-section-gap: 2.5rem;
+  --gg-card-gap: 1.25rem;
+  --gg-font-display: 'Press Start 2P', 'Geist Variable', sans-serif;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gg-page-px: 1rem;
+    --gg-page-py: 2rem;
+  }
+
+  :root.theme-neon-tavern,
+  :root.theme-emerald-den,
+  :root.theme-high-roller-marquee {
+    --gg-page-px: 2.5rem;
+  }
 }
 
 /* Theme style: Neon Tavern (2a) — default */
@@ -302,6 +321,103 @@
   --sidebar-ring: #849b49;
 }
 
+/* Theme style: High Roller Marquee (2c) */
+:root.theme-high-roller-marquee {
+  --gg-shell-bg:
+    radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.25) 0%, transparent 55%),
+    radial-gradient(at 20% 100%, rgba(244, 63, 94, 0.12) 0%, transparent 50%);
+  --gg-logo-glow: rgba(244, 63, 94, 0.7);
+  --gg-nav-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+  --gg-section-gap: 3rem;
+  --gg-card-gap: 1.25rem;
+  --gg-font-display: 'OptimusPrinceps', 'Times New Roman', serif;
+  --background: #faf5f8;
+  --foreground: #1a0f18;
+  --card: #ffffff;
+  --card-foreground: #1a0f18;
+  --popover: #ffffff;
+  --popover-foreground: #1a0f18;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #f5eef8;
+  --secondary-foreground: #1a0f18;
+  --muted: #f5eef8;
+  --muted-foreground: #6b5a68;
+  --accent: rgba(139, 92, 246, 0.12);
+  --accent-foreground: #1a0f18;
+  --destructive: #e11d48;
+  --border: #e9d5e3;
+  --input: #e9d5e3;
+  --ring: #a78bfa;
+  --gold: #f43f5e;
+  --gold-dark: #e11d48;
+  --chart-1: #8b5cf6;
+  --chart-2: #f43f5e;
+  --chart-3: #fb7185;
+  --chart-4: #a78bfa;
+  --chart-5: #fda4af;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a0f18;
+  --sidebar-primary: #8b5cf6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(139, 92, 246, 0.12);
+  --sidebar-accent-foreground: #1a0f18;
+  --sidebar-border: #e9d5e3;
+  --sidebar-ring: #a78bfa;
+}
+
+.dark.theme-high-roller-marquee {
+  --gg-shell-bg:
+    radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.25) 0%, transparent 55%),
+    radial-gradient(at 20% 100%, rgba(244, 63, 94, 0.12) 0%, transparent 50%);
+  --gg-logo-glow: rgba(244, 63, 94, 0.7);
+  --gg-nav-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+  --background: #0a0710;
+  --foreground: #f0e6f5;
+  --card: #140c1c;
+  --card-foreground: #f0e6f5;
+  --popover: #140c1c;
+  --popover-foreground: #f0e6f5;
+  --primary: #fb7185;
+  --primary-foreground: #0a0710;
+  --secondary: rgba(20, 12, 28, 0.85);
+  --secondary-foreground: #f0e6f5;
+  --muted: #140c1c;
+  --muted-foreground: #9a8aa8;
+  --accent: rgba(139, 92, 246, 0.15);
+  --accent-foreground: #f0e6f5;
+  --destructive: #fb7185;
+  --border: rgba(139, 92, 246, 0.35);
+  --input: rgba(139, 92, 246, 0.35);
+  --ring: #a78bfa;
+  --gold: #fb7185;
+  --gold-dark: #f43f5e;
+  --chart-1: #fb7185;
+  --chart-2: #a78bfa;
+  --chart-3: #f43f5e;
+  --chart-4: #c4b5fd;
+  --chart-5: #fda4af;
+  --sidebar: #140c1c;
+  --sidebar-foreground: #f0e6f5;
+  --sidebar-primary: #fb7185;
+  --sidebar-primary-foreground: #0a0710;
+  --sidebar-accent: rgba(139, 92, 246, 0.15);
+  --sidebar-accent-foreground: #f0e6f5;
+  --sidebar-border: rgba(139, 92, 246, 0.35);
+  --sidebar-ring: #a78bfa;
+}
+
+.theme-emerald-den {
+  --gg-section-gap: 3rem;
+  --gg-card-gap: 0.875rem;
+  --gg-font-display: 'RuneScape UF', ui-monospace, monospace;
+}
+
+.theme-neon-tavern {
+  --gg-section-gap: 3.5rem;
+  --gg-card-gap: 1.25rem;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -495,4 +611,169 @@ html.motion-reduce .animate-gg-pulse {
   box-shadow: none !important;
   text-shadow: none !important;
   transform: none !important;
+}
+
+/* Page shell spacing */
+.gg-page {
+  padding-left: var(--gg-page-px);
+  padding-right: var(--gg-page-px);
+  padding-top: var(--gg-page-py);
+  padding-bottom: var(--gg-page-py);
+}
+
+/* Theme display fonts */
+.gg-font-fantasy {
+  font-family: var(--gg-font-display);
+  line-height: 1.35;
+}
+
+.gg-marquee-display,
+.gg-marquee-title {
+  font-family: 'OptimusPrinceps', 'Times New Roman', serif;
+  letter-spacing: 0.04em;
+}
+
+.gg-marquee-title {
+  background: linear-gradient(180deg, #fda4af 0%, #f43f5e 45%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(244, 63, 94, 0.8)) drop-shadow(0 0 50px rgba(139, 92, 246, 0.5));
+}
+
+.gg-marquee-subtitle {
+  color: #a78bfa;
+  text-shadow: 0 0 12px rgba(139, 92, 246, 0.9);
+}
+
+.gg-marquee-frame {
+  border: 3px solid rgba(244, 63, 94, 0.7);
+  background: rgba(20, 10, 25, 0.75);
+  box-shadow:
+    0 0 40px rgba(244, 63, 94, 0.4),
+    inset 0 0 60px rgba(139, 92, 246, 0.15);
+}
+
+.theme-high-roller-marquee .gg-hero-title,
+.theme-high-roller-marquee .gg-eyebrow {
+  text-shadow:
+    0 0 14px rgba(244, 63, 94, 0.8),
+    0 0 40px rgba(139, 92, 246, 0.45);
+}
+
+.theme-high-roller-marquee .gg-neon-btn-primary {
+  background: linear-gradient(180deg, #fb7185, #e11d48) !important;
+  border: 1px solid #fda4af !important;
+  box-shadow:
+    0 0 36px rgba(244, 63, 94, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  font-family: 'OptimusPrinceps', 'Times New Roman', serif !important;
+  letter-spacing: 0.08em;
+}
+
+.theme-high-roller-marquee .gg-neon-btn-primary:hover {
+  box-shadow:
+    0 0 64px rgba(244, 63, 94, 1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+.theme-high-roller-marquee .gg-neon-btn-outline {
+  background: rgba(139, 92, 246, 0.1) !important;
+  color: #c4b5fd !important;
+  border: 1px solid rgba(139, 92, 246, 0.55) !important;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3) !important;
+  font-family: 'OptimusPrinceps', 'Times New Roman', serif !important;
+}
+
+.theme-emerald-den .gg-neon-btn-outline {
+  background: rgba(132, 155, 73, 0.1) !important;
+  color: #b7c98a !important;
+  border: 2px solid rgba(132, 155, 73, 0.55) !important;
+  box-shadow: 0 0 18px rgba(132, 155, 73, 0.25) !important;
+  text-shadow: 0 0 10px rgba(132, 155, 73, 0.7);
+  font-family: var(--gg-font-display) !important;
+}
+
+.theme-emerald-den .gg-neon-btn-primary {
+  font-family: var(--gg-font-display) !important;
+  color: #1a1405 !important;
+  border: 2px solid #ecc24e !important;
+}
+
+.theme-emerald-den .gg-eyebrow {
+  text-shadow: 0 0 10px rgba(132, 155, 73, 0.6);
+}
+
+/* CRT scanlines for High Roller Marquee */
+.gg-crt-shell::after {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+  opacity: 0.35;
+}
+
+@keyframes ggBulbA {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes ggBulbB {
+  0%,
+  49% {
+    opacity: 0.2;
+  }
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ggTicker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-gg-bulb-a {
+  animation: ggBulbA 1s steps(1) infinite;
+}
+
+.animate-gg-bulb-b {
+  animation: ggBulbB 1s steps(1) infinite;
+}
+
+.animate-gg-ticker {
+  animation: ggTicker 22s linear infinite;
+}
+
+html.motion-reduce .animate-gg-bulb-a,
+html.motion-reduce .animate-gg-bulb-b,
+html.motion-reduce .animate-gg-ticker {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gg-bulb-a,
+  .animate-gg-bulb-b,
+  .animate-gg-ticker {
+    animation: none;
+  }
 }

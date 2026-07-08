@@ -10,14 +10,16 @@ export interface NeonCardProps {
   accent?: GameAccent;
   /** Visual stage panel (taller min-height, centered). */
   stage?: boolean;
+  'data-testid'?: string;
 }
 
 /** Flat neon-tavern card shell from the redesign (bypasses 8-bit thick borders). */
-export function NeonCard({ children, className, accent, stage }: NeonCardProps) {
+export function NeonCard({ children, className, accent, stage, 'data-testid': testId }: NeonCardProps) {
   const tokens = accent ? accentTokens(accent) : null;
 
   return (
     <div
+      data-testid={testId}
       className={cn(
         'bg-card text-card-foreground border border-border',
         'shadow-[0_4px_20px_rgba(0,0,0,.4)]',

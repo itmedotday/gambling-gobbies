@@ -8,6 +8,11 @@ const OPTIONS: { value: ThemeStyle; label: string; description: string }[] = [
     description: 'Indigo/violet glow, color-coded games, neon cards (redesign 2a).',
   },
   {
+    value: 'highRollerMarquee',
+    label: 'High Roller Marquee',
+    description: 'Rose/violet neon signage, marquee bulbs, CRT ticker (redesign 2c).',
+  },
+  {
     value: 'emeraldDen',
     label: 'Emerald Den',
     description: 'Goblin-green torchlight with gold highlights (redesign 2b).',

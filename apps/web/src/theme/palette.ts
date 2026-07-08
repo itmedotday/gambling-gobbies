@@ -3,7 +3,7 @@
  * Shared by Tailwind (index.css) and Phaser scenes via getPalette().
  */
 export type PaletteMode = 'light' | 'dark';
-export type PaletteStyle = 'mono' | 'neonTavern' | 'emeraldDen';
+export type PaletteStyle = 'mono' | 'neonTavern' | 'emeraldDen' | 'highRollerMarquee';
 
 export interface PaletteTokens {
   background: string;
@@ -112,6 +112,36 @@ const EMERALD_DEN_DARK: PaletteTokens = {
   info: '#a5b4fc',
 };
 
+const HIGH_ROLLER_MARQUEE_LIGHT: PaletteTokens = {
+  background: '#faf5f8',
+  surface: '#ffffff',
+  border: '#e9d5e3',
+  text: '#1a0f18',
+  textMuted: '#6b5a68',
+  goblin: '#8b5cf6',
+  goblinDark: '#7c3aed',
+  gold: '#f43f5e',
+  goldDark: '#e11d48',
+  danger: '#e11d48',
+  opponent: '#fb7185',
+  info: '#a78bfa',
+};
+
+const HIGH_ROLLER_MARQUEE_DARK: PaletteTokens = {
+  background: '#0a0710',
+  surface: '#140c1c',
+  border: 'rgba(139, 92, 246, 0.35)',
+  text: '#f0e6f5',
+  textMuted: '#9a8aa8',
+  goblin: '#a78bfa',
+  goblinDark: '#8b5cf6',
+  gold: '#fb7185',
+  goldDark: '#f43f5e',
+  danger: '#fb7185',
+  opponent: '#fda4af',
+  info: '#c4b5fd',
+};
+
 let activeMode: PaletteMode = 'dark';
 let activeStyle: PaletteStyle = 'neonTavern';
 let activePalette: PaletteTokens = NEON_TAVERN_DARK;
@@ -124,6 +154,8 @@ function resolvePalette(mode: PaletteMode, style: PaletteStyle): PaletteTokens {
       return mode === 'light' ? NEON_TAVERN_LIGHT : NEON_TAVERN_DARK;
     case 'emeraldDen':
       return mode === 'light' ? EMERALD_DEN_LIGHT : EMERALD_DEN_DARK;
+    case 'highRollerMarquee':
+      return mode === 'light' ? HIGH_ROLLER_MARQUEE_LIGHT : HIGH_ROLLER_MARQUEE_DARK;
     default:
       return mode === 'light' ? NEON_TAVERN_LIGHT : NEON_TAVERN_DARK;
   }

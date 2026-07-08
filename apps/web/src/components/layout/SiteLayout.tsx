@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { Volume2, VolumeX, Settings, LineChart } from 'lucide-react';
 import { Button } from '@/components/kit';
-import { useSettingsStore } from '@/stores/settingsStore';
+import { useSettingsStore, useThemeStyle } from '@/stores/settingsStore';
 import { WalletHud } from './WalletHud';
 import { useAudioUnlock } from '@/audio/useAudioUnlock';
 import { ThemeToggleIcon } from '@/components/theme/ThemeToggle';
 import { LiveStatsPanel } from '@/components/stats/LiveStatsPanel';
+import { MarqueeTicker } from '@/components/theme/MarqueeTicker';
+import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
   { to: '/lobby', label: 'Lobby' },
@@ -18,18 +20,35 @@ export function SiteLayout() {
   useAudioUnlock();
   const muted = useSettingsStore((s) => s.muted);
   const setMuted = useSettingsStore((s) => s.setMuted);
+  const themeStyle = useThemeStyle();
   const [statsOpen, setStatsOpen] = useState(false);
+  const isMarquee = themeStyle === 'highRollerMarquee';
+  const isEmerald = themeStyle === 'emeraldDen';
 
   return (
-    <div className="flex min-h-screen flex-col bg-background [background-image:var(--gg-shell-bg)]">
+    <div
+      className={cn(
+        'flex min-h-screen flex-col bg-background [background-image:var(--gg-shell-bg)]',
+        isMarquee && 'gg-crt-shell relative',
+      )}
+    >
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-sm focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:ring-2 focus:ring-ring"
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-40 border-b border-border bg-[rgba(24,24,27,.6)] backdrop-blur-md">
-        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 sm:min-h-12 sm:flex-nowrap sm:gap-6 sm:px-10 sm:py-3.5">
+      <header
+        className={cn(
+          'sticky top-0 z-40 border-b border-border backdrop-blur-md',
+          isMarquee
+            ? 'bg-[rgba(10,7,16,.88)]'
+            : isEmerald
+              ? 'bg-[rgba(11,13,9,.78)]'
+              : 'bg-[rgba(24,24,27,.6)]',
+        )}
+      >
+        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-[var(--gg-page-px)] py-2 sm:min-h-12 sm:flex-nowrap sm:gap-6 sm:py-3.5">
           <Link
             to="/"
             className="flex shrink-0 items-center gap-2"
@@ -42,7 +61,16 @@ export function SiteLayout() {
               height={36}
               className="pixelated h-9 w-9 drop-shadow-[0_0_8px_var(--gg-logo-glow)]"
             />
-            <span className="retro hidden text-[9px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block">
+            <span
+              className={cn(
+                'hidden text-[9px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block',
+                isMarquee
+                  ? 'gg-marquee-display text-sm tracking-wide'
+                  : isEmerald
+                    ? 'gg-font-fantasy text-sm'
+                    : 'retro',
+              )}
+            >
               Gambling
               <br />
               Gobbies
@@ -54,14 +82,22 @@ export function SiteLayout() {
                 key={item.to}
                 variant="ghost"
                 size="sm"
-                className="retro h-auto px-[13px] py-2 text-[9px] text-muted-foreground hover:text-primary"
+                className={cn(
+                  'h-auto px-[13px] py-2 text-[9px] text-muted-foreground hover:text-primary',
+                  isMarquee ? 'gg-marquee-display text-xs' : isEmerald ? 'gg-font-fantasy text-sm' : 'retro',
+                )}
                 asChild
               >
                 <NavLink
                   to={item.to}
                   className={({ isActive }) =>
                     isActive
-                      ? 'bg-primary/15 text-primary ring-1 ring-primary/50 [box-shadow:var(--gg-nav-shadow)]'
+                      ? cn(
+                          'text-primary [box-shadow:var(--gg-nav-shadow)]',
+                          isEmerald
+                            ? 'bg-primary text-primary-foreground ring-0'
+                            : 'bg-primary/15 ring-1 ring-primary/50',
+                        )
                       : ''
                   }
                 >
@@ -102,12 +138,13 @@ export function SiteLayout() {
           </div>
         </div>
       </header>
-      <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8">
+      {isMarquee && <MarqueeTicker />}
+      <main id="main" className="gg-page mx-auto w-full max-w-6xl flex-1">
         <Outlet />
       </main>
       <LiveStatsPanel open={statsOpen} onClose={() => setStatsOpen(false)} />
       <footer className="border-t border-border/80 bg-background/60 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-[var(--gg-page-px)] py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>Gambling Gobbies — virtual Gobbie Gold only. No real money.</span>
           <span>
             Pixel art by{' '}

@@ -24,7 +24,10 @@ export interface GobbieEventMap {
   /** Player clicked a tile in the Phaser grid. */
   'mines-pick': { index: number };
   /** Theme changed (React -> Phaser palette refresh). */
-  'theme-change': { mode: 'light' | 'dark'; style: 'mono' | 'neonTavern' | 'emeraldDen' };
+  'theme-change': {
+    mode: 'light' | 'dark';
+    style: 'mono' | 'neonTavern' | 'emeraldDen' | 'highRollerMarquee';
+  };
 }
 
 export type GobbieEventName = keyof GobbieEventMap;

@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware';
 export type UiSkin = 'eightbit' | 'shadcn';
 
 /** Which design direction the app uses (from the redesign doc). */
-export type ThemeStyle = 'mono' | 'neonTavern' | 'emeraldDen';
+export type ThemeStyle = 'mono' | 'neonTavern' | 'emeraldDen' | 'highRollerMarquee';
 
 interface SettingsState {
   uiSkin: UiSkin;
@@ -36,6 +36,7 @@ const defaultThemeStyle: ThemeStyle = (() => {
   const raw = import.meta.env.VITE_DEFAULT_THEME_STYLE as string | undefined;
   if (raw === 'mono') return 'mono';
   if (raw === 'emeraldDen') return 'emeraldDen';
+  if (raw === 'highRollerMarquee') return 'highRollerMarquee';
   return 'neonTavern';
 })();
 
