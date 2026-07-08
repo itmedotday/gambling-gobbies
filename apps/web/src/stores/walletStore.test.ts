@@ -4,9 +4,10 @@ import {
   DAILY_BONUS_AMOUNT,
   DAILY_BONUS_COOLDOWN_MS,
   BAILOUT_AMOUNT,
+  MAX_DEBT,
 } from '@gobbies/shared';
 import { useWalletStore } from './walletStore';
-import { validateBet } from '@/components/game/BetControls';
+import { validateBet } from '@/game/validateBet';
 
 describe('walletStore', () => {
   beforeEach(() => {
@@ -22,14 +23,14 @@ describe('walletStore', () => {
     expect(useWalletStore.getState().balance).toBe(STARTING_BALANCE);
   });
 
-  it('settle credits and debits, never below zero', () => {
+  it('settle credits and debits, floors at max debt', () => {
     const { settle } = useWalletStore.getState();
     settle(-400);
     expect(useWalletStore.getState().balance).toBe(600);
     settle(150.5);
     expect(useWalletStore.getState().balance).toBe(750.5);
     settle(-99999);
-    expect(useWalletStore.getState().balance).toBe(0);
+    expect(useWalletStore.getState().balance).toBe(-MAX_DEBT);
   });
 
   it('daily bonus credits once, then respects the cooldown', () => {
@@ -52,15 +53,27 @@ describe('walletStore', () => {
 });
 
 describe('validateBet', () => {
-  it('rejects zero, negative, NaN, and over-balance bets', () => {
+  it('rejects zero, negative, NaN, and over-balance bets without debt', () => {
     expect(validateBet(0, 100)).not.toBeNull();
     expect(validateBet(-5, 100)).not.toBeNull();
     expect(validateBet(Number.NaN, 100)).not.toBeNull();
     expect(validateBet(101, 100)).not.toBeNull();
   });
 
-  it('accepts valid bets', () => {
+  it('accepts valid bets without debt', () => {
     expect(validateBet(1, 100)).toBeNull();
     expect(validateBet(100, 100)).toBeNull();
+  });
+
+  it('allows solo bets into debt up to MAX_DEBT headroom', () => {
+    expect(validateBet(150, 100, true)).toBeNull();
+    expect(validateBet(201, 100, true)).not.toBeNull();
+    expect(validateBet(50, -30, true)).toBeNull();
+    expect(validateBet(71, -30, true)).not.toBeNull();
+    expect(validateBet(1, -MAX_DEBT, true)).not.toBeNull();
+  });
+
+  it('reports lowered max bet while in debt', () => {
+    expect(validateBet(80, -30, true)).toContain('while in debt');
   });
 });

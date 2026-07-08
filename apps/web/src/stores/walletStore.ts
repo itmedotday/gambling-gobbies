@@ -7,6 +7,7 @@ import {
   BAILOUT_AMOUNT,
   BAILOUT_THRESHOLD,
   BAILOUT_COOLDOWN_MS,
+  MAX_DEBT,
 } from '@gobbies/shared';
 
 interface WalletState {
@@ -31,7 +32,12 @@ export const useWalletStore = create<WalletState>()(
       lastBonusAt: null,
       lastBailoutAt: null,
       settle: (delta) =>
-        set((s) => ({ balance: Math.max(0, Math.round((s.balance + delta) * 100) / 100) })),
+        set((s) => ({
+          balance: Math.max(
+            -MAX_DEBT,
+            Math.round((s.balance + delta) * 100) / 100,
+          ),
+        })),
       canClaimDailyBonus: () => {
         const { lastBonusAt } = get();
         return lastBonusAt === null || Date.now() - lastBonusAt >= DAILY_BONUS_COOLDOWN_MS;

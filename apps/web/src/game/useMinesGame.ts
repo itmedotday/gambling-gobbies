@@ -10,7 +10,7 @@ import { webHasher } from '@gobbies/engine/web';
 import { useWalletStore } from '@/stores/walletStore';
 import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
-import { validateBet } from '@/components/game/BetControls';
+import { validateBet } from '@/game/validateBet';
 import { EventBus } from '@/phaser/events';
 import { playSfx } from '@/audio/sfx';
 
@@ -82,7 +82,7 @@ export function useMinesGame() {
   const start = useCallback(async () => {
     if (roundRef.current && !roundRef.current.settled) return;
     const wallet = useWalletStore.getState();
-    const error = validateBet(amount, wallet.balance);
+    const error = validateBet(amount, wallet.balance, true);
     if (error) {
       toast.error(error);
       return;

@@ -6,7 +6,7 @@ import type { GameId } from '@gobbies/shared';
 import { useWalletStore } from '@/stores/walletStore';
 import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
-import { validateBet } from '@/components/game/BetControls';
+import { validateBet } from '@/game/validateBet';
 import { playSfx } from '@/audio/sfx';
 
 export interface SettleOptions {
@@ -42,7 +42,7 @@ export function useConsoleBet(game: GameId, floatCount = 8) {
   const beginBet = useCallback(async (): Promise<number[] | null> => {
     if (pendingRef.current) return null;
     const wallet = useWalletStore.getState();
-    const error = validateBet(amount, wallet.balance);
+    const error = validateBet(amount, wallet.balance, true);
     if (error) {
       toast.error(error);
       return null;

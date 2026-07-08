@@ -4,7 +4,7 @@ import type { GameId } from '@gobbies/shared';
 import { useWalletStore } from '@/stores/walletStore';
 import { useFairnessStore } from '@/stores/fairnessStore';
 import { useLedgerStore } from '@/stores/ledgerStore';
-import { validateBet } from '@/components/game/BetControls';
+import { validateBet } from '@/game/validateBet';
 
 export interface SoloBetResolution {
   multiplier: number;
@@ -34,7 +34,7 @@ export async function placeSoloBet<T extends SoloBetResolution>(options: {
   resolve: (floats: number[]) => T;
 }): Promise<SoloBetResult<T>> {
   const wallet = useWalletStore.getState();
-  const error = validateBet(options.amount, wallet.balance);
+  const error = validateBet(options.amount, wallet.balance, true);
   if (error) return { ok: false, error };
 
   wallet.settle(-options.amount);

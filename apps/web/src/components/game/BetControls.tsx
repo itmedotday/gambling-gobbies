@@ -1,9 +1,11 @@
 import { toast } from 'sonner';
+import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/8bit/button';
 import { Input } from '@/components/ui/8bit/input';
 import { Label } from '@/components/ui/8bit/label';
-import { MIN_BET } from '@gobbies/shared';
+import { MIN_BET, getMaxBet, isInDebt } from '@gobbies/shared';
 import { useWalletStore } from '@/stores/walletStore';
+import { validateBet } from '@/game/validateBet';
 
 export interface BetControlsProps {
   amount: number;
@@ -15,17 +17,6 @@ export interface BetControlsProps {
   betLabel?: string;
 }
 
-/** Validates a prospective bet; returns null when valid, or a user-facing error. */
-export function validateBet(amount: number, balance: number): string | null {
-  if (!Number.isFinite(amount) || amount < MIN_BET) {
-    return `Minimum bet is ${MIN_BET} GG`;
-  }
-  if (amount > balance) {
-    return 'Not enough Gobbie Gold';
-  }
-  return null;
-}
-
 export function BetControls({
   amount,
   onAmountChange,
@@ -35,10 +26,12 @@ export function BetControls({
   betLabel = 'Place Bet',
 }: BetControlsProps) {
   const balance = useWalletStore((s) => s.balance);
+  const maxBet = getMaxBet(balance, true);
+  const inDebt = isInDebt(balance);
   const potentialWin = Math.floor(amount * multiplier * 100) / 100;
 
   const handleBet = () => {
-    const error = validateBet(amount, balance);
+    const error = validateBet(amount, balance, true);
     if (error) {
       toast.error(error);
       return;
@@ -47,15 +40,33 @@ export function BetControls({
   };
 
   const clamp = (value: number) =>
-    Math.max(MIN_BET, Math.min(Math.floor(balance), Math.floor(value)));
+    Math.max(MIN_BET, Math.min(maxBet, Math.floor(value)));
 
   return (
     <div className="flex flex-col gap-4" data-testid="bet-controls">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="bet-amount">Bet amount</Label>
-          <span className="text-xs text-muted-foreground">Balance: {balance.toLocaleString()} GG</span>
+          <span
+            className={`text-xs tabular-nums ${inDebt ? 'text-destructive' : 'text-muted-foreground'}`}
+          >
+            Balance: {balance.toLocaleString()} GG
+            {inDebt ? ' · in debt' : ''}
+          </span>
         </div>
+        {inDebt ? (
+          <p
+            className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+            role="status"
+          >
+            <AlertTriangle className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+            <span>
+              You&apos;re in debt — max bet is lowered to{' '}
+              <span className="font-medium tabular-nums">{maxBet.toLocaleString()} GG</span> until
+              your balance recovers.
+            </span>
+          </p>
+        ) : null}
         <div className="flex items-stretch gap-3">
           <Input
             id="bet-amount"
@@ -96,7 +107,7 @@ export function BetControls({
             variant="outline"
             size="sm"
             disabled={busy}
-            onClick={() => onAmountChange(clamp(balance))}
+            onClick={() => onAmountChange(clamp(maxBet))}
             aria-label="Bet maximum"
           >
             Max
