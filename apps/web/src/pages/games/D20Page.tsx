@@ -8,6 +8,7 @@ import { LedgerTable } from '@/components/game/LedgerTable';
 import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
+import { GamePageFrame } from '@/components/game/GamePageFrame';
 
 export default function D20Page() {
   const [dc, setDc] = useState(11);
@@ -33,9 +34,8 @@ export default function D20Page() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <GamePageFrame game="d20" title="D20 Roll">
       <VersusPlayBanner />
-      <h1 className="retro text-lg text-primary">D20 Roll</h1>
       <GameStatsHeader game="d20" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
@@ -108,6 +108,6 @@ export default function D20Page() {
           <LedgerTable game="d20" />
         </CardContent>
       </Card>
-    </div>
+    </GamePageFrame>
   );
 }

@@ -1,5 +1,5 @@
 import { Coins } from 'lucide-react';
-import { Badge } from '@/components/ui/8bit/badge';
+import { Badge } from '@/components/kit';
 import { isInDebt } from '@gobbies/shared';
 import { useWalletStore } from '@/stores/walletStore';
 
@@ -10,9 +10,13 @@ export function WalletHud() {
   return (
     <Badge
       variant="default"
-      className={`retro flex items-center gap-1.5 bg-card px-2.5 py-1.5 text-[10px] ${
-        inDebt ? 'text-destructive' : 'text-primary'
-      }`}
+      className={[
+        'retro inline-flex items-center gap-2 px-3 py-2 text-[10px] leading-none',
+        inDebt
+          ? 'border border-destructive/50 bg-destructive/10 text-destructive shadow-[0_0_14px_rgba(244,63,94,.25)]'
+          : 'border border-[color:var(--chart-3)]/45 bg-[color:var(--chart-3)]/10 text-[color:var(--chart-3)] shadow-[0_0_14px_rgba(16,185,129,.3)]',
+        'skin-shadcn:rounded-md skin-eightbit:rounded-sm',
+      ].join(' ')}
       data-testid="wallet-balance"
     >
       <Coins className="size-3.5" aria-hidden />

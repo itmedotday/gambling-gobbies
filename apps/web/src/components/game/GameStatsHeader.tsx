@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/8bit/card';
+import { Card, CardContent } from '@/components/kit';
 import type { GameId } from '@gobbies/shared';
 import { useLedgerStore } from '@/stores/ledgerStore';
 
@@ -16,18 +16,18 @@ export function GameStatsHeader({ game }: { game: GameId }) {
   }
 
   const stats = [
-    { label: 'Wins', value: wins, className: 'text-primary' },
+    { label: 'Wins', value: wins, className: 'text-[color:var(--chart-3)]' },
     { label: 'Losses', value: losses, className: 'text-destructive' },
     { label: 'Win Ratio', value: `${ratio}%`, className: 'text-foreground' },
     { label: 'Win Streak', value: streak, className: 'text-primary' },
   ] as const;
 
   return (
-    <Card>
+    <Card className="border border-border bg-card">
       <CardContent className="grid grid-cols-4 gap-2 p-4" data-testid="game-stats">
         {stats.map((stat) => (
           <div key={stat.label} className="flex flex-col items-center gap-1">
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className="retro text-[8px] uppercase tracking-wider text-muted-foreground">
               {stat.label}
             </span>
             <span className={`retro text-sm ${stat.className}`}>{stat.value}</span>

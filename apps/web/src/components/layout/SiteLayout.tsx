@@ -28,8 +28,8 @@ export function SiteLayout() {
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-40 border-b border-border/80 bg-background/60 backdrop-blur">
-        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 sm:h-16 sm:flex-nowrap sm:gap-4 sm:px-4 sm:py-0">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/60 backdrop-blur">
+        <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 sm:min-h-12 sm:flex-nowrap sm:gap-6 sm:px-10 sm:py-3">
           <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Gambling Gobbies home">
             <img
               src="/assets/sprites/royal-goblin/idle.webp"
@@ -38,7 +38,7 @@ export function SiteLayout() {
               height={36}
               className="pixelated h-9 w-9 drop-shadow-[0_0_8px_var(--gg-logo-glow)]"
             />
-            <span className="retro hidden text-[11px] leading-tight text-primary sm:block">
+            <span className="retro hidden text-[9px] leading-tight text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block">
               Gambling
               <br />
               Gobbies
@@ -50,14 +50,14 @@ export function SiteLayout() {
                 key={item.to}
                 variant="ghost"
                 size="sm"
-                className="retro px-3 text-[10px] text-muted-foreground hover:text-primary sm:text-xs"
+                className="retro h-auto px-[13px] py-2 text-[9px] text-muted-foreground hover:text-primary"
                 asChild
               >
                 <NavLink
                   to={item.to}
                   className={({ isActive }) =>
                     isActive
-                      ? 'bg-primary/10 text-primary ring-1 ring-primary/40 [box-shadow:var(--gg-nav-shadow)]'
+                      ? 'bg-primary/15 text-primary ring-1 ring-primary/50 [box-shadow:var(--gg-nav-shadow)]'
                       : ''
                   }
                 >

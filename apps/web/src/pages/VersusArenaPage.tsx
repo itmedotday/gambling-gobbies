@@ -59,20 +59,35 @@ export default function VersusArenaPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="retro text-lg text-primary">Versus · {view.code}</h1>
-          <p className="text-xs text-muted-foreground capitalize">Phase: {view.phase}</p>
+          <h1 className="retro text-lg text-foreground drop-shadow-[0_0_12px_rgba(99,102,241,.55)]">
+            Versus · <span className="text-primary">{view.code}</span>
+          </h1>
+          <p className="text-xs text-muted-foreground capitalize">
+            Phase:{' '}
+            <span className={view.phase === 'live' ? 'text-[color:var(--chart-3)]' : 'text-muted-foreground'}>
+              {view.phase}
+            </span>
+          </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={() => send({ type: 'ready' })}>
+          <Button
+            variant="secondary"
+            className="retro border border-primary/50 bg-primary/10 text-primary shadow-[0_0_16px_rgba(99,102,241,.25)]"
+            onClick={() => send({ type: 'ready' })}
+          >
             Ready up
           </Button>
-          <Button variant="destructive" onClick={() => send({ type: 'forfeit' })}>
+          <Button
+            variant="destructive"
+            className="retro border border-destructive/50 bg-destructive/10 text-destructive shadow-[0_0_16px_rgba(244,63,94,.22)]"
+            onClick={() => send({ type: 'forfeit' })}
+          >
             Forfeit
           </Button>
-          <Button variant="outline" onClick={() => leave()}>
+          <Button variant="outline" className="retro border border-border bg-transparent text-muted-foreground" onClick={() => leave()}>
             Leave
           </Button>
         </div>
@@ -99,29 +114,66 @@ export default function VersusArenaPage() {
         </Card>
       )}
 
-      <Card>
+      <Card className="border border-border bg-card">
         <CardHeader>
           <CardTitle className="retro text-xs flex items-center justify-between">
             <span>Timer</span>
-            <span className={view.timerRemainingMs < 30_000 ? 'text-destructive' : 'text-primary'}>
+            <span
+              className={[
+                'retro text-base',
+                view.timerRemainingMs < 30_000
+                  ? 'text-destructive drop-shadow-[0_0_12px_rgba(244,63,94,.35)]'
+                  : 'text-[color:var(--chart-3)] drop-shadow-[0_0_12px_rgba(16,185,129,.35)]',
+              ].join(' ')}
+            >
               {formatTimer(view.timerRemainingMs)}
             </span>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Progress value={progress} />
+          <Progress
+            value={progress}
+            className="h-3 border border-border bg-background"
+          />
         </CardContent>
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {view.players.map((p) => (
-          <Card key={p.sessionId}>
+        {view.players.map((p, idx) => (
+          <Card
+            key={p.sessionId}
+            className={[
+              'border bg-card',
+              idx === 0 ? 'border-primary/50 shadow-[0_0_18px_rgba(99,102,241,.16)]' : 'border-destructive/50 shadow-[0_0_18px_rgba(244,63,94,.12)]',
+            ].join(' ')}
+          >
             <CardContent className="flex items-center gap-3 p-4">
               <img src={avatarSpriteUrl(p.avatar)} alt="" className="h-10 w-10 image-pixelated" />
               <div>
-                <p className="retro text-xs">{p.name}</p>
-                <p className="text-sm">{p.balance.toLocaleString()} GG</p>
+                <p className={['retro text-[10px]', idx === 0 ? 'text-primary' : 'text-destructive'].join(' ')}>
+                  {p.name}
+                </p>
+                <p className="text-sm text-foreground">
+                  {p.balance.toLocaleString()} GG{' '}
+                  <span className="text-xs text-muted-foreground">
+                    {(() => {
+                      const start = view.snapshots[0]?.balances[p.playerId] ?? p.balance;
+                      const delta = Math.round((p.balance - start) * 100) / 100;
+                      if (delta === 0) return null;
+                      const up = delta > 0;
+                      return (
+                        <span className={up ? 'text-[color:var(--chart-3)]' : 'text-destructive'}>
+                          {up ? '+' : '−'}
+                          {Math.abs(delta)}
+                        </span>
+                      );
+                    })()}
+                  </span>
+                </p>
                 {p.disconnected && <Badge variant="destructive">Reconnecting…</Badge>}
+              </div>
+              <div className="ml-auto">
+                {idx === 0 && <Badge className="retro text-[8px] border border-[color:var(--chart-3)]/50 bg-[color:var(--chart-3)]/10 text-[color:var(--chart-3)]">LEADING</Badge>}
               </div>
             </CardContent>
           </Card>
@@ -137,13 +189,24 @@ export default function VersusArenaPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border border-border bg-card">
         <CardHeader>
           <CardTitle className="retro text-xs">Event feed</CardTitle>
         </CardHeader>
-        <CardContent className="max-h-40 space-y-1 overflow-y-auto text-xs text-muted-foreground">
+        <CardContent className="max-h-44 space-y-1 overflow-y-auto font-mono text-xs">
           {view.events.map((ev, i) => (
-            <p key={i}>{ev.message}</p>
+            <p
+              key={i}
+              className={
+                ev.message.toLowerCase().includes('won') || ev.message.toLowerCase().includes('+')
+                  ? 'text-[color:var(--chart-3)]'
+                  : ev.message.toLowerCase().includes('bust') || ev.message.toLowerCase().includes('forfeit')
+                    ? 'text-destructive'
+                    : 'text-muted-foreground'
+              }
+            >
+              {ev.message}
+            </p>
           ))}
         </CardContent>
       </Card>

@@ -8,6 +8,7 @@ import { RngWheelBoard } from '@/components/game/RngWheelBoard';
 import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
+import { GamePageFrame } from '@/components/game/GamePageFrame';
 
 export default function WheelPage() {
   const [winChance, setWinChance] = useState(50);
@@ -34,9 +35,8 @@ export default function WheelPage() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <GamePageFrame game="wheel" title="Wheel">
       <VersusPlayBanner />
-      <h1 className="retro text-lg text-primary">Wheel</h1>
       <GameStatsHeader game="wheel" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
@@ -95,6 +95,6 @@ export default function WheelPage() {
           <LedgerTable game="wheel" />
         </CardContent>
       </Card>
-    </div>
+    </GamePageFrame>
   );
 }

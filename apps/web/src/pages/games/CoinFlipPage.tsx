@@ -8,6 +8,7 @@ import { LedgerTable } from '@/components/game/LedgerTable';
 import { useConsoleBet } from '@/game/useConsoleBet';
 import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
+import { GamePageFrame } from '@/components/game/GamePageFrame';
 
 type Pick = 'gold' | 'moon';
 
@@ -33,9 +34,8 @@ export default function CoinFlipPage() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <GamePageFrame game="coinflip" title="Coin Flip">
       <VersusPlayBanner />
-      <h1 className="retro text-lg text-primary">Coin Flip</h1>
       <GameStatsHeader game="coinflip" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
@@ -91,6 +91,6 @@ export default function CoinFlipPage() {
           <LedgerTable game="coinflip" />
         </CardContent>
       </Card>
-    </div>
+    </GamePageFrame>
   );
 }

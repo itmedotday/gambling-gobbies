@@ -1,7 +1,4 @@
-import { Button } from '@/components/ui/8bit/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Label } from '@/components/ui/8bit/label';
-import { Slider } from '@/components/ui/8bit/slider';
+import { Button, Card, CardContent, CardHeader, CardTitle, Label, Slider } from '@/components/kit';
 import { BetControls } from '@/components/game/BetControls';
 import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
@@ -11,6 +8,7 @@ import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
 import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useMinesGame } from '@/game/useMinesGame';
 import { MINES_MAX, MINES_MIN } from '@gobbies/engine';
+import { GamePageFrame } from '@/components/game/GamePageFrame';
 
 export default function MinesPage() {
   const sceneReady = usePhaserSceneReady('mines');
@@ -19,8 +17,7 @@ export default function MinesPage() {
   const playing = game.phase === 'playing';
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="retro text-lg text-primary">Goblin Mines</h1>
+    <GamePageFrame game="mines" title="Goblin Mines">
       <GameStatsHeader game="mines" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
@@ -31,7 +28,7 @@ export default function MinesPage() {
             {playing && (
               <div className="flex w-full flex-col items-center gap-1 text-center">
                 <span className="retro text-xs text-muted-foreground">Current multiplier</span>
-                <span className="retro text-xl text-primary" data-testid="mines-multiplier">
+                <span className="retro text-xl text-[color:var(--chart-3)] drop-shadow-[0_0_14px_rgba(70,200,210,.45)]" data-testid="mines-multiplier">
                   {game.currentMultiplier.toFixed(2)}x
                 </span>
                 {game.nextMultiplier !== null && (
@@ -68,7 +65,7 @@ export default function MinesPage() {
             {playing ? (
               <Button
                 size="lg"
-                className="w-full"
+                className="retro w-full border border-[color:var(--chart-3)]/45 bg-[color:var(--chart-3)]/10 text-[color:var(--chart-3)] shadow-[0_0_16px_rgba(70,200,210,.25)] hover:shadow-[0_0_30px_rgba(70,200,210,.45)]"
                 onClick={game.cashOut}
                 disabled={game.safePicks === 0}
                 data-testid="mines-cashout"
@@ -100,6 +97,6 @@ export default function MinesPage() {
           <LedgerTable game="mines" />
         </CardContent>
       </Card>
-    </div>
+    </GamePageFrame>
   );
 }

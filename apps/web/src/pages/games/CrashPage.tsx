@@ -1,8 +1,4 @@
-import { Badge } from '@/components/ui/8bit/badge';
-import { Button } from '@/components/ui/8bit/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Input } from '@/components/ui/8bit/input';
-import { Label } from '@/components/ui/8bit/label';
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@/components/kit';
 import { BetControls } from '@/components/game/BetControls';
 import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
@@ -11,15 +7,16 @@ import { CrashScene } from '@/phaser/scenes/CrashScene';
 import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
 import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useCrashGame } from '@/game/useCrashGame';
+import { GamePageFrame } from '@/components/game/GamePageFrame';
 
 export default function CrashPage() {
   const sceneReady = usePhaserSceneReady('crash');
   const themeKey = useThemeKey();
-  const game = useCrashGame();  const running = game.phase === 'running';
+  const game = useCrashGame();
+  const running = game.phase === 'running';
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="retro text-lg text-primary">Goblin Crash</h1>
+    <GamePageFrame game="crash" title="Goblin Crash">
       <GameStatsHeader game="crash" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
@@ -32,7 +29,7 @@ export default function CrashPage() {
                 {game.history.map((round, i) => (
                   <Badge
                     key={i}
-                    className={`text-[10px] ${round.cashedAt !== null ? 'text-primary' : 'text-destructive'}`}
+                    className={`text-[10px] ${round.cashedAt !== null ? 'text-[color:var(--chart-3)]' : 'text-destructive'}`}
                   >
                     {round.crashPoint.toFixed(2)}x
                   </Badge>
@@ -65,17 +62,20 @@ export default function CrashPage() {
             </div>
             {running ? (
               <div className="flex flex-col gap-3">
-                <div className="retro text-center text-2xl text-primary" data-testid="crash-multiplier">
+                <div className="retro text-center text-3xl text-destructive drop-shadow-[0_0_18px_rgba(244,63,94,.55)] animate-pulse" data-testid="crash-multiplier">
                   {game.multiplier.toFixed(2)}x
                 </div>
                 <Button
                   size="lg"
-                  className="w-full"
+                  className="retro w-full bg-gradient-to-b from-[color:var(--destructive)] to-[color:var(--destructive)] shadow-[0_0_36px_rgba(244,63,94,.55)] hover:shadow-[0_0_60px_rgba(244,63,94,.9)]"
                   onClick={game.cashOut}
                   data-testid="cashout-button"
                 >
                   Cash out {(Math.floor(game.amount * game.multiplier * 100) / 100).toLocaleString()} GG
                 </Button>
+                <span className="text-center text-xs text-muted-foreground">
+                  {Math.floor(game.amount * 100) / 100} GG riding · started at 1.00x
+                </span>
               </div>
             ) : (
               <BetControls
@@ -83,7 +83,8 @@ export default function CrashPage() {
                 onAmountChange={game.setAmount}
                 multiplier={1}
                 onBet={() => void game.start()}
-                busy={running || !sceneReady}                betLabel="Start the run"
+                busy={running || !sceneReady}
+                betLabel="Start the run"
               />
             )}
           </CardContent>
@@ -97,6 +98,6 @@ export default function CrashPage() {
           <LedgerTable game="crash" />
         </CardContent>
       </Card>
-    </div>
+    </GamePageFrame>
   );
 }
