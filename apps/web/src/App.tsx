@@ -20,6 +20,7 @@ export default function App() {
           <Route index element={<LandingPage />} />
           <Route path="/lobby" element={<LobbyPage />} />
           <Route path="/play/:gameId" element={<GamePage />} />
+          <Route path="/versus/:code/play/:gameId" element={<GamePage />} />
           <Route path="/versus" element={<VersusHubPage />} />
           <Route path="/versus/:code" element={<VersusArenaPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />

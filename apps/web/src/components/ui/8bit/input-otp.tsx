@@ -1,6 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import {
   InputOTP as ShadcnInputOTP,
@@ -75,6 +76,10 @@ export const InputOTPSlot = ({
   index = 0,
   ...props
 }: SharedProps & { index?: number }) => {
+  if (!useEightBit()) {
+    return <ShadcnInputOTPSlot index={index} {...props} className={className} />;
+  }
+
   return (
     <div className="relative size-12 border-y-6 border-foreground dark:border-ring">
       <ShadcnInputOTPSlot

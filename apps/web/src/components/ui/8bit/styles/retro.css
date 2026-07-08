@@ -10,6 +10,16 @@
   letter-spacing: 0.5px;
 }
 
+/*
+ * When the shadcn kit is active, neutralize the pixel font everywhere so that
+ * text using the `retro` class (including hard-coded page headings) inherits
+ * the standard sans-serif stack for a cohesive modern look.
+ */
+.skin-shadcn .retro {
+  font-family: var(--font-sans);
+  letter-spacing: normal;
+}
+
 .pixelated {
   image-rendering: pixelated;
   image-rendering: crisp-edges;

@@ -1,6 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import { Input as ShadcnInput } from "@/components/ui/input";
 
@@ -26,6 +27,10 @@ export interface BitInputProps
 
 function Input({ ...props }: BitInputProps) {
   const { className, font } = props;
+
+  if (!useEightBit()) {
+    return <ShadcnInput {...props} className={className} />;
+  }
 
   return (
     <div

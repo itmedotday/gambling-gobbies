@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { Volume2, VolumeX, Settings, LineChart } from 'lucide-react';
-import { Button } from '@/components/ui/8bit/button';
+import { Button } from '@/components/kit';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { WalletHud } from './WalletHud';
 import { useAudioUnlock } from '@/audio/useAudioUnlock';
@@ -21,14 +21,22 @@ export function SiteLayout() {
   const [statsOpen, setStatsOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 border-b-4 border-border bg-card/95 backdrop-blur">
+    <div className="flex min-h-screen flex-col bg-background [background-image:var(--gg-shell-bg)]">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-sm focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:ring-2 focus:ring-ring"
+      >
+        Skip to main content
+      </a>
+      <header className="sticky top-0 z-40 border-b border-border/80 bg-background/60 backdrop-blur">
         <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 px-3 py-2 sm:h-16 sm:flex-nowrap sm:gap-4 sm:px-4 sm:py-0">
           <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Gambling Gobbies home">
             <img
               src="/assets/sprites/royal-goblin/idle.webp"
               alt=""
-              className="pixelated h-9 w-9"
+              width={36}
+              height={36}
+              className="pixelated h-9 w-9 drop-shadow-[0_0_8px_var(--gg-logo-glow)]"
             />
             <span className="retro hidden text-[11px] leading-tight text-primary sm:block">
               Gambling
@@ -38,18 +46,24 @@ export function SiteLayout() {
           </Link>
           <nav className="flex items-center gap-1 sm:gap-2" aria-label="Main">
             {NAV_ITEMS.map((item) => (
-              <NavLink key={item.to} to={item.to}>
-                {({ isActive }) => (
-                  <Button
-                    variant={isActive ? 'secondary' : 'ghost'}
-                    size="sm"
-                    className="text-[10px] sm:text-xs"
-                    asChild
-                  >
-                    <span>{item.label}</span>
-                  </Button>
-                )}
-              </NavLink>
+              <Button
+                key={item.to}
+                variant="ghost"
+                size="sm"
+                className="retro px-3 text-[10px] text-muted-foreground hover:text-primary sm:text-xs"
+                asChild
+              >
+                <NavLink
+                  to={item.to}
+                  className={({ isActive }) =>
+                    isActive
+                      ? 'bg-primary/10 text-primary ring-1 ring-primary/40 [box-shadow:var(--gg-nav-shadow)]'
+                      : ''
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              </Button>
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-1.5 sm:gap-3">
@@ -61,7 +75,7 @@ export function SiteLayout() {
               aria-pressed={statsOpen}
               onClick={() => setStatsOpen((v) => !v)}
             >
-              <LineChart className="size-4" />
+              <LineChart className="size-4" aria-hidden="true" />
             </Button>
             <ThemeToggleIcon />
             <Button
@@ -70,23 +84,28 @@ export function SiteLayout() {
               aria-label={muted ? 'Unmute sound' : 'Mute sound'}
               onClick={() => setMuted(!muted)}
             >
-              {muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
+              {muted ? (
+                <VolumeX className="size-4" aria-hidden="true" />
+              ) : (
+                <Volume2 className="size-4" aria-hidden="true" />
+              )}
             </Button>
-            <NavLink to="/settings" aria-label="Settings">
-              <Button variant="ghost" size="icon" asChild>
-                <span>
-                  <Settings className="size-4" />
-                </span>
-              </Button>
-            </NavLink>
+            <Button variant="ghost" size="icon" asChild>
+              <NavLink to="/settings" aria-label="Settings">
+                <Settings className="size-4" aria-hidden="true" />
+              </NavLink>
+            </Button>
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8">
+      <main
+        id="main"
+        className="mx-auto w-full max-w-6xl flex-1 px-3 py-6 sm:px-4 sm:py-8"
+      >
         <Outlet />
       </main>
       <LiveStatsPanel open={statsOpen} onClose={() => setStatsOpen(false)} />
-      <footer className="border-t-4 border-border bg-card">
+      <footer className="border-t border-border/80 bg-background/60 backdrop-blur">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>Gambling Gobbies — virtual Gobbie Gold only. No real money.</span>
           <span>

@@ -2,6 +2,7 @@ import type * as SelectPrimitive from "@radix-ui/react-select";
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import {
   Select as ShadcnSelect,
@@ -72,6 +73,14 @@ interface BitSelectTriggerProps
 function SelectTrigger({ children, ...props }: BitSelectTriggerProps) {
   const { className, font } = props;
 
+  if (!useEightBit()) {
+    return (
+      <ShadcnSelectTrigger {...props} className={className}>
+        {children}
+      </ShadcnSelectTrigger>
+    );
+  }
+
   return (
     <div
       className={cn(
@@ -108,6 +117,14 @@ function SelectContent({
 }: BitSelectContentProps) {
   const { font } = props;
 
+  if (!useEightBit()) {
+    return (
+      <ShadcnSelectContent className={className} {...props}>
+        {children}
+      </ShadcnSelectContent>
+    );
+  }
+
   return (
     <ShadcnSelectContent
       className={cn(
@@ -134,6 +151,14 @@ function SelectItem({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  if (!useEightBit()) {
+    return (
+      <ShadcnSelectItem className={cn(className)} {...props}>
+        {children}
+      </ShadcnSelectItem>
+    );
+  }
+
   return (
     <ShadcnSelectItem
       className={cn(

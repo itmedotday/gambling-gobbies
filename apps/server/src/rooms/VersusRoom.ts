@@ -4,6 +4,7 @@ import { generateFloats } from '@gobbies/engine';
 import { nodeHasher, randomSeedHex } from '@gobbies/engine/node';
 import type { GameId, VersusClientMessage } from '@gobbies/shared';
 import { MIN_BET } from '@gobbies/shared';
+import { generateRoomCode } from '@gobbies/shared';
 import type { Store } from '../db/memoryStore.js';
 import { VersusPlayerState, VersusState } from './schema.js';
 import { floatCountFor, resolveBet } from '../game/resolveBet.js';
@@ -11,15 +12,6 @@ import { floatCountFor, resolveBet } from '../game/resolveBet.js';
 const COUNTDOWN_MS = 3000;
 const SNAPSHOT_INTERVAL_MS = 2000;
 const RECONNECT_GRACE_MS = 60_000;
-
-function generateCode(): string {
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-  let code = '';
-  for (let i = 0; i < 4; i++) {
-    code += alphabet[Math.floor(Math.random() * alphabet.length)] ?? 'G';
-  }
-  return code;
-}
 
 interface JoinOptions {
   code?: string;
@@ -48,7 +40,7 @@ export class VersusRoom extends Room {
 
   override onCreate(options: JoinOptions) {
     this.setState(new VersusState());
-    this.s.code = options.code ?? generateCode();
+    this.s.code = options.code ?? generateRoomCode();
     this.s.durationMs = options.durationMs ?? 300_000;
     this.s.phase = 'waiting';
     this.setMetadata({ code: this.s.code });

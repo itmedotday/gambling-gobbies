@@ -2,6 +2,7 @@ import type * as TabsPrimitive from "@radix-ui/react-tabs";
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import {
   Tabs as ShadcnTabs,
@@ -50,6 +51,14 @@ function TabsList({
   children,
   ...props
 }: React.ComponentProps<typeof ShadcnTabsList>) {
+  if (!useEightBit()) {
+    return (
+      <ShadcnTabsList {...props} className={cn(className)}>
+        {children}
+      </ShadcnTabsList>
+    );
+  }
+
   return (
     <ShadcnTabsList
       {...props}
@@ -74,6 +83,14 @@ function TabsTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof ShadcnTabsTrigger>) {
+  if (!useEightBit()) {
+    return (
+      <ShadcnTabsTrigger className={cn(className)} {...props}>
+        {children}
+      </ShadcnTabsTrigger>
+    );
+  }
+
   return (
     <ShadcnTabsTrigger
       className={cn(

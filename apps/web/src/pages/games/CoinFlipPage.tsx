@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { CoinFlip } from '@itme.day/rng-react-components';
 import { resolveCoinFlip, COINFLIP_WIN_MULTIPLIER } from '@gobbies/engine';
-import { Button } from '@/components/ui/8bit/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/kit';
 import { BetControls } from '@/components/game/BetControls';
 import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
 import { useConsoleBet } from '@/game/useConsoleBet';
-import { PhaserGame } from '@/phaser/PhaserGame';
-import { CoinScene } from '@/phaser/scenes/CoinScene';
-import { EventBus } from '@/phaser/events';
-import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
-import { useThemeKey } from '@/components/theme/useThemeKey';
+import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
+import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 
 type Pick = 'gold' | 'moon';
 
@@ -18,43 +15,41 @@ const SIDE_LABELS: Record<Pick, string> = { gold: 'Heads', moon: 'Tails' };
 
 export default function CoinFlipPage() {
   const [prediction, setPrediction] = useState<Pick>('gold');
-  const sceneReady = usePhaserSceneReady('coin');
-  const themeKey = useThemeKey();
   const bet = useConsoleBet('coinflip', 1);
-  const pendingRef = useRef<{ detail: string; isWin: boolean; multiplier: number } | null>(null);
 
-  useEffect(() => {
-    return EventBus.on('coin-anim-done', () => {
-      const pending = pendingRef.current;
-      if (!pending) return;
-      pendingRef.current = null;
-      bet.settleOutcome(pending);
-    });
-  }, [bet]);
-
-  const handleBet = async () => {
-    const floats = await bet.beginBet();
-    if (!floats) return;
-    const pick = prediction === 'gold' ? 'heads' : 'tails';
-    const outcome = resolveCoinFlip({ pick }, floats);
-    const landed: Pick = outcome.landed === 'heads' ? 'gold' : 'moon';
-    pendingRef.current = {
-      detail: `Landed ${SIDE_LABELS[landed]}`,
-      isWin: outcome.isWin,
-      multiplier: COINFLIP_WIN_MULTIPLIER,
-    };
-    EventBus.emit('coin-animate', { landed, isWin: outcome.isWin });
-  };
+  const { handleBet, handleComplete } = useConsoleBetFlow(
+    bet,
+    () => ({ pick: prediction === 'gold' ? 'heads' : 'tails' }),
+    (floats) => {
+      const pick = prediction === 'gold' ? 'heads' : 'tails';
+      const outcome = resolveCoinFlip({ pick }, floats);
+      const landed: Pick = outcome.landed === 'heads' ? 'gold' : 'moon';
+      return {
+        detail: `Landed ${SIDE_LABELS[landed]}`,
+        isWin: outcome.isWin,
+        multiplier: COINFLIP_WIN_MULTIPLIER,
+      };
+    },
+  );
 
   return (
     <div className="flex flex-col gap-6">
+      <VersusPlayBanner />
       <h1 className="retro text-lg text-primary">Coin Flip</h1>
       <GameStatsHeader game="coinflip" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
           <CardContent className="flex min-h-72 items-center justify-center p-4">
-            <div data-testid="coin-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
-              <PhaserGame scenes={[CoinScene]} width={520} height={300} transparent themeKey={themeKey} />
+            <div
+              data-testid="coin-visual"
+              data-scene-ready="true"
+              className="pointer-events-none [perspective:1200px]"
+            >
+              <CoinFlip
+                rng={bet.rng}
+                flipRequest={bet.request}
+                onFlipComplete={handleComplete}
+              />
             </div>
           </CardContent>
         </Card>
@@ -81,8 +76,9 @@ export default function CoinFlipPage() {
               onAmountChange={bet.setAmount}
               multiplier={COINFLIP_WIN_MULTIPLIER}
               onBet={() => void handleBet()}
-              busy={bet.busy || !sceneReady}
+              busy={bet.busy}
               betLabel="Flip"
+              balance={bet.versusBetting ? bet.balance : undefined}
             />
           </CardContent>
         </Card>

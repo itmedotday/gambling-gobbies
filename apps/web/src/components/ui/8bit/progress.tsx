@@ -2,6 +2,8 @@ import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
+import { Progress as ShadcnProgress } from "@/components/ui/progress";
 
 import "@/components/ui/8bit/styles/retro.css";
 
@@ -37,6 +39,16 @@ function Progress({
   progressBg,
   ...props
 }: BitProgressProps) {
+  if (!useEightBit()) {
+    return (
+      <ShadcnProgress
+        className={className}
+        value={value}
+        {...props}
+      />
+    );
+  }
+
   // Extract height from className if present
   const heightMatch = className?.match(/h-(\d+|\[.*?\])/);
   const heightClass = heightMatch ? heightMatch[0] : "h-2";

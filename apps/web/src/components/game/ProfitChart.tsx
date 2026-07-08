@@ -1,5 +1,5 @@
 import { Line, LineChart, CartesianGrid, XAxis, YAxis, ReferenceLine } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/8bit/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/kit';
 import type { BalanceSnapshot } from '@gobbies/shared';
 import { useSessionStore } from '@/stores/sessionStore';
 

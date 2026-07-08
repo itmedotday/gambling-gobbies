@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { applyPaletteMode, paletteModeFromDocument, type PaletteMode } from '@/theme/palette';
-import { EventBus } from '@/phaser/events';
+import { paletteModeFromDocument, type PaletteMode } from '@/theme/palette';
+import { applyThemeAppearance } from '@/theme/applyTheme';
+import { useSettingsStore } from '@/stores/settingsStore';
 
 function resolveMode(resolvedTheme: string | undefined): PaletteMode {
   if (resolvedTheme === 'light') return 'light';
@@ -9,15 +10,21 @@ function resolveMode(resolvedTheme: string | undefined): PaletteMode {
   return paletteModeFromDocument();
 }
 
-/** Keeps Phaser palette + EventBus in sync with next-themes. */
+/** Keeps palette, Phaser, skin, and motion prefs in sync with settings. */
 export function ThemeSync() {
   const { resolvedTheme } = useTheme();
+  const uiSkin = useSettingsStore((s) => s.uiSkin);
+  const themeStyle = useSettingsStore((s) => s.themeStyle);
+  const reducedMotion = useSettingsStore((s) => s.reducedMotion);
 
   useEffect(() => {
-    const mode = resolveMode(resolvedTheme);
-    applyPaletteMode(mode);
-    EventBus.emit('theme-change', { mode });
-  }, [resolvedTheme]);
+    applyThemeAppearance({
+      mode: resolveMode(resolvedTheme),
+      style: themeStyle,
+      skin: uiSkin,
+      reducedMotion,
+    });
+  }, [resolvedTheme, themeStyle, uiSkin, reducedMotion]);
 
   return null;
 }

@@ -1,6 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import { Badge as ShadcnBadge } from "@/components/ui/badge";
 
@@ -35,6 +36,14 @@ function Badge({
   variant,
   ...props
 }: BitButtonProps) {
+  if (!useEightBit()) {
+    return (
+      <ShadcnBadge className={className} variant={variant} {...props}>
+        {children}
+      </ShadcnBadge>
+    );
+  }
+
   const color = badgeVariants({ variant, font });
 
   const classes = className.split(" ");

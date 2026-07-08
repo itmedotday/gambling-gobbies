@@ -13,8 +13,8 @@ import { ALL_GAME_IDS, GAME_META, type GameId } from '@gobbies/shared';
 import { useLedgerStore, type LedgerEntry } from '@/stores/ledgerStore';
 import { cn } from '@/lib/utils';
 
-const GREEN = '#22c55e';
-const RED = '#ef4444';
+const PROFIT_UP = 'var(--chart-1)';
+const PROFIT_DOWN = 'var(--destructive)';
 
 type GameFilter = GameId | 'all';
 
@@ -110,7 +110,7 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
       role="dialog"
       aria-label="Live Stats"
       className="fixed z-50 flex w-[92vw] max-w-[360px] flex-col border-4 border-border bg-card text-card-foreground shadow-2xl"
-      style={{ left: pos.x, top: pos.y, '--gg-green': GREEN, '--gg-red': RED } as React.CSSProperties}
+      style={{ left: pos.x, top: pos.y, '--gg-up': PROFIT_UP, '--gg-down': PROFIT_DOWN } as React.CSSProperties}
     >
       {/* Drag handle / header */}
       <div
@@ -125,7 +125,7 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
             type="button"
             aria-label="Reset stats"
             onClick={() => setResetAt(Date.now())}
-            className="grid size-7 place-items-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="grid size-7 place-items-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <RefreshCw className="size-4" />
           </button>
@@ -133,7 +133,7 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
             type="button"
             aria-label="Close live stats"
             onClick={onClose}
-            className="grid size-7 place-items-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="grid size-7 place-items-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X className="size-4" />
           </button>
@@ -159,19 +159,19 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
         {/* Stat grid */}
         <div className="grid grid-cols-2 gap-3 border-2 border-border bg-background/50 p-3 text-sm">
           <Stat label="Profit">
-            <span className={cn('font-semibold tabular-nums', profitUp ? 'text-[color:var(--gg-green)]' : 'text-[color:var(--gg-red)]')}>
+            <span className={cn('font-semibold tabular-nums', profitUp ? 'text-[color:var(--gg-up)]' : 'text-[color:var(--gg-down)]')}>
               {profitUp ? '+' : '-'}
               {fmt(Math.abs(stats.profit))} GG
             </span>
           </Stat>
           <Stat label="Wins">
-            <span className="font-semibold tabular-nums text-[color:var(--gg-green)]">{stats.wins}</span>
+            <span className="font-semibold tabular-nums text-[color:var(--gg-up)]">{stats.wins}</span>
           </Stat>
           <Stat label="Wagered">
             <span className="font-semibold tabular-nums">{fmt(stats.wagered)} GG</span>
           </Stat>
           <Stat label="Losses">
-            <span className="font-semibold tabular-nums text-[color:var(--gg-red)]">{stats.losses}</span>
+            <span className="font-semibold tabular-nums text-[color:var(--gg-down)]">{stats.losses}</span>
           </Stat>
         </div>
 
@@ -181,14 +181,14 @@ export function LiveStatsPanel({ open, onClose }: LiveStatsPanelProps) {
             <AreaChart data={chart.data} margin={{ top: 6, right: 6, bottom: 0, left: 0 }}>
               <defs>
                 <linearGradient id="ggProfitStroke" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset={chart.offset} stopColor={GREEN} />
-                  <stop offset={chart.offset} stopColor={RED} />
+                  <stop offset={chart.offset} stopColor={PROFIT_UP} />
+                  <stop offset={chart.offset} stopColor={PROFIT_DOWN} />
                 </linearGradient>
                 <linearGradient id="ggProfitFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset={0} stopColor={GREEN} stopOpacity={0.35} />
-                  <stop offset={chart.offset} stopColor={GREEN} stopOpacity={0.05} />
-                  <stop offset={chart.offset} stopColor={RED} stopOpacity={0.05} />
-                  <stop offset={1} stopColor={RED} stopOpacity={0.35} />
+                  <stop offset={0} stopColor={PROFIT_UP} stopOpacity={0.35} />
+                  <stop offset={chart.offset} stopColor={PROFIT_UP} stopOpacity={0.05} />
+                  <stop offset={chart.offset} stopColor={PROFIT_DOWN} stopOpacity={0.05} />
+                  <stop offset={1} stopColor={PROFIT_DOWN} stopOpacity={0.35} />
                 </linearGradient>
               </defs>
               <XAxis dataKey="i" hide />

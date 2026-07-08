@@ -1,66 +1,54 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { resolveWheelSpin, wheelMultiplier } from '@gobbies/engine';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Label } from '@/components/ui/8bit/label';
-import { Slider } from '@/components/ui/8bit/slider';
+import { Card, CardContent, CardHeader, CardTitle, Label, Slider } from '@/components/kit';
 import { BetControls } from '@/components/game/BetControls';
 import { GameStatsHeader } from '@/components/game/GameStatsHeader';
 import { LedgerTable } from '@/components/game/LedgerTable';
+import { RngWheelBoard } from '@/components/game/RngWheelBoard';
+import { VersusPlayBanner } from '@/components/game/VersusPlayBanner';
 import { useConsoleBet } from '@/game/useConsoleBet';
-import { PhaserGame } from '@/phaser/PhaserGame';
-import { WheelScene } from '@/phaser/scenes/WheelScene';
-import { EventBus } from '@/phaser/events';
-import { usePhaserSceneReady } from '@/phaser/usePhaserSceneReady';
-import { useThemeKey } from '@/components/theme/useThemeKey';
+import { useConsoleBetFlow } from '@/game/useConsoleBetFlow';
 
 export default function WheelPage() {
   const [winChance, setWinChance] = useState(50);
-  const sceneReady = usePhaserSceneReady('wheel');
-  const themeKey = useThemeKey();
+  const [lastAngle, setLastAngle] = useState<number | null>(null);
+  const [lastIsWin, setLastIsWin] = useState(false);
   const bet = useConsoleBet('wheel', 1);
-  const pendingRef = useRef<{ detail: string; isWin: boolean; multiplier: number } | null>(null);
 
   const params = { winChance };
   const multiplier = wheelMultiplier(params);
 
-  useEffect(() => {
-    EventBus.emit('wheel-preview', { winChance });
-  }, [winChance]);
-
-  useEffect(() => {
-    return EventBus.on('wheel-anim-done', () => {
-      const pending = pendingRef.current;
-      if (!pending) return;
-      pendingRef.current = null;
-      bet.settleOutcome(pending);
-    });
-  }, [bet]);
-
-  const handleBet = async () => {
-    const floats = await bet.beginBet();
-    if (!floats) return;
-    const outcome = resolveWheelSpin(params, floats);
-    pendingRef.current = {
-      detail: outcome.isWin ? 'Hit the win zone' : 'Missed the win zone',
-      isWin: outcome.isWin,
-      multiplier: outcome.multiplier,
-    };
-    EventBus.emit('wheel-animate', {
-      angle: outcome.angle,
-      isWin: outcome.isWin,
-      winChance,
-    });
-  };
+  const { handleBet, handleComplete } = useConsoleBetFlow(
+    bet,
+    () => ({ winChance }),
+    (floats) => {
+      const outcome = resolveWheelSpin(params, floats);
+      setLastAngle(outcome.angle);
+      setLastIsWin(outcome.isWin);
+      return {
+        detail: outcome.isWin ? 'Hit the win zone' : 'Missed the win zone',
+        isWin: outcome.isWin,
+        multiplier: outcome.multiplier,
+      };
+    },
+  );
 
   return (
     <div className="flex flex-col gap-6">
+      <VersusPlayBanner />
       <h1 className="retro text-lg text-primary">Wheel</h1>
       <GameStatsHeader game="wheel" />
       <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card>
           <CardContent className="flex min-h-72 items-center justify-center p-4">
-            <div data-testid="wheel-visual" data-scene-ready={sceneReady ? 'true' : 'false'}>
-              <PhaserGame scenes={[WheelScene]} width={520} height={300} transparent themeKey={themeKey} />
+            <div data-testid="wheel-visual">
+              <RngWheelBoard
+                winChance={winChance}
+                angle={lastAngle}
+                isWin={lastIsWin}
+                request={bet.request}
+                onComplete={handleComplete}
+              />
             </div>
           </CardContent>
         </Card>
@@ -92,8 +80,9 @@ export default function WheelPage() {
               onAmountChange={bet.setAmount}
               multiplier={multiplier}
               onBet={() => void handleBet()}
-              busy={bet.busy || !sceneReady}
+              busy={bet.busy}
               betLabel="Spin"
+              balance={bet.versusBetting ? bet.balance : undefined}
             />
           </CardContent>
         </Card>

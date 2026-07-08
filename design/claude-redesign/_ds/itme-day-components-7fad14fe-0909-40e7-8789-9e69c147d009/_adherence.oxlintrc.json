@@ -1,0 +1,307 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/general/Button/**",
+              "components/general/Card/**",
+              "components/general/SlidingTabTrigger/**",
+              "components/general/Tabs/**",
+              "components/general/ThemeToggle/**",
+              "components/gobby/GobbyMascot/**",
+              "components/text-fx/TextFxPanel/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:RuneScape UF|OptimusPrinceps))/i]",
+        "message": "Font not provided by the design system. Available: RuneScape UF, OptimusPrinceps."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "GobbyMascot": {
+        "replaces": []
+      },
+      "SlidingTabTrigger": {
+        "replaces": []
+      },
+      "Tabs": {
+        "replaces": []
+      },
+      "TextFxPanel": {
+        "replaces": []
+      },
+      "ThemeToggle": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent",
+      "--accent-foreground",
+      "--background",
+      "--border",
+      "--card",
+      "--card-foreground",
+      "--font-titling",
+      "--foreground",
+      "--fx-blue",
+      "--fx-brown",
+      "--fx-cyan",
+      "--fx-green",
+      "--fx-grey",
+      "--fx-orange",
+      "--fx-pink",
+      "--fx-purple",
+      "--fx-red",
+      "--fx-white",
+      "--fx-yellow",
+      "--gobby-cap",
+      "--gobby-cap-deep",
+      "--gobby-cream",
+      "--gobby-ring",
+      "--gobby-shirt",
+      "--gobby-shirt-deep",
+      "--gobby-skin",
+      "--gobby-skin-deep",
+      "--input",
+      "--muted",
+      "--muted-foreground",
+      "--primary",
+      "--primary-foreground",
+      "--radius",
+      "--ring",
+      "--rng-backdrop",
+      "--rng-bg",
+      "--rng-emerald",
+      "--rng-emerald-light",
+      "--rng-glow-active",
+      "--rng-indigo",
+      "--rng-indigo-deep",
+      "--rng-indigo-light",
+      "--rng-line",
+      "--rng-muted",
+      "--rng-orange",
+      "--rng-rose",
+      "--rng-rose-deep",
+      "--rng-rose-light",
+      "--rng-shadow-card",
+      "--rng-surface",
+      "--rng-surface-2",
+      "--rng-text",
+      "--rng-violet",
+      "--rng-violet-light",
+      "--secondary",
+      "--secondary-foreground",
+      "--tw-backdrop-blur",
+      "--tw-backdrop-brightness",
+      "--tw-backdrop-contrast",
+      "--tw-backdrop-grayscale",
+      "--tw-backdrop-hue-rotate",
+      "--tw-backdrop-invert",
+      "--tw-backdrop-opacity",
+      "--tw-backdrop-saturate",
+      "--tw-backdrop-sepia",
+      "--tw-blur",
+      "--tw-border-spacing-x",
+      "--tw-border-spacing-y",
+      "--tw-brightness",
+      "--tw-contain-layout",
+      "--tw-contain-paint",
+      "--tw-contain-size",
+      "--tw-contain-style",
+      "--tw-contrast",
+      "--tw-drop-shadow",
+      "--tw-gradient-from-position",
+      "--tw-gradient-to-position",
+      "--tw-gradient-via-position",
+      "--tw-grayscale",
+      "--tw-hue-rotate",
+      "--tw-invert",
+      "--tw-numeric-figure",
+      "--tw-numeric-fraction",
+      "--tw-numeric-spacing",
+      "--tw-ordinal",
+      "--tw-pan-x",
+      "--tw-pan-y",
+      "--tw-pinch-zoom",
+      "--tw-ring-color",
+      "--tw-ring-inset",
+      "--tw-ring-offset-color",
+      "--tw-ring-offset-shadow",
+      "--tw-ring-offset-width",
+      "--tw-ring-shadow",
+      "--tw-rotate",
+      "--tw-saturate",
+      "--tw-scale-x",
+      "--tw-scale-y",
+      "--tw-scroll-snap-strictness",
+      "--tw-sepia",
+      "--tw-shadow",
+      "--tw-shadow-colored",
+      "--tw-skew-x",
+      "--tw-skew-y",
+      "--tw-slashed-zero",
+      "--tw-text-opacity",
+      "--tw-translate-x",
+      "--tw-translate-y"
+    ],
+    "tokenKinds": {
+      "--font-titling": "font",
+      "--background": "color",
+      "--foreground": "color",
+      "--card": "color",
+      "--card-foreground": "color",
+      "--primary": "color",
+      "--primary-foreground": "color",
+      "--secondary": "color",
+      "--secondary-foreground": "color",
+      "--muted": "color",
+      "--muted-foreground": "color",
+      "--accent": "color",
+      "--accent-foreground": "color",
+      "--border": "color",
+      "--input": "color",
+      "--ring": "color",
+      "--radius": "radius",
+      "--gobby-skin": "color",
+      "--gobby-skin-deep": "color",
+      "--gobby-cream": "color",
+      "--gobby-ring": "color",
+      "--gobby-shirt": "color",
+      "--gobby-shirt-deep": "color",
+      "--gobby-cap": "color",
+      "--gobby-cap-deep": "color",
+      "--rng-bg": "color",
+      "--rng-surface": "color",
+      "--rng-surface-2": "color",
+      "--rng-line": "color",
+      "--rng-text": "font",
+      "--rng-muted": "color",
+      "--rng-indigo": "color",
+      "--rng-indigo-light": "color",
+      "--rng-indigo-deep": "color",
+      "--rng-violet": "color",
+      "--rng-violet-light": "color",
+      "--rng-emerald": "color",
+      "--rng-emerald-light": "color",
+      "--rng-rose": "color",
+      "--rng-rose-light": "color",
+      "--rng-rose-deep": "color",
+      "--rng-orange": "color",
+      "--fx-red": "color",
+      "--fx-purple": "color",
+      "--fx-green": "color",
+      "--fx-cyan": "color",
+      "--fx-yellow": "color",
+      "--fx-white": "color",
+      "--fx-orange": "color",
+      "--fx-pink": "color",
+      "--fx-brown": "color",
+      "--fx-blue": "color",
+      "--fx-grey": "color",
+      "--rng-backdrop": "other",
+      "--rng-shadow-card": "shadow",
+      "--rng-glow-active": "other",
+      "--tw-border-spacing-x": "spacing",
+      "--tw-border-spacing-y": "spacing",
+      "--tw-translate-x": "other",
+      "--tw-translate-y": "spacing",
+      "--tw-rotate": "other",
+      "--tw-skew-x": "other",
+      "--tw-skew-y": "other",
+      "--tw-scale-x": "other",
+      "--tw-scale-y": "other",
+      "--tw-pan-x": "other",
+      "--tw-pan-y": "other",
+      "--tw-pinch-zoom": "other",
+      "--tw-scroll-snap-strictness": "other",
+      "--tw-gradient-from-position": "other",
+      "--tw-gradient-via-position": "other",
+      "--tw-gradient-to-position": "other",
+      "--tw-ordinal": "other",
+      "--tw-slashed-zero": "other",
+      "--tw-numeric-figure": "other",
+      "--tw-numeric-spacing": "spacing",
+      "--tw-numeric-fraction": "other",
+      "--tw-ring-inset": "spacing",
+      "--tw-ring-offset-width": "spacing",
+      "--tw-ring-offset-color": "color",
+      "--tw-ring-color": "color",
+      "--tw-ring-offset-shadow": "shadow",
+      "--tw-ring-shadow": "shadow",
+      "--tw-shadow": "shadow",
+      "--tw-shadow-colored": "shadow",
+      "--tw-blur": "other",
+      "--tw-brightness": "other",
+      "--tw-contrast": "other",
+      "--tw-grayscale": "other",
+      "--tw-hue-rotate": "other",
+      "--tw-invert": "other",
+      "--tw-saturate": "other",
+      "--tw-sepia": "other",
+      "--tw-drop-shadow": "shadow",
+      "--tw-backdrop-blur": "other",
+      "--tw-backdrop-brightness": "other",
+      "--tw-backdrop-contrast": "other",
+      "--tw-backdrop-grayscale": "other",
+      "--tw-backdrop-hue-rotate": "other",
+      "--tw-backdrop-invert": "other",
+      "--tw-backdrop-opacity": "other",
+      "--tw-backdrop-saturate": "other",
+      "--tw-backdrop-sepia": "other",
+      "--tw-contain-size": "spacing",
+      "--tw-contain-layout": "other",
+      "--tw-contain-paint": "other",
+      "--tw-contain-style": "other",
+      "--tw-text-opacity": "font"
+    },
+    "fontFamilies": [
+      "OptimusPrinceps",
+      "RuneScape UF"
+    ]
+  }
+}

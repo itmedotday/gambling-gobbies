@@ -5,11 +5,17 @@ import type * as React from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
+import { Switch as ShadcnSwitch } from "@/components/ui/switch";
 
 function Switch({
   className,
   ...props
 }: React.ComponentProps<typeof SwitchPrimitive.Root>) {
+  if (!useEightBit()) {
+    return <ShadcnSwitch className={className} {...props} />;
+  }
+
   return (
     <SwitchPrimitive.Root
       data-slot="switch"

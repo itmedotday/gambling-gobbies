@@ -23,20 +23,8 @@ export interface GobbieEventMap {
   'mines-reveal-all': { mines: number[] };
   /** Player clicked a tile in the Phaser grid. */
   'mines-pick': { index: number };
-  /** Classic game presentation triggers (React logic -> Phaser). */
-  'coin-animate': { landed: 'gold' | 'moon'; isWin: boolean };
-  'coin-anim-done': Record<string, never>;
-  'dice-animate': { roll: number; isWin: boolean; target: number; rollOver: boolean };
-  'dice-anim-done': Record<string, never>;
-  'wheel-animate': { angle: number; isWin: boolean; winChance: number };
-  'wheel-anim-done': Record<string, never>;
-  'd20-animate': { roll: number; isCritical: boolean; isFumble: boolean };
-  'd20-anim-done': Record<string, never>;
-  /** Win-zone preview while sliders move (no bet). */
-  'dice-preview': { target: number; rollOver: boolean };
-  'wheel-preview': { winChance: number };
-  /** Light/dark theme changed (React -> Phaser palette refresh). */
-  'theme-change': { mode: 'light' | 'dark' };
+  /** Theme changed (React -> Phaser palette refresh). */
+  'theme-change': { mode: 'light' | 'dark'; style: 'mono' | 'neonTavern' | 'emeraldDen' };
 }
 
 export type GobbieEventName = keyof GobbieEventMap;

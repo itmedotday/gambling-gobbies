@@ -12,15 +12,17 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "@colyseus/sdk": "^0.17.43",
     "@fontsource-variable/geist": "^5.2.9",
     "@gobbies/engine": "*",
     "@gobbies/shared": "*",
+    "@itme.day/rng-react-components": "^0.3.0",
     "@radix-ui/react-progress": "^1.1.12",
     "@radix-ui/react-scroll-area": "^1.2.14",
     "@radix-ui/react-separator": "^1.1.11",
+    "@react-spring/web": "^10.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "colyseus.js": "^0.16.22",
     "input-otp": "^1.4.2",
     "lucide-react": "^1.23.0",
     "next-themes": "^0.4.6",

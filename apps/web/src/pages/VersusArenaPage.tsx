@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button } from '@/components/ui/8bit/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
-import { Badge } from '@/components/ui/8bit/badge';
-import { Progress } from '@/components/ui/8bit/progress';
+import { toast } from 'sonner';
+import { Copy } from 'lucide-react';
+import { Button, Card, CardContent, CardHeader, CardTitle, Badge, Progress } from '@/components/kit';
 import { ProfitChart } from '@/components/game/ProfitChart';
 import { useVersusStore, useVersusView } from '@/stores/versusStore';
-import { ALL_GAME_IDS, GAME_META } from '@gobbies/shared';
+import { VERSUS_INSTANT_GAMES, GAME_META } from '@gobbies/shared';
 import { avatarSpriteUrl } from '@/stores/sessionStore';
 
 function formatTimer(ms: number): string {
@@ -46,6 +45,18 @@ export default function VersusArenaPage() {
     view.config.durationMs > 0
       ? ((view.config.durationMs - view.timerRemainingMs) / view.config.durationMs) * 100
       : 0;
+  const roomCode = view.code || code || '';
+  const waitingForOpponent = view.phase === 'waiting' && view.players.length < 2;
+
+  const copyInvite = async () => {
+    const shareUrl = `${window.location.origin}/versus/${roomCode}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success('Invite link copied — send it to a friend.');
+    } catch {
+      toast.error(`Copy failed. Room code: ${roomCode}`);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -66,6 +77,27 @@ export default function VersusArenaPage() {
           </Button>
         </div>
       </div>
+
+      {waitingForOpponent && (
+        <Card>
+          <CardContent className="flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-1">
+              <span className="retro text-[11px] text-primary">Room code</span>
+              <span className="text-xs text-muted-foreground">
+                Share this code (or the link) so a friend can join. Waiting for an opponent…
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="retro text-2xl tracking-widest text-primary" data-testid="room-code">
+                {roomCode}
+              </span>
+              <Button variant="secondary" size="sm" onClick={() => void copyInvite()}>
+                <Copy className="mr-1 size-3.5" /> Copy invite
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
@@ -121,14 +153,20 @@ export default function VersusArenaPage() {
           <CardHeader>
             <CardTitle className="retro text-xs">Play a game</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-2">
-            {ALL_GAME_IDS.map((id) => (
-              <Link key={id} to={`/play/${id}`}>
+          <CardContent className="flex flex-col gap-3 text-xs text-muted-foreground">
+            <p>Instant games debit your versus balance via the server.</p>
+            <div className="flex flex-wrap gap-2">
+            {VERSUS_INSTANT_GAMES.map((id) => (
+              <Link key={id} to={`/versus/${roomCode}/play/${id}`}>
                 <Button size="sm" variant="secondary">
                   {GAME_META[id].name}
                 </Button>
               </Link>
             ))}
+            </div>
+            <p className="text-[10px]">
+              Mines and Crash use solo wallet — session games are not yet wired for versus.
+            </p>
           </CardContent>
         </Card>
       )}

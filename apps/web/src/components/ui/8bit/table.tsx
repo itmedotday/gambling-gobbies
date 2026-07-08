@@ -5,6 +5,7 @@ import type * as React from "react";
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import {
   Table as ShadcnTable,
@@ -45,6 +46,10 @@ function Table({
   font?: VariantProps<typeof tableVariants>["font"];
   variant?: VariantProps<typeof tableVariants>["variant"];
 }) {
+  if (!useEightBit()) {
+    return <ShadcnTable className={className} {...props} />;
+  }
+
   return (
     <div
       className={cn(
@@ -65,6 +70,10 @@ function Table({
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
+  if (!useEightBit()) {
+    return <ShadcnTableHeader className={cn(className)} {...props} />;
+  }
+
   return (
     <ShadcnTableHeader
       className={cn(className, "border-b-4 border-foreground dark:border-ring")}
@@ -82,6 +91,10 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+  if (!useEightBit()) {
+    return <ShadcnTableRow className={cn(className)} {...props} />;
+  }
+
   return (
     <ShadcnTableRow
       className={cn(

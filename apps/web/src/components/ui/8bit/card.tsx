@@ -1,6 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import {
   Card as ShadcnCard,
@@ -33,6 +34,10 @@ export interface BitCardProps
 }
 
 function Card({ className, font, ...props }: BitCardProps) {
+  if (!useEightBit()) {
+    return <ShadcnCard className={className} {...props} />;
+  }
+
   return (
     <div
       className={cn(

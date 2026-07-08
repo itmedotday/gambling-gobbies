@@ -4,6 +4,8 @@ import { Slider } from '@/components/ui/8bit/slider';
 import { Switch } from '@/components/ui/8bit/switch';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { ThemeToggleSwitch } from '@/components/theme/ThemeToggle';
+import { InterfaceStyleSelect } from '@/components/theme/InterfaceStyleSelect';
+import { ThemeStyleSelect } from '@/components/theme/ThemeStyleSelect';
 
 export default function SettingsPage() {
   const settings = useSettingsStore();
@@ -16,7 +18,9 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="retro text-xs">Appearance</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-6">
+          <InterfaceStyleSelect />
+          <ThemeStyleSelect />
           <ThemeToggleSwitch />
         </CardContent>
       </Card>

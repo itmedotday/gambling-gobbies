@@ -68,7 +68,12 @@ export function PhaserGame({
       ref={containerRef}
       data-phaser-container
       className={className}
-      style={{ width: '100%', maxWidth: width, marginInline: 'auto' }}
+      style={{
+        width: '100%',
+        maxWidth: width,
+        aspectRatio: `${width} / ${height}`,
+        marginInline: 'auto',
+      }}
     />
   );
 }

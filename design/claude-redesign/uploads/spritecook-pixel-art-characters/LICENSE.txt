@@ -1,0 +1,11 @@
+SpriteCook sample asset license
+
+These sample assets were generated with SpriteCook and are provided as free example assets.
+
+You may use, modify, and include these sample assets in personal and commercial projects, including games you sell.
+
+You may not resell or redistribute these sample assets as a standalone asset pack, claim SpriteCook branding as your own, or use the assets in a way that violates SpriteCook's Terms of Service or the usage policies of the underlying AI providers.
+
+Attribution is appreciated but not required.
+
+Source: https://www.spritecook.ai/examples

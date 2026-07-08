@@ -54,11 +54,94 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/*
- * Monochrome palette — light and dark.
- * Hex values mirror src/theme/palette.ts (Phaser + CSS stay in sync).
- */
+/* Cross-theme shell polish variables (overridden per theme style). */
 :root {
+  --gg-shell-bg: radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.16) 0%, transparent 50%);
+  --gg-logo-glow: rgba(99, 102, 241, 0.65);
+  --gg-nav-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+}
+
+/* Theme style: Neon Tavern (2a) — default */
+:root,
+:root.theme-neon-tavern {
+    --background: #fafafa;
+    --foreground: #09090b;
+    --card: #ffffff;
+    --card-foreground: #09090b;
+    --popover: #ffffff;
+    --popover-foreground: #09090b;
+    --primary: #4f46e5;
+    --primary-foreground: #ffffff;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #09090b;
+    --muted: #f4f4f5;
+    --muted-foreground: #52525b;
+    --accent: #eef2ff;
+    --accent-foreground: #09090b;
+    --destructive: #e11d48;
+    --border: #d4d4d8;
+    --input: #d4d4d8;
+    --ring: #6366f1;
+    --gold: #d97706;
+    --gold-dark: #b45309;
+    --chart-1: #4f46e5;
+    --chart-2: #7c3aed;
+    --chart-3: #0ea5e9;
+    --chart-4: #d97706;
+    --chart-5: #e11d48;
+    --radius: 0.25rem;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #09090b;
+    --sidebar-primary: #4f46e5;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #eef2ff;
+    --sidebar-accent-foreground: #09090b;
+    --sidebar-border: #d4d4d8;
+    --sidebar-ring: #6366f1;
+}
+
+.dark,
+.dark.theme-neon-tavern {
+    --background: #09090b;
+    --foreground: #d4d4d8;
+    --card: #18181b;
+    --card-foreground: #d4d4d8;
+    --popover: #18181b;
+    --popover-foreground: #d4d4d8;
+    --primary: #a5b4fc;
+    --primary-foreground: #09090b;
+    --secondary: #0f0f12;
+    --secondary-foreground: #d4d4d8;
+    --muted: #18181b;
+    --muted-foreground: #71717a;
+    --accent: rgba(99,102,241,.12);
+    --accent-foreground: #d4d4d8;
+    --destructive: #fb7185;
+    --border: #2e2e35;
+    --input: #2e2e35;
+    --ring: #818cf8;
+    --gold: #ecc24e;
+    --gold-dark: #fdba74;
+    --chart-1: #818cf8;
+    --chart-2: #fb7185;
+    --chart-3: #34d399;
+    --chart-4: #c4b5fd;
+    --chart-5: #fdba74;
+    --sidebar: #18181b;
+    --sidebar-foreground: #d4d4d8;
+    --sidebar-primary: #a5b4fc;
+    --sidebar-primary-foreground: #09090b;
+    --sidebar-accent: rgba(99,102,241,.12);
+    --sidebar-accent-foreground: #d4d4d8;
+    --sidebar-border: #2e2e35;
+    --sidebar-ring: #818cf8;
+}
+
+/* Theme style: Monochrome (classic) */
+:root.theme-mono {
+    --gg-shell-bg: none;
+    --gg-logo-glow: rgba(0, 0, 0, 0);
+    --gg-nav-shadow: 0 0 0 rgba(0, 0, 0, 0);
     --background: #ffffff;
     --foreground: #0a0a0a;
     --card: #f4f4f4;
@@ -84,7 +167,6 @@
     --chart-3: #737373;
     --chart-4: #a3a3a3;
     --chart-5: #d4d4d4;
-    --radius: 0.25rem;
     --sidebar: #f4f4f4;
     --sidebar-foreground: #0a0a0a;
     --sidebar-primary: #0a0a0a;
@@ -95,7 +177,10 @@
     --sidebar-ring: #0a0a0a;
 }
 
-.dark {
+.dark.theme-mono {
+    --gg-shell-bg: none;
+    --gg-logo-glow: rgba(0, 0, 0, 0);
+    --gg-nav-shadow: 0 0 0 rgba(0, 0, 0, 0);
     --background: #0a0a0a;
     --foreground: #fafafa;
     --card: #141414;
@@ -129,6 +214,87 @@
     --sidebar-accent-foreground: #fafafa;
     --sidebar-border: #404040;
     --sidebar-ring: #fafafa;
+}
+
+/* Theme style: Emerald Den (2b) */
+:root.theme-emerald-den {
+    --gg-shell-bg: radial-gradient(at 50% -10%, rgba(132, 155, 73, 0.22) 0%, transparent 55%),
+      radial-gradient(at 85% 100%, rgba(236, 194, 78, 0.07) 0%, transparent 50%);
+    --gg-logo-glow: rgba(132, 155, 73, 0.55);
+    --gg-nav-shadow: 0 0 12px rgba(132, 155, 73, 0.18);
+    --background: #fbfaf5;
+    --foreground: #0b0d09;
+    --card: #ffffff;
+    --card-foreground: #0b0d09;
+    --popover: #ffffff;
+    --popover-foreground: #0b0d09;
+    --primary: #5c7c3a;
+    --primary-foreground: #fbfaf5;
+    --secondary: #f1eee2;
+    --secondary-foreground: #0b0d09;
+    --muted: #f1eee2;
+    --muted-foreground: #5b5f54;
+    --accent: rgba(132,155,73,.12);
+    --accent-foreground: #0b0d09;
+    --destructive: #b42318;
+    --border: #d7d2c4;
+    --input: #d7d2c4;
+    --ring: #5c7c3a;
+    --gold: #b8891a;
+    --gold-dark: #8e6b14;
+    --chart-1: #5c7c3a;
+    --chart-2: #b8891a;
+    --chart-3: #0ea5e9;
+    --chart-4: #6b4eff;
+    --chart-5: #b42318;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #0b0d09;
+    --sidebar-primary: #5c7c3a;
+    --sidebar-primary-foreground: #fbfaf5;
+    --sidebar-accent: rgba(132,155,73,.12);
+    --sidebar-accent-foreground: #0b0d09;
+    --sidebar-border: #d7d2c4;
+    --sidebar-ring: #5c7c3a;
+}
+
+.dark.theme-emerald-den {
+    --gg-shell-bg: radial-gradient(at 50% -10%, rgba(132, 155, 73, 0.22) 0%, transparent 55%),
+      radial-gradient(at 85% 100%, rgba(236, 194, 78, 0.07) 0%, transparent 50%);
+    --gg-logo-glow: rgba(132, 155, 73, 0.55);
+    --gg-nav-shadow: 0 0 12px rgba(132, 155, 73, 0.18);
+    --background: #0b0d09;
+    --foreground: #e6d5b8;
+    --card: #181b13;
+    --card-foreground: #e6d5b8;
+    --popover: #181b13;
+    --popover-foreground: #e6d5b8;
+    --primary: #849b49;
+    --primary-foreground: #0b0d09;
+    --secondary: rgba(24,27,19,.85);
+    --secondary-foreground: #e6d5b8;
+    --muted: #181b13;
+    --muted-foreground: #8a8f7a;
+    --accent: rgba(132,155,73,.12);
+    --accent-foreground: #e6d5b8;
+    --destructive: #fb7185;
+    --border: #2a2f22;
+    --input: #2a2f22;
+    --ring: #849b49;
+    --gold: #ecc24e;
+    --gold-dark: #d5ab3b;
+    --chart-1: #849b49;
+    --chart-2: #ecc24e;
+    --chart-3: #34d399;
+    --chart-4: #a5b4fc;
+    --chart-5: #fb7185;
+    --sidebar: #181b13;
+    --sidebar-foreground: #e6d5b8;
+    --sidebar-primary: #849b49;
+    --sidebar-primary-foreground: #0b0d09;
+    --sidebar-accent: rgba(132,155,73,.12);
+    --sidebar-accent-foreground: #e6d5b8;
+    --sidebar-border: #2a2f22;
+    --sidebar-ring: #849b49;
 }
 
 @layer base {

@@ -1,6 +1,7 @@
 import { type VariantProps, cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { useEightBit } from "@/stores/settingsStore";
 
 import { Button as ShadcnButton } from "@/components/ui/button";
 
@@ -42,6 +43,20 @@ export interface BitButtonProps
 
 function Button({ children, asChild, ...props }: BitButtonProps) {
   const { variant, size, className, font } = props;
+
+  if (!useEightBit()) {
+    return (
+      <ShadcnButton
+        {...props}
+        size={size}
+        variant={variant}
+        asChild={asChild}
+        className={className}
+      >
+        {children}
+      </ShadcnButton>
+    );
+  }
 
   return (
     <ShadcnButton
