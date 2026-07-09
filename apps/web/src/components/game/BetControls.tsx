@@ -39,6 +39,7 @@ export function BetControls({
   const maxBet = getMaxBet(balance, true);
   const inDebt = isInDebt(balance);
   const canBet = maxBet >= MIN_BET && validateBet(amount, balance, true) === null;
+  const betError = validateBet(amount, balance, true);
   const potentialWin = Math.floor(amount * multiplier * 100) / 100;
   const tokens = accentTokens(accent);
   const inputClass = layout.isMono
@@ -46,7 +47,7 @@ export function BetControls({
     : 'retro h-10 flex-1 border-border bg-background text-[11px] tabular-nums';
   const quickBtnClass = layout.isMono
     ? 'h-10 border-border px-3 text-xs text-muted-foreground hover:border-primary hover:text-primary'
-    : 'retro h-10 border-border px-3 text-[9px] text-muted-foreground hover:border-primary hover:text-primary';
+    : 'retro h-10 border-border px-3 text-[11px] text-muted-foreground hover:border-primary hover:text-primary';
   const winColorClass = layout.isMono
     ? 'text-foreground'
     : 'text-[color:var(--chart-3)] [text-shadow:0_0_8px_color-mix(in_srgb,var(--chart-3)_70%,transparent)]';
@@ -132,6 +133,8 @@ export function BetControls({
             disabled={busy || maxBet < MIN_BET}
             className={inputClass}
             data-testid="bet-amount"
+            aria-invalid={betError !== null && !busy}
+            aria-describedby={betError ? 'bet-amount-error' : undefined}
           />
           {(['1/2', 'x2', 'Max'] as const).map((label, i) => (
             <Button
@@ -151,6 +154,11 @@ export function BetControls({
             </Button>
           ))}
         </div>
+        {betError && !busy ? (
+          <p id="bet-amount-error" className="text-xs text-destructive" role="alert">
+            {betError}
+          </p>
+        ) : null}
       </div>
       <div className="flex items-center justify-between text-[13px] text-muted-foreground">
         <span className="tabular-nums">

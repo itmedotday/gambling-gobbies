@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/kit';
+import type { GameId } from '@gobbies/shared';
 import { ALL_GAME_IDS } from '@gobbies/shared';
 import { PhaserGame } from '@/phaser/PhaserGame';
 import { MascotScene } from '@/phaser/scenes/MascotScene';
@@ -72,12 +73,22 @@ function HeroCtas({ className }: { className?: string }) {
   );
 }
 
-function GamesSection({ gridClass, titleClass }: { gridClass: string; titleClass: string }) {
+const FEATURED_GAME_IDS: GameId[] = ['crash', 'mines', 'dice'];
+
+function FeaturedGamesSection({ gridClass, titleClass }: { gridClass: string; titleClass: string }) {
   return (
     <section className="flex flex-col gap-5">
-      <h2 className={titleClass}>The Games</h2>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <h2 className={titleClass}>Featured games</h2>
+        <Link
+          to="/lobby"
+          className="text-xs text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+        >
+          View all {ALL_GAME_IDS.length} games in the lobby →
+        </Link>
+      </div>
       <div className={gridClass} data-testid="game-grid">
-        {ALL_GAME_IDS.map((id) => (
+        {FEATURED_GAME_IDS.map((id) => (
           <GameLobbyCard key={id} gameId={id} />
         ))}
       </div>
@@ -115,7 +126,7 @@ export default function LandingPage() {
             wins.
           </p>
         </section>
-        <GamesSection
+        <FeaturedGamesSection
           gridClass={layout.gamesGridClass}
           titleClass="gg-marquee-display text-center text-2xl text-[#fda4af] [text-shadow:0_0_14px_rgba(244,63,94,.7)]"
         />
@@ -141,7 +152,7 @@ export default function LandingPage() {
             Virtual currency only. The goblins keep the real gold.
           </p>
         </section>
-        <GamesSection
+        <FeaturedGamesSection
           gridClass={layout.gamesGridClass}
           titleClass="gg-font-fantasy text-[26px] text-foreground [text-shadow:0_0_14px_rgba(132,155,73,.6)]"
         />
@@ -172,7 +183,7 @@ export default function LandingPage() {
         </div>
         <MascotStage themeKey={themeKey} variant="neon" />
       </section>
-      <GamesSection
+      <FeaturedGamesSection
         gridClass={layout.gamesGridClass}
         titleClass="retro text-[13px] text-foreground drop-shadow-[0_0_12px_rgba(99,102,241,.7)]"
       />

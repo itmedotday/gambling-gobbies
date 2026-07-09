@@ -20,3 +20,12 @@
 - Server deploys on Render via `Dockerfile.server`; runtime uses `tsx`; server `build` is a no-op in production.
 - Do not import `@itme.day/rng-react-components` global `style.css` (resets body/theme); scan package for Tailwind classes instead.
 - Versus mode: timed sessions with a profit graph; highest balance when the timer ends wins.
+
+## Design Context
+
+Strategic and visual defaults for agents live in the repo root:
+
+- [PRODUCT.md](PRODUCT.md) — register, users, brand personality, anti-references, principles
+- [DESIGN.md](DESIGN.md) — theme styles, tokens, typography, component patterns
+
+Default register: **product** (gameplay UI). Baseline theme: **mono** B/W; alternate skins: neon tavern, emerald den, high roller marquee. Import UI from `@/components/kit`.

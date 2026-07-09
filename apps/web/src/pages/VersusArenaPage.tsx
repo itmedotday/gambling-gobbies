@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Copy, Loader2 } from 'lucide-react';
 import { Button, Badge } from '@/components/kit';
 import { ProfitChart } from '@/components/game/ProfitChart';
 import { NeonCard } from '@/components/game/NeonCard';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useVersusStore, useVersusView } from '@/stores/versusStore';
 import { VERSUS_INSTANT_GAMES, GAME_META } from '@gobbies/shared';
 import { avatarSpriteUrl } from '@/stores/sessionStore';
@@ -19,6 +20,19 @@ function formatTimer(ms: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
+function formatPhaseLabel(phase: string): string {
+  switch (phase) {
+    case 'waiting':
+      return 'Waiting for players';
+    case 'live':
+      return 'Live';
+    case 'finished':
+      return 'Finished';
+    default:
+      return phase;
+  }
+}
+
 export default function VersusArenaPage() {
   const layout = useThemeLayout();
   const { code } = useParams<{ code: string }>();
@@ -27,6 +41,7 @@ export default function VersusArenaPage() {
   const connectJoin = useVersusStore((s) => s.connectJoin);
   const send = useVersusStore((s) => s.send);
   const leave = useVersusStore((s) => s.leave);
+  const [forfeitOpen, setForfeitOpen] = useState(false);
 
   useEffect(() => {
     if (!code || room) return;
@@ -95,7 +110,7 @@ export default function VersusArenaPage() {
                     : ''
               }
             >
-              {view.phase}
+              {formatPhaseLabel(view.phase)}
             </span>
           </span>
         </div>
@@ -119,11 +134,21 @@ export default function VersusArenaPage() {
                 'border border-destructive/50 bg-destructive/10 text-destructive',
                 layout.isMono ? 'text-xs' : 'retro text-[10px] shadow-[0_0_16px_rgba(244,63,94,.25)]',
               )}
-              onClick={() => send({ type: 'forfeit' })}
+              onClick={() => setForfeitOpen(true)}
             >
               Forfeit
             </Button>
           ) : null}
+          <ConfirmDialog
+            open={forfeitOpen}
+            onOpenChange={setForfeitOpen}
+            title="Forfeit this match?"
+            description="You will lose this versus session and your opponent wins. This cannot be undone."
+            confirmLabel="Forfeit"
+            cancelLabel="Keep playing"
+            variant="destructive"
+            onConfirm={() => send({ type: 'forfeit' })}
+          />
           <Button
             variant="outline"
             className={cn(
@@ -209,6 +234,8 @@ export default function VersusArenaPage() {
               <img
                 src={avatarSpriteUrl(p.avatar)}
                 alt=""
+                width={48}
+                height={48}
                 className={cn(
                   'h-12 w-12 image-pixelated',
                   !layout.isMono && 'drop-shadow-[0_0_8px_rgba(99,102,241,.5)]',
@@ -247,7 +274,7 @@ export default function VersusArenaPage() {
                 <Badge
                   className={cn(
                     'ml-auto',
-                    layout.isMono ? 'text-[10px]' : 'retro text-[8px]',
+                    layout.isMono ? 'text-[11px]' : 'retro text-[11px]',
                     layout.isMono
                       ? 'border-foreground/40 bg-foreground/10 text-foreground'
                       : 'border-[color:var(--chart-3)]/50 bg-[color:var(--chart-3)]/10 text-[color:var(--chart-3)]',

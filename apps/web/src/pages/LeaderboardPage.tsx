@@ -33,7 +33,7 @@ export default function LeaderboardPage() {
       ? 'gg-font-fantasy border border-border bg-card/60 px-4 py-2.5 text-sm text-muted-foreground shadow-none data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground'
       : layout.isMono
         ? 'border border-border bg-card/60 px-4 py-2.5 text-xs text-muted-foreground shadow-none data-[state=active]:border-foreground data-[state=active]:bg-foreground/10 data-[state=active]:text-foreground'
-        : 'retro border border-border bg-card/60 px-4 py-2.5 text-[9px] text-muted-foreground shadow-none data-[state=active]:border-primary/50 data-[state=active]:bg-primary/15 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_14px_rgba(99,102,241,.3)]';
+        : 'retro border border-border bg-card/60 px-4 py-2.5 text-[11px] text-muted-foreground shadow-none data-[state=active]:border-primary/50 data-[state=active]:bg-primary/15 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_14px_rgba(99,102,241,.3)]';
 
   useEffect(() => {
     let cancelled = false;
@@ -146,6 +146,8 @@ export default function LeaderboardPage() {
                           <img
                             src={avatarSpriteUrl(row.avatar)}
                             alt=""
+                            width={34}
+                            height={34}
                             className="h-[34px] w-[34px] object-contain image-pixelated"
                           />
                           <span

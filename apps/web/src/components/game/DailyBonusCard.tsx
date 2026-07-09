@@ -85,7 +85,7 @@ export function DailyBonusCard() {
           data-testid="daily-bonus-claim"
           className={btnClass}
         >
-          {claimLabel}
+          <span aria-live="polite">{claimLabel}</span>
         </Button>
       </div>
     );
@@ -107,7 +107,7 @@ export function DailyBonusCard() {
           </div>
         </div>
         <Button onClick={handleClaim} disabled={!claimable} data-testid="daily-bonus-claim" className={btnClass}>
-          {claimLabel}
+          <span aria-live="polite">{claimLabel}</span>
         </Button>
       </div>
     );
@@ -147,7 +147,7 @@ export function DailyBonusCard() {
         data-testid="daily-bonus-claim"
         className={cn('gg-neon-btn-primary shrink-0', btnClass)}
       >
-        {claimLabel}
+        <span aria-live="polite">{claimLabel}</span>
       </Button>
     </NeonCard>
   );

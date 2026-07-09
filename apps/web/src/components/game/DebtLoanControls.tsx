@@ -86,7 +86,9 @@ export function DebtLoanControls({ className, compact = false }: DebtLoanControl
           layout.isMarquee ? 'gg-marquee-display text-sm' : layout.isMono ? 'text-xs' : 'retro text-xs',
         )}
       >
-        {ready ? `Take ${DEBT_LOAN_AMOUNT} GG Loan` : `Loan ready in ${cooldownSec}s…`}
+        <span aria-live="polite">
+          {ready ? `Take ${DEBT_LOAN_AMOUNT} GG Loan` : `Loan ready in ${cooldownSec}s…`}
+        </span>
       </Button>
     </div>
   );

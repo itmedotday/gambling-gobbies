@@ -66,7 +66,7 @@ function EmeraldDenCard({ gameId, className }: GameLobbyCardProps) {
     >
       <div
         className={cn(
-          'flex items-center gap-[18px] border border-[rgba(132,155,73,.28)] border-l-[3px] border-l-primary',
+          'flex items-center gap-[18px] border-2 border-primary/45',
           'bg-[rgba(24,27,19,.85)] px-[22px] py-[18px] transition-[background-color,border-color,box-shadow] duration-200',
           'group-hover:border-[rgba(132,155,73,.6)] group-hover:bg-[rgba(33,38,25,.95)] group-hover:shadow-[0_0_22px_rgba(132,155,73,.25)]',
         )}

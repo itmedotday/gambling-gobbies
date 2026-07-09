@@ -499,13 +499,15 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-pulse-glow-win,
-  .animate-pulse-glow-loss {
+  .animate-pulse-glow-loss,
+  .animate-pulse {
     animation: none;
   }
 }
 
 html.motion-reduce .animate-pulse-glow-win,
-html.motion-reduce .animate-pulse-glow-loss {
+html.motion-reduce .animate-pulse-glow-loss,
+html.motion-reduce .animate-pulse {
   animation: none;
 }
 
@@ -673,11 +675,10 @@ html.motion-reduce .animate-gg-pulse {
 
 .gg-marquee-title {
   min-height: 1.05em;
-  background: linear-gradient(180deg, #fda4af 0%, #f43f5e 45%, #a78bfa 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 18px rgba(244, 63, 94, 0.8)) drop-shadow(0 0 50px rgba(139, 92, 246, 0.5));
+  color: #fda4af;
+  text-shadow:
+    0 0 18px rgba(244, 63, 94, 0.8),
+    0 0 50px rgba(139, 92, 246, 0.5);
 }
 
 .gg-marquee-subtitle {

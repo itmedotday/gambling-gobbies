@@ -63,7 +63,7 @@ export function SiteLayout() {
             />
             <span
               className={cn(
-                'hidden min-h-[2.25rem] min-w-[5.5rem] text-[9px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block',
+                'hidden min-h-[2.25rem] min-w-[5.5rem] text-[11px] leading-snug text-foreground drop-shadow-[0_0_10px_var(--gg-logo-glow)] sm:block',
                 isMarquee
                   ? 'gg-marquee-display text-sm tracking-wide'
                   : isEmerald
@@ -84,7 +84,7 @@ export function SiteLayout() {
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  'h-auto px-[13px] py-2 text-[9px] text-muted-foreground hover:text-primary',
+                  'h-auto px-[13px] py-2 text-[11px] text-muted-foreground hover:text-primary',
                   isMarquee ? 'gg-marquee-display text-xs' : isEmerald ? 'gg-font-fantasy text-sm' : 'retro',
                 )}
                 asChild
