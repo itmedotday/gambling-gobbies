@@ -8,7 +8,7 @@ A goblin-themed, provably-fair virtual casino. Play solo against the house or ra
 
 | Path | Purpose |
 | --- | --- |
-| `apps/web` | Vite + React 19 + Phaser 4 + 8bitcn/ui client |
+| `apps/web` | Vite + React 19 + Phaser 4 + shadcn/ui client |
 | `apps/server` | Colyseus game server + Express REST API |
 | `packages/engine` | Pure TS game math + provably-fair RNG (shared client/server) |
 | `packages/shared` | Types and message contracts |
@@ -86,4 +86,4 @@ Set repository **variable** `ENABLE_VERCEL_DEPLOY=true` and secrets listed in [d
 
 Pixel art characters by [SpriteCook](https://spritecook.com) — see `apps/web/public/assets/sprites/LICENSE.txt`.
 
-UI components from [8bitcn](https://www.8bitcn.com/docs).
+UI components from [shadcn/ui](https://ui.shadcn.com).

@@ -1,8 +1,6 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { Button } from '@/components/ui/8bit/button';
-import { Label } from '@/components/ui/8bit/label';
-import { Switch } from '@/components/ui/8bit/switch';
+import { Button, Label, Switch } from '@/components/kit';
 
 /** Compact sun/moon toggle for the header. */
 export function ThemeToggleIcon() {

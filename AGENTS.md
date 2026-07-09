@@ -6,7 +6,7 @@
 - Use Chrome DevTools MCP for visual verification when requested.
 - UI theme is black and white with a light/dark mode toggle, not green.
 - Target near-final product quality, not a minimal MVP.
-- Support switching between 8-bit CN wrappers and base shadcn components via a feature flag.
+- UI uses base shadcn components only (no 8bitcn wrappers).
 - When the user says "continue", keep executing the current plan without restarting.
 - Avoid layout shift; open dropdowns/Select popovers must not lock page scroll or hide/shift the scrollbar.
 - Commit and push to main only after tests, lint, formatting, and build all pass.
@@ -14,7 +14,7 @@
 ## Learned Workspace Facts
 
 - Monorepo with `apps/web` (React/Vite) and `apps/server` (Colyseus); npm workspaces `@gobbies/web` and `@gobbies/server`.
-- Web UI uses 8bitcn wrappers in `components/ui/8bit` over base shadcn in `components/ui`.
+- Web UI uses base shadcn in `components/ui`, re-exported via `@/components/kit`.
 - Game visuals use Phaser JS; RNG consoles come from `@itme.day/rng-react-components`.
 - Provably-fair engine (`useConsoleBet`) is the source of truth; RNG components are driven visuals only.
 - Server runs Colyseus 0.17; web client uses `@colyseus/sdk` 0.17 (not deprecated `colyseus.js` 0.16).

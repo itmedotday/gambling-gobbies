@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/8bit/dialog';
+} from '@/components/ui/dialog';
 
 export interface ConfirmDialogProps {
   open: boolean;

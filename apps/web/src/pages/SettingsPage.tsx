@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, Label, Slider, Switch } from '@/components/kit';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { ThemeToggleSwitch } from '@/components/theme/ThemeToggle';
-import { InterfaceStyleSelect } from '@/components/theme/InterfaceStyleSelect';
 import { ThemeStyleSelect } from '@/components/theme/ThemeStyleSelect';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
 import { cn } from '@/lib/utils';
@@ -19,7 +18,6 @@ export default function SettingsPage() {
           <CardTitle className={cn(layout.sectionLabelClass, 'text-foreground')}>Appearance</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
-          <InterfaceStyleSelect />
           <ThemeStyleSelect />
           <ThemeToggleSwitch />
         </CardContent>
@@ -103,8 +101,8 @@ export default function SettingsPage() {
           </span>
           <span>
             UI components by{' '}
-            <a href="https://www.8bitcn.com" className="underline hover:text-foreground">
-              8bitcn/ui
+            <a href="https://ui.shadcn.com" className="underline hover:text-foreground">
+              shadcn/ui
             </a>
             .
           </span>

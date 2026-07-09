@@ -1,15 +1,15 @@
 /**
- * UI kit barrel — pages import from here, not from ui/8bit directly.
- * Wrappers branch on useEightBit() and fall back to shadcn primitives.
+ * UI kit barrel — pages import from here, not from `@/components/ui` directly.
+ * Re-exports base shadcn primitives.
  */
-export { Button, buttonVariants, type BitButtonProps } from '@/components/ui/8bit/button';
-export { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/8bit/card';
-export { Badge } from '@/components/ui/8bit/badge';
-export { Progress } from '@/components/ui/8bit/progress';
-export { Input } from '@/components/ui/8bit/input';
-export { Label } from '@/components/ui/8bit/label';
-export { Slider } from '@/components/ui/8bit/slider';
-export { Switch } from '@/components/ui/8bit/switch';
+export { Button, buttonVariants } from '@/components/ui/button';
+export { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+export { Badge } from '@/components/ui/badge';
+export { Progress } from '@/components/ui/progress';
+export { Input } from '@/components/ui/input';
+export { Label } from '@/components/ui/label';
+export { Slider } from '@/components/ui/slider';
+export { Switch } from '@/components/ui/switch';
 export {
   Select,
   SelectContent,
@@ -18,8 +18,8 @@ export {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/8bit/select';
-export { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/8bit/tabs';
+} from '@/components/ui/select';
+export { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 export {
   Table,
   TableBody,
@@ -27,13 +27,13 @@ export {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/8bit/table';
+} from '@/components/ui/table';
 export {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '@/components/ui/8bit/input-otp';
+} from '@/components/ui/input-otp';
 export {
   ChartContainer,
   ChartTooltip,
@@ -55,7 +55,7 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/8bit/alert-dialog';
+} from '@/components/ui/alert-dialog';
 export {
   Sheet,
   SheetClose,
@@ -65,5 +65,5 @@ export {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/8bit/sheet';
-export { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/8bit/popover';
+} from '@/components/ui/sheet';
+export { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';

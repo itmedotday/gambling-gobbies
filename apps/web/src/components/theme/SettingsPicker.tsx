@@ -1,7 +1,5 @@
 import { CheckIcon, ChevronDownIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useEightBit } from '@/stores/settingsStore';
-import { cn } from '@/lib/utils';
 
 export interface SettingsPickerOption<T extends string> {
   value: T;
@@ -33,47 +31,29 @@ export function SettingsPicker<T extends string>({
   options,
   'data-testid': testId,
 }: SettingsPickerProps<T>) {
-  const eightBit = useEightBit();
   const active = options.find((o) => o.value === value) ?? options[0]!;
-
-  const trigger = (
-    <button
-      type="button"
-      id={id}
-      data-testid={testId}
-      role="combobox"
-      aria-haspopup="listbox"
-      className={cn(triggerBaseClass, eightBit && 'retro rounded-none border-0 ring-0')}
-    >
-      <span className="line-clamp-1 text-left">{active.label}</span>
-      <ChevronDownIcon className="pointer-events-none size-4 shrink-0 text-muted-foreground" />
-    </button>
-  );
 
   return (
     <Popover>
       <div className="relative w-full shrink-0">
         <PopoverTrigger asChild>
-          {eightBit ? (
-            <div className="relative w-full border-y-6 border-foreground dark:border-ring">
-              {trigger}
-              <div
-                className="pointer-events-none absolute inset-0 -mx-1.5 border-x-6 border-foreground dark:border-ring"
-                aria-hidden="true"
-              />
-            </div>
-          ) : (
-            trigger
-          )}
+          <button
+            type="button"
+            id={id}
+            data-testid={testId}
+            role="combobox"
+            aria-haspopup="listbox"
+            className={triggerBaseClass}
+          >
+            <span className="line-clamp-1 text-left">{active.label}</span>
+            <ChevronDownIcon className="pointer-events-none size-4 shrink-0 text-muted-foreground" />
+          </button>
         </PopoverTrigger>
       </div>
       <PopoverContent
         align="end"
         sideOffset={4}
-        className={cn(
-          'max-h-(--radix-popover-content-available-height) overflow-y-auto p-1',
-          eightBit && 'retro mt-1 rounded-none border-4 border-foreground dark:border-ring',
-        )}
+        className="max-h-(--radix-popover-content-available-height) overflow-y-auto p-1"
       >
         <div role="listbox" aria-labelledby={id}>
           {options.map((option) => {
@@ -84,11 +64,7 @@ export function SettingsPicker<T extends string>({
                 type="button"
                 role="option"
                 aria-selected={selected}
-                className={cn(
-                  itemBaseClass,
-                  eightBit &&
-                    'rounded-none border-y-3 border-dashed border-transparent hover:border-foreground dark:hover:border-ring',
-                )}
+                className={itemBaseClass}
                 onClick={() => onValueChange(option.value)}
               >
                 {option.label}

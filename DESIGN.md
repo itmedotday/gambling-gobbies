@@ -1,6 +1,6 @@
 ---
 name: Gambling Gobbies
-description: Goblin-themed virtual casino UI with four theme styles and dual 8-bit / modern kits
+description: Goblin-themed virtual casino UI with four theme styles and shadcn/ui components
 colors:
   background-dark: "#09090b"
   foreground-dark: "#d4d4d8"
@@ -71,12 +71,9 @@ components:
 
 ## Overview
 
-Gambling Gobbies is a **product UI** (tool serving gameplay), not a marketing site. Visual identity stacks two axes:
+Gambling Gobbies is a **product UI** (tool serving gameplay), not a marketing site. Visual identity is driven by **theme style** (`mono` | `neonTavern` | `emeraldDen` | `highRollerMarquee`) — palette, shell glow, display typography. UI primitives are base **shadcn/ui** via `@/components/kit`.
 
-1. **Theme style** (`mono` | `neonTavern` | `emeraldDen` | `highRollerMarquee`) — palette, shell glow, display typography.
-2. **UI skin** (`eightbit` | `shadcn`) — pixel-bordered 8bitcn wrappers vs clean shadcn primitives via `@/components/kit`.
-
-Default production direction: **Neon Tavern** dark with 8-bit kit. User baseline preference: **Monochrome** black/white with light/dark toggle. Phaser game canvases and header wallet HUD must stay legible in every combination.
+Default production direction: **Neon Tavern** dark. User baseline preference: **Monochrome** black/white with light/dark toggle. Phaser game canvases and header wallet HUD must stay legible in every combination.
 
 Tokens live in `apps/web/src/index.css`, `apps/web/src/theme/palette.ts`, and `applyThemeAppearance()` (`apps/web/src/theme/applyTheme.ts`). Layout tokens: `--gg-page-px`, `--gg-page-py`, `--gg-section-gap`, `--gg-card-gap`, `--gg-ticker-height`.
 
@@ -130,7 +127,7 @@ Z-index scale (implicit): sticky header 40, skip link focus 50, modals/dialogs v
 
 ## Components
 
-Import UI from `@/components/kit` only (never `ui/8bit` directly in pages).
+Import UI from `@/components/kit` only (not `@/components/ui` directly in pages).
 
 | Pattern | Component |
 |---------|-----------|
@@ -138,7 +135,7 @@ Import UI from `@/components/kit` only (never `ui/8bit` directly in pages).
 | Game frame | `GamePageFrame`, `GamePageGrid`, `GameStatsHeader` |
 | Economy | `DailyBonusCard`, `BailoutCard`, `DebtLoanControls`, `BetControls` |
 | Lobby tiles | `GameLobbyCard` (four theme variants) |
-| Settings | `Card` sections + `ThemeStyleSelect`, `InterfaceStyleSelect`, `ThemeToggleSwitch` |
+| Settings | `Card` sections + `ThemeStyleSelect`, `ThemeToggleSwitch` |
 | Versus | `NeonCard` panels, `ProfitChart`, phase-gated action buttons |
 
 States required on interactive controls: default, hover, focus-visible, disabled, loading/busy where async (create room, place bet).

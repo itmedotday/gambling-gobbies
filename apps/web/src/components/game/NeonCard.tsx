@@ -15,7 +15,7 @@ export interface NeonCardProps {
   'data-testid'?: string;
 }
 
-/** Flat neon-tavern card shell from the redesign (bypasses 8-bit thick borders). */
+/** Flat neon-tavern card shell from the redesign. */
 export function NeonCard({ children, className, accent, stage, stageClip, 'data-testid': testId }: NeonCardProps) {
   const tokens = accent ? accentTokens(accent) : null;
 

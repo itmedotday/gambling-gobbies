@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/8bit/card';
+import { Card, CardContent } from '@/components/kit';
 
 export default function PlaceholderPage({ title, note }: { title: string; note: string }) {
   return (

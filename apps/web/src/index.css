@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
@@ -633,9 +634,31 @@ html.motion-reduce .animate-gg-pulse {
   text-shadow: none;
 }
 
+/* Pixel / display labels (theme styles may override the family). */
+.retro {
+  font-family: 'Press Start 2P', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
 .theme-mono .retro {
   font-family: var(--font-sans);
   letter-spacing: normal;
+}
+
+.theme-emerald-den .retro,
+.theme-high-roller-marquee .retro {
+  font-family: var(--gg-font-display);
+  letter-spacing: 0.02em;
+}
+
+.theme-high-roller-marquee .retro {
+  font-family: 'OptimusPrinceps', 'Times New Roman', serif;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 .gg-neon-btn-primary {

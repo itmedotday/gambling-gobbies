@@ -56,10 +56,10 @@ test.describe('Gambling Gobbies smoke', () => {
   test('settings select does not shift page when opened', async ({ page }) => {
     await page.goto('/settings');
     await page.setViewportSize({ width: 1280, height: 720 });
-    const trigger = page.getByTestId('setting-ui-skin');
+    const trigger = page.getByTestId('setting-theme-style');
     const boxBefore = await trigger.boundingBox();
     await trigger.click();
-    await expect(page.getByRole('option', { name: 'Modern' })).toBeVisible();
+    await expect(page.getByRole('option').first()).toBeVisible();
     const bodyMargin = await page.evaluate(() => getComputedStyle(document.body).marginRight);
     expect(bodyMargin).toBe('0px');
     const boxAfter = await trigger.boundingBox();
@@ -70,8 +70,8 @@ test.describe('Gambling Gobbies smoke', () => {
     await page.goto('/settings');
     await page.setViewportSize({ width: 390, height: 640 });
     const scrollBefore = await page.evaluate(() => window.scrollY);
-    await page.getByTestId('setting-ui-skin').click();
-    await expect(page.getByRole('option', { name: 'Modern' })).toBeVisible();
+    await page.getByTestId('setting-theme-style').click();
+    await expect(page.getByRole('option').first()).toBeVisible();
     await page.mouse.wheel(0, 400);
     await page.waitForTimeout(100);
     const scrollAfter = await page.evaluate(() => window.scrollY);

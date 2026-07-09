@@ -22,7 +22,7 @@ export function WalletHud() {
           : layout.isMono
             ? 'border border-border bg-card text-foreground'
             : 'border border-[color:var(--chart-3)]/45 bg-[color:var(--chart-3)]/10 text-[color:var(--chart-3)] shadow-[0_0_14px_rgba(16,185,129,.3)]',
-        'skin-shadcn:rounded-md skin-eightbit:rounded-sm',
+        'rounded-md',
         inDebt && 'hover:bg-destructive/15',
       )}
       data-testid="wallet-balance"

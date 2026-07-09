@@ -28,7 +28,7 @@ Playful, mischievous, slightly greedy (the goblins take a 1% edge). Voice is inf
 
 1. **Gameplay first** — UI disappears into the bet loop; chrome supports balance, bet amount, and outcome, not the reverse.
 2. **One source of truth** — Solo money moves only through `walletStore.settle()`; visuals and RNG components follow the provably-fair engine.
-3. **Theme is skin, not logic** — Four theme styles and two UI skins change typography and glow; behavior and affordances stay identical.
+3. **Theme is skin, not logic** — Four theme styles change typography and glow; behavior and affordances stay identical.
 4. **Honest virtual economy** — Debt, loans, bailouts, and daily bonus rules are visible before the player is stuck; errors say what to do next.
 5. **Earned neon** — Glow and CRT effects belong to tavern/marquee fantasy; Monochrome mode stays flat, high-contrast, and readable.
 
