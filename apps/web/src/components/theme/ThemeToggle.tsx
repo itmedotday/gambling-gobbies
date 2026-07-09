@@ -31,7 +31,7 @@ export function ThemeToggleSwitch() {
     <div className="flex items-center justify-between gap-4">
       <div className="flex flex-col gap-1">
         <Label htmlFor="dark-mode">Dark mode</Label>
-        <span className="text-xs text-muted-foreground">Switch between light and dark monochrome themes.</span>
+        <span className="text-xs text-muted-foreground">Switch between light and dark appearance.</span>
       </div>
       <Switch
         id="dark-mode"

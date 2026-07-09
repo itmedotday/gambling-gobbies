@@ -66,9 +66,10 @@ function EmeraldDenCard({ gameId, className }: GameLobbyCardProps) {
     >
       <div
         className={cn(
-          'flex items-center gap-[18px] border-2 border-primary/45',
-          'bg-[rgba(24,27,19,.85)] px-[22px] py-[18px] transition-[background-color,border-color,box-shadow] duration-200',
-          'group-hover:border-[rgba(132,155,73,.6)] group-hover:bg-[rgba(33,38,25,.95)] group-hover:shadow-[0_0_22px_rgba(132,155,73,.25)]',
+          'flex items-center gap-[18px] border-2 border-primary/45 bg-card px-[22px] py-[18px]',
+          'transition-[background-color,border-color,box-shadow] duration-200',
+          'group-hover:border-primary/70 group-hover:bg-muted/40 group-hover:shadow-[0_0_22px_rgba(132,155,73,.15)]',
+          'dark:bg-[rgba(24,27,19,.85)] dark:group-hover:border-[rgba(132,155,73,.6)] dark:group-hover:bg-[rgba(33,38,25,.95)] dark:group-hover:shadow-[0_0_22px_rgba(132,155,73,.25)]',
         )}
       >
         <span className="gg-font-fantasy w-[34px] shrink-0 text-center text-[22px] text-gold [text-shadow:0_0_10px_rgba(236,194,78,.6)]">
@@ -103,7 +104,8 @@ function MarqueeTableCard({ gameId, className }: GameLobbyCardProps) {
     >
       <div
         className={cn(
-          'flex flex-col items-center gap-2 bg-[rgba(24,15,32,.85)] px-5 py-[26px] text-center transition-[transform,box-shadow,border-color] duration-200',
+          'flex flex-col items-center gap-2 bg-card px-5 py-[26px] text-center transition-[transform,box-shadow,border-color] duration-200',
+          'dark:bg-[rgba(24,15,32,.85)]',
           'group-hover:-translate-y-1',
         )}
         style={{
@@ -120,7 +122,7 @@ function MarqueeTableCard({ gameId, className }: GameLobbyCardProps) {
         >
           {meta.name}
         </span>
-        <span className="text-[12.5px] text-[#8b8496]">{meta.tagline}</span>
+        <span className="text-[12.5px] text-muted-foreground">{meta.tagline}</span>
       </div>
     </Link>
   );

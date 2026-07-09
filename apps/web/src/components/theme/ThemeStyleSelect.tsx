@@ -30,16 +30,16 @@ export function ThemeStyleSelect() {
   const active = OPTIONS.find((o) => o.value === themeStyle) ?? OPTIONS[0]!;
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-      <div className="flex flex-col gap-1">
+    <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_14rem] sm:items-start">
+      <div className="flex min-w-0 flex-col gap-1">
         <Label htmlFor="theme-style">Theme style</Label>
-        <span className="text-xs text-muted-foreground">{active.description}</span>
+        <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">{active.description}</span>
       </div>
       <Select value={themeStyle} onValueChange={(v) => setThemeStyle(v as ThemeStyle)}>
-        <SelectTrigger id="theme-style" className="w-full sm:w-56" data-testid="setting-theme-style">
+        <SelectTrigger id="theme-style" className="h-10 w-full shrink-0" data-testid="setting-theme-style">
           <SelectValue />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent position="popper" sideOffset={4} align="end">
           {OPTIONS.map((opt) => (
             <SelectItem key={opt.value} value={opt.value}>
               {opt.label}

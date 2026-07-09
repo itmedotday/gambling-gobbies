@@ -5,7 +5,7 @@ const TICKER =
 export function MarqueeTicker() {
   return (
     <div
-      className="gg-marquee-ticker h-[var(--gg-ticker-height)] overflow-hidden border-y border-[rgba(139,92,246,.35)] bg-[rgba(20,12,28,.8)]"
+      className="gg-marquee-ticker h-[var(--gg-ticker-height)] overflow-hidden border-y border-[var(--gg-marquee-ticker-border)] bg-[var(--gg-marquee-ticker-bg)]"
       aria-hidden
     >
       <div className="gg-marquee-ticker-track flex w-max animate-gg-ticker gap-0">

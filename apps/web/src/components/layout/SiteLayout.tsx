@@ -38,16 +38,7 @@ export function SiteLayout() {
       >
         Skip to main content
       </a>
-      <header
-        className={cn(
-          'sticky top-0 z-40 border-b border-border backdrop-blur-md',
-          isMarquee
-            ? 'bg-[rgba(10,7,16,.88)]'
-            : isEmerald
-              ? 'bg-[rgba(11,13,9,.78)]'
-              : 'bg-[rgba(24,24,27,.6)]',
-        )}
-      >
+      <header className="sticky top-0 z-40 border-b border-border bg-[var(--gg-header-bg)] backdrop-blur-md">
         <div className="mx-auto grid min-h-14 w-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-2 px-[var(--gg-page-px)] py-2 sm:min-h-12 sm:grid-cols-[auto_1fr_auto] sm:gap-6 sm:py-3.5">
           <Link
             to="/"
@@ -144,7 +135,7 @@ export function SiteLayout() {
         <Outlet />
       </main>
       <LiveStatsPanel open={statsOpen} onClose={() => setStatsOpen(false)} />
-      <footer className="border-t border-border/80 bg-background/60 backdrop-blur">
+      <footer className="border-t border-border/80 bg-[var(--gg-header-bg)] backdrop-blur">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-[var(--gg-page-px)] py-4 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>Gambling Gobbies — virtual Gobbie Gold only. No real money.</span>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

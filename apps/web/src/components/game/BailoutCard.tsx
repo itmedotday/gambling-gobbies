@@ -62,7 +62,7 @@ export function BailoutCard() {
       accent={accent}
       className={cn(
         'flex flex-col items-start justify-between gap-4 p-5 sm:flex-row sm:items-center',
-        layout.isMarquee && 'border-[rgba(244,63,94,.25)] bg-[rgba(24,15,32,.85)]',
+        layout.isMarquee && 'border-[rgba(244,63,94,.25)] bg-card dark:bg-[rgba(24,15,32,.85)]',
         layout.isMono && 'shadow-none',
       )}
       data-testid="bailout-card"

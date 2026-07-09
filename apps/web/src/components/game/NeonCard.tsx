@@ -24,7 +24,7 @@ export function NeonCard({ children, className, accent, stage, stageClip, 'data-
       data-testid={testId}
       className={cn(
         'bg-card text-card-foreground border border-border',
-        'shadow-[0_4px_20px_rgba(0,0,0,.4)]',
+        'shadow-[var(--gg-card-shadow)]',
         accent && 'border-t-2',
         stage && 'relative flex w-full min-h-[min(360px,50vh)] flex-col items-center justify-center',
         stage && (stageClip ? 'overflow-hidden' : 'overflow-visible'),
@@ -34,7 +34,7 @@ export function NeonCard({ children, className, accent, stage, stageClip, 'data-
         tokens
           ? {
               borderTopColor: tokens.border,
-              boxShadow: `${tokens.insetShadow}, 0 4px 20px rgba(0,0,0,.4)`,
+              boxShadow: `${tokens.insetShadow}, var(--gg-card-shadow)`,
             }
           : undefined
       }

@@ -58,17 +58,42 @@
 /* Cross-theme shell polish variables (overridden per theme style). */
 :root {
   --gg-shell-bg:
-    radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.18) 0%, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.06) 0%, transparent 50%);
-  --gg-logo-glow: rgba(99, 102, 241, 0.65);
-  --gg-nav-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+    radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.04) 0%, transparent 50%);
+  --gg-logo-glow: rgba(99, 102, 241, 0.45);
+  --gg-nav-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
+  --gg-header-bg: color-mix(in srgb, var(--background) 90%, transparent);
+  --gg-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --gg-marquee-ticker-bg: color-mix(in srgb, var(--card) 94%, rgba(139, 92, 246, 0.08));
+  --gg-marquee-ticker-border: color-mix(in srgb, var(--border) 75%, rgba(139, 92, 246, 0.35));
   --gg-page-px: 0.75rem;
   --gg-page-py: 1.5rem;
   --gg-section-gap: 2.5rem;
   --gg-card-gap: 1.25rem;
   --gg-font-display: 'Press Start 2P', 'Geist Variable', sans-serif;
   --gg-ticker-height: 0px;
+}
+
+.dark {
+  --gg-shell-bg:
+    radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.18) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.06) 0%, transparent 50%);
+  --gg-logo-glow: rgba(99, 102, 241, 0.65);
+  --gg-nav-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+  --gg-header-bg: rgba(24, 24, 27, 0.72);
+  --gg-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --gg-marquee-ticker-bg: rgba(20, 12, 28, 0.8);
+  --gg-marquee-ticker-border: rgba(139, 92, 246, 0.35);
+}
+
+.dark.theme-emerald-den {
+  --gg-header-bg: rgba(11, 13, 9, 0.78);
+}
+
+.dark.theme-high-roller-marquee {
+  --gg-header-bg: rgba(10, 7, 16, 0.88);
 }
 
 .theme-high-roller-marquee {
@@ -642,6 +667,55 @@ html.motion-reduce .animate-gg-pulse {
   box-shadow: none !important;
   text-shadow: none !important;
   transform: none !important;
+}
+
+.theme-mono:not(.dark) .gg-neon-btn-outline {
+  background: transparent !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.theme-mono:not(.dark) .gg-neon-btn-outline:hover {
+  background: var(--muted) !important;
+}
+
+:root:not(.dark) .gg-eyebrow {
+  text-shadow: 0 0 8px rgba(99, 102, 241, 0.25);
+}
+
+:root:not(.dark) .gg-hero-title {
+  text-shadow:
+    0 0 10px rgba(99, 102, 241, 0.25),
+    0 0 28px rgba(139, 92, 246, 0.12);
+}
+
+:root.theme-high-roller-marquee:not(.dark) .gg-marquee-frame {
+  background: color-mix(in srgb, var(--card) 95%, rgba(244, 63, 94, 0.05));
+  border-color: rgba(244, 63, 94, 0.45);
+  box-shadow:
+    0 0 24px rgba(244, 63, 94, 0.15),
+    inset 0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+:root.theme-high-roller-marquee:not(.dark) .gg-marquee-title {
+  color: #e11d48;
+  text-shadow: 0 0 14px rgba(244, 63, 94, 0.35);
+}
+
+:root.theme-high-roller-marquee:not(.dark) .gg-marquee-subtitle {
+  color: #7c3aed;
+  text-shadow: none;
+}
+
+:root.theme-high-roller-marquee:not(.dark) .gg-hero-title,
+:root.theme-high-roller-marquee:not(.dark) .gg-eyebrow {
+  text-shadow:
+    0 0 10px rgba(244, 63, 94, 0.25),
+    0 0 24px rgba(139, 92, 246, 0.15);
+}
+
+:root:not(.dark) .gg-crt-shell::after {
+  opacity: 0.1;
 }
 
 /* Page shell spacing */
