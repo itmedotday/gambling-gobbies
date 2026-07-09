@@ -44,5 +44,5 @@ export const useSessionStore = create<SessionState>()(
 );
 
 export function avatarSpriteUrl(id: AvatarId): string {
-  return `/assets/sprites/${id}/idle_sheet.png`;
+  return `/assets/sprites/${id}/idle.webp`;
 }

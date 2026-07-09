@@ -107,11 +107,11 @@ export default function LandingPage() {
         <section className="flex flex-col items-center gap-8 px-2 text-center sm:gap-10">
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14">
             <img
-              src="/assets/sprites/tiny-pirate/idle.webp"
+              src="/assets/sprites/royal-goblin/idle.webp"
               alt=""
-              width={96}
-              height={120}
-              className="pixelated hidden h-[100px] animate-gg-float sm:block sm:h-[120px] [filter:drop-shadow(0_0_14px_rgba(244,63,94,.7))]"
+              width={80}
+              height={80}
+              className="pixelated image-pixelated hidden h-[100px] w-[100px] -scale-x-100 animate-gg-float object-contain sm:block sm:h-[120px] sm:w-[120px] [filter:drop-shadow(0_0_14px_rgba(244,63,94,.7))]"
             />
             <div className="flex flex-col items-center gap-4">
               <HeroCtas />
