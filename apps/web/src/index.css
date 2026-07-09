@@ -454,11 +454,19 @@
   }
   body {
     @apply bg-background text-foreground;
+    scrollbar-gutter: stable;
   }
   html {
     @apply font-sans;
     scrollbar-gutter: stable;
   }
+}
+
+/* Radix Select locks body scroll via react-remove-scroll; keep gutter space stable. */
+body[data-scroll-locked],
+.with-scroll-bars-hidden {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
 }
 
 body {

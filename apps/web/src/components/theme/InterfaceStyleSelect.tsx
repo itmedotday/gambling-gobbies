@@ -28,9 +28,11 @@ export function InterfaceStyleSelect() {
         <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">{active.description}</span>
       </div>
       <Select value={uiSkin} onValueChange={(v) => setUiSkin(v as UiSkin)}>
-        <SelectTrigger id="interface-style" className="h-10 w-full shrink-0" data-testid="setting-ui-skin">
-          <SelectValue />
-        </SelectTrigger>
+        <div className="relative w-full shrink-0">
+          <SelectTrigger id="interface-style" className="h-10 w-full" data-testid="setting-ui-skin">
+            <SelectValue />
+          </SelectTrigger>
+        </div>
         <SelectContent position="popper" sideOffset={4} align="end">
           {SKIN_OPTIONS.map((option) => (
             <SelectItem key={option.value} value={option.value}>

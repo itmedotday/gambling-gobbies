@@ -46,4 +46,17 @@ test.describe('Gambling Gobbies smoke', () => {
     await page.goto('/settings');
     await expect(page.getByTestId('setting-dark-mode')).toBeVisible();
   });
+
+  test('settings select does not shift page when opened', async ({ page }) => {
+    await page.goto('/settings');
+    await page.setViewportSize({ width: 1280, height: 720 });
+    const trigger = page.getByTestId('setting-ui-skin');
+    const boxBefore = await trigger.boundingBox();
+    await trigger.click();
+    await expect(page.getByRole('option', { name: 'Modern' })).toBeVisible();
+    const bodyMargin = await page.evaluate(() => getComputedStyle(document.body).marginRight);
+    expect(bodyMargin).toBe('0px');
+    const boxAfter = await trigger.boundingBox();
+    expect(boxAfter?.x).toBeCloseTo(boxBefore?.x ?? 0, 0);
+  });
 });

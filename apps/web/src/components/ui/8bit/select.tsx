@@ -70,12 +70,12 @@ interface BitSelectTriggerProps
   asChild?: boolean;
 }
 
-function SelectTrigger({ children, ...props }: BitSelectTriggerProps) {
-  const { className, font } = props;
+function SelectTrigger({ children, className, ...props }: BitSelectTriggerProps) {
+  const { font } = props;
 
   if (!useEightBit()) {
     return (
-      <ShadcnSelectTrigger {...props} className={className}>
+      <ShadcnSelectTrigger className={className} {...props}>
         {children}
       </ShadcnSelectTrigger>
     );
@@ -85,7 +85,6 @@ function SelectTrigger({ children, ...props }: BitSelectTriggerProps) {
     <div
       className={cn(
         'relative w-full shrink-0 border-y-6 border-foreground dark:border-ring',
-        className,
         font !== 'normal' && 'retro',
       )}
     >

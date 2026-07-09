@@ -36,9 +36,11 @@ export function ThemeStyleSelect() {
         <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">{active.description}</span>
       </div>
       <Select value={themeStyle} onValueChange={(v) => setThemeStyle(v as ThemeStyle)}>
-        <SelectTrigger id="theme-style" className="h-10 w-full shrink-0" data-testid="setting-theme-style">
-          <SelectValue />
-        </SelectTrigger>
+        <div className="relative w-full shrink-0">
+          <SelectTrigger id="theme-style" className="h-10 w-full" data-testid="setting-theme-style">
+            <SelectValue />
+          </SelectTrigger>
+        </div>
         <SelectContent position="popper" sideOffset={4} align="end">
           {OPTIONS.map((opt) => (
             <SelectItem key={opt.value} value={opt.value}>
