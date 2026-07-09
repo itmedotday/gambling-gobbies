@@ -11,6 +11,7 @@ import { GamePageFrame } from '@/components/game/GamePageFrame';
 import { GamePageGrid } from '@/components/game/GamePageGrid';
 import { VisualStage } from '@/components/game/VisualStage';
 import { NeonCard } from '@/components/game/NeonCard';
+import { CoinFaceIcon } from '@/components/game/CoinFaceIcon';
 import { accentForGame, accentTokens } from '@/game/accent';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
 import { cn } from '@/lib/utils';
@@ -47,7 +48,7 @@ export default function CoinFlipPage() {
       <GamePageGrid>
         <NeonCard accent={accent} stage className="p-6">
           <VisualStage width={320} height={280} data-testid="coin-visual" data-scene-ready="true">
-            <div className="pointer-events-none w-full [perspective:1200px]">
+            <div className="pointer-events-none flex w-full items-center justify-center [perspective:1200px]">
               <CoinFlip rng={bet.rng} flipRequest={bet.request} onFlipComplete={handleComplete} />
             </div>
           </VisualStage>
@@ -69,9 +70,10 @@ export default function CoinFlipPage() {
                 disabled={bet.busy}
                 onClick={() => setPrediction(side)}
                 data-testid={`predict-${side === 'gold' ? 'orange' : 'blue'}`}
+                aria-label={SIDE_LABELS[side]}
+                aria-pressed={prediction === side}
                 className={cn(
-                  layout.sectionLabelClass,
-                  'h-auto py-4',
+                  'h-auto py-3',
                   prediction === side
                     ? 'border-0 text-white'
                     : 'border-border bg-transparent text-muted-foreground hover:border-primary hover:text-primary',
@@ -85,7 +87,11 @@ export default function CoinFlipPage() {
                     : undefined
                 }
               >
-                {SIDE_LABELS[side]}
+                <CoinFaceIcon
+                  side={side}
+                  selected={prediction === side}
+                  className="size-11 sm:size-12"
+                />
               </Button>
             ))}
           </div>

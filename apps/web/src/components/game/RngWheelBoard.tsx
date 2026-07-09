@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSpring } from '@react-spring/web';
 import { WheelVisual } from '@itme.day/rng-react-components';
+import { cn } from '@/lib/utils';
 
 const SPIN_MS = 1500;
 
@@ -132,17 +133,22 @@ export function RngWheelBoard({
 
   return (
     <div
-      className={`w-full max-w-xl glass-panel rounded-3xl p-4 sm:p-5 flex flex-col items-center transition-[box-shadow,transform] duration-300 ${glow}`}
+      className={cn(
+        'gg-wheel-board w-full max-w-xs glass-panel rounded-2xl p-3 flex flex-col items-center transition-[box-shadow,transform] duration-300',
+        glow,
+      )}
     >
-      <WheelVisual
-        wheelStyles={wheelStyles}
-        pointerStyles={centerStyles}
-        centerStyles={centerStyles}
-        isSpinning={isSpinning}
-        spinStatus={spinStatus}
-        multiplierDisplay=""
-        winChance={winChance}
-      />
+      <div className="gg-wheel-visual-compact w-full">
+        <WheelVisual
+          wheelStyles={wheelStyles}
+          pointerStyles={centerStyles}
+          centerStyles={centerStyles}
+          isSpinning={isSpinning}
+          spinStatus={spinStatus}
+          multiplierDisplay=""
+          winChance={winChance}
+        />
+      </div>
     </div>
   );
 }

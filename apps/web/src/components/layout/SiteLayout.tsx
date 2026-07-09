@@ -68,15 +68,22 @@ export function SiteLayout() {
               Gobbies
             </span>
           </Link>
-          <nav className="col-span-3 flex items-center gap-1 sm:col-span-1 sm:gap-2" aria-label="Main">
+          <nav
+            className="col-span-3 flex items-center gap-1 sm:col-span-1 sm:gap-2"
+            aria-label="Main"
+          >
             {NAV_ITEMS.map((item) => (
               <Button
                 key={item.to}
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  'h-auto px-[13px] py-2 text-[11px] text-muted-foreground hover:text-primary',
-                  isMarquee ? 'gg-marquee-display text-xs' : isEmerald ? 'gg-font-fantasy text-sm' : 'retro',
+                  'h-auto px-[13px] py-2 text-[11px] hover:bg-muted/60 hover:text-primary',
+                  isMarquee
+                    ? 'gg-marquee-display text-xs'
+                    : isEmerald
+                      ? 'gg-font-fantasy text-sm'
+                      : 'retro',
                 )}
                 asChild
               >
@@ -90,7 +97,7 @@ export function SiteLayout() {
                             ? 'bg-primary text-primary-foreground ring-0'
                             : 'bg-primary/15 ring-1 ring-primary/50',
                         )
-                      : ''
+                      : 'text-foreground/90 hover:text-primary'
                   }
                 >
                   {item.label}

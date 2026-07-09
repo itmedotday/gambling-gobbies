@@ -8,6 +8,8 @@
 - Target near-final product quality, not a minimal MVP.
 - Support switching between 8-bit CN wrappers and base shadcn components via a feature flag.
 - When the user says "continue", keep executing the current plan without restarting.
+- Avoid layout shift; open dropdowns/Select popovers must not lock page scroll or hide/shift the scrollbar.
+- Commit and push to main only after tests, lint, formatting, and build all pass.
 
 ## Learned Workspace Facts
 
@@ -19,7 +21,9 @@
 - Production web: https://gambling-gobbies.vercel.app; deploy via Vercel CLI (GitHub connect blocked by org/team mismatch).
 - Server deploys on Render via `Dockerfile.server`; runtime uses `tsx`; server `build` is a no-op in production.
 - Do not import `@itme.day/rng-react-components` global `style.css` (resets body/theme); scan package for Tailwind classes instead.
-- Versus mode: timed sessions with a profit graph; highest balance when the timer ends wins.
+- Versus mode: timed sessions; a draggable, toggleable floating profit graph tracks balance; highest balance when the timer ends wins.
+- Git remote is `github.com/itmedotday/gambling-gobbies`; commits and production deploys must be authored by daylennguyen@gmail.com.
+- Players may go into debt (max bet is lowered while in debt); loans are capped at 150 money per 15 seconds.
 
 ## Design Context
 

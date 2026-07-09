@@ -46,7 +46,7 @@ export default function D20Page() {
       <GamePageGrid>
         <NeonCard accent={accent} stage className="p-6">
           <VisualStage width={320} height={280} data-testid="d20-visual">
-            <div className="pointer-events-none w-full [perspective:1200px]">
+            <div className="pointer-events-none flex w-full items-center justify-center [perspective:1200px]">
               <D20Roll rng={bet.rng} rollRequest={bet.request} onRollComplete={handleComplete} />
             </div>
           </VisualStage>

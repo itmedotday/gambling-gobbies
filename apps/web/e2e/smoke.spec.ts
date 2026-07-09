@@ -16,10 +16,16 @@ test.describe('Gambling Gobbies smoke', () => {
     await expect(page.locator('[data-testid="coin-visual"][data-scene-ready="true"]')).toBeVisible({
       timeout: 15_000,
     });
-    const balanceBefore = await page.getByText(/Balance:/).first().textContent();
+    const balanceBefore = await page
+      .getByText(/Balance:/)
+      .first()
+      .textContent();
     await page.getByTestId('bet-button').click();
     await expect(page.getByTestId('ledger-row').first()).toBeVisible({ timeout: 15_000 });
-    const balanceAfter = await page.getByText(/Balance:/).first().textContent();
+    const balanceAfter = await page
+      .getByText(/Balance:/)
+      .first()
+      .textContent();
     expect(balanceAfter).not.toEqual(balanceBefore);
   });
 
@@ -58,5 +64,18 @@ test.describe('Gambling Gobbies smoke', () => {
     expect(bodyMargin).toBe('0px');
     const boxAfter = await trigger.boundingBox();
     expect(boxAfter?.x).toBeCloseTo(boxBefore?.x ?? 0, 0);
+  });
+
+  test('settings select keeps page scrollable while open', async ({ page }) => {
+    await page.goto('/settings');
+    await page.setViewportSize({ width: 390, height: 640 });
+    const scrollBefore = await page.evaluate(() => window.scrollY);
+    await page.getByTestId('setting-ui-skin').click();
+    await expect(page.getByRole('option', { name: 'Modern' })).toBeVisible();
+    await page.mouse.wheel(0, 400);
+    await page.waitForTimeout(100);
+    const scrollAfter = await page.evaluate(() => window.scrollY);
+    expect(scrollAfter).toBeGreaterThan(scrollBefore);
+    expect(await page.evaluate(() => document.body.hasAttribute('data-scroll-locked'))).toBe(false);
   });
 });

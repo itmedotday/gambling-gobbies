@@ -45,8 +45,8 @@ export default function WheelPage() {
     <GamePageFrame game="wheel" title="Wheel">
       <VersusPlayBanner />
       <GamePageGrid>
-        <NeonCard accent={accent} stage className="p-6">
-          <VisualStage width={480} height={360} data-testid="wheel-visual">
+        <NeonCard accent={accent} stage className="p-4 min-h-[min(260px,38vh)]">
+          <VisualStage width={340} height={260} data-testid="wheel-visual">
             <RngWheelBoard
               winChance={winChance}
               angle={lastAngle}
@@ -61,8 +61,7 @@ export default function WheelPage() {
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between gap-3">
               <Label htmlFor="wheel-chance" className="text-sm text-muted-foreground">
-                Win chance{' '}
-                <span className="tabular-nums text-primary">{winChance}%</span>
+                Win chance <span className="tabular-nums text-primary">{winChance}%</span>
               </Label>
               <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                 {multiplier.toFixed(2)}x payout

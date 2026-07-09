@@ -1,4 +1,5 @@
-import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/kit';
+import { Label } from '@/components/kit';
+import { SettingsPicker } from '@/components/theme/SettingsPicker';
 import { type UiSkin, useSettingsStore } from '@/stores/settingsStore';
 
 const SKIN_OPTIONS: { value: UiSkin; label: string; description: string }[] = [
@@ -18,29 +19,23 @@ const SKIN_OPTIONS: { value: UiSkin; label: string; description: string }[] = [
 export function InterfaceStyleSelect() {
   const uiSkin = useSettingsStore((s) => s.uiSkin);
   const setUiSkin = useSettingsStore((s) => s.setUiSkin);
-  const active =
-    SKIN_OPTIONS.find((o) => o.value === uiSkin) ?? SKIN_OPTIONS[0]!;
+  const active = SKIN_OPTIONS.find((o) => o.value === uiSkin) ?? SKIN_OPTIONS[0]!;
 
   return (
     <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_14rem] sm:items-start">
       <div className="flex min-w-0 flex-col gap-1">
         <Label htmlFor="interface-style">Interface style</Label>
-        <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">{active.description}</span>
+        <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">
+          {active.description}
+        </span>
       </div>
-      <Select value={uiSkin} onValueChange={(v) => setUiSkin(v as UiSkin)}>
-        <div className="relative w-full shrink-0">
-          <SelectTrigger id="interface-style" className="h-10 w-full" data-testid="setting-ui-skin">
-            <SelectValue />
-          </SelectTrigger>
-        </div>
-        <SelectContent position="popper" sideOffset={4} align="end">
-          {SKIN_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <SettingsPicker
+        id="interface-style"
+        value={uiSkin}
+        onValueChange={setUiSkin}
+        options={SKIN_OPTIONS}
+        data-testid="setting-ui-skin"
+      />
     </div>
   );
 }

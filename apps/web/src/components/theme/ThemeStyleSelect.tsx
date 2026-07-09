@@ -1,4 +1,5 @@
-import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/kit';
+import { Label } from '@/components/kit';
+import { SettingsPicker } from '@/components/theme/SettingsPicker';
 import { type ThemeStyle, useSettingsStore } from '@/stores/settingsStore';
 
 const OPTIONS: { value: ThemeStyle; label: string; description: string }[] = [
@@ -33,23 +34,17 @@ export function ThemeStyleSelect() {
     <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_14rem] sm:items-start">
       <div className="flex min-w-0 flex-col gap-1">
         <Label htmlFor="theme-style">Theme style</Label>
-        <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">{active.description}</span>
+        <span className="min-h-10 text-xs leading-relaxed text-muted-foreground">
+          {active.description}
+        </span>
       </div>
-      <Select value={themeStyle} onValueChange={(v) => setThemeStyle(v as ThemeStyle)}>
-        <div className="relative w-full shrink-0">
-          <SelectTrigger id="theme-style" className="h-10 w-full" data-testid="setting-theme-style">
-            <SelectValue />
-          </SelectTrigger>
-        </div>
-        <SelectContent position="popper" sideOffset={4} align="end">
-          {OPTIONS.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <SettingsPicker
+        id="theme-style"
+        value={themeStyle}
+        onValueChange={setThemeStyle}
+        options={OPTIONS}
+        data-testid="setting-theme-style"
+      />
     </div>
   );
 }
-
