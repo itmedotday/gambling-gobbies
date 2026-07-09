@@ -1,39 +1,70 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/kit';
 import type { GameId } from '@gobbies/shared';
 import { ALL_GAME_IDS } from '@gobbies/shared';
-import { PhaserGame } from '@/phaser/PhaserGame';
-import { MascotScene } from '@/phaser/scenes/MascotScene';
-import { useThemeKey } from '@/components/theme/useThemeKey';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
 import { NeonMarqueeSign } from '@/components/theme/NeonMarqueeSign';
 import { GameLobbyCard } from '@/components/game/GameLobbyCard';
-import { VisualStage } from '@/components/game/VisualStage';
 import { cn } from '@/lib/utils';
 
-function MascotStage({ themeKey, variant }: { themeKey: string; variant: 'neon' | 'emerald' | 'marquee' }) {
+interface HeroSpriteProps {
+  src: string;
+  className?: string;
+  mirror?: boolean;
+  glow?: string;
+  animationDelay?: string;
+}
+
+/** Static SpriteCook preview — reliable on landing (no Phaser mount). */
+function HeroSprite({ src, className, mirror, glow, animationDelay }: HeroSpriteProps) {
+  return (
+    <img
+      src={src}
+      alt=""
+      width={96}
+      height={120}
+      className={cn(
+        'image-pixelated animate-gg-float object-contain',
+        mirror && '-scale-x-100',
+        className,
+      )}
+      style={{
+        filter: glow,
+        animationDelay,
+      }}
+    />
+  );
+}
+
+interface HeroGlowStageProps {
+  variant: 'neon' | 'emerald' | 'marquee';
+  children: ReactNode;
+}
+
+function HeroGlowStage({ variant, children }: HeroGlowStageProps) {
   const glow =
     variant === 'emerald'
       ? {
           floor: 'radial-gradient(ellipse at center, rgba(236,194,78,.45) 0%, rgba(132,155,73,.2) 50%, transparent 72%)',
           pulse: 'rgba(236,194,78,.55)',
-          drop: 'drop-shadow(0 0 14px rgba(132,155,73,.8))',
         }
       : variant === 'marquee'
         ? {
             floor: 'radial-gradient(ellipse at center, rgba(244,63,94,.4) 0%, rgba(139,92,246,.15) 55%, transparent 75%)',
             pulse: 'rgba(244,63,94,.6)',
-            drop: 'drop-shadow(0 0 14px rgba(244,63,94,.7))',
           }
         : {
             floor:
               'radial-gradient(ellipse at center, rgba(99,102,241,.5) 0%, rgba(99,102,241,.12) 55%, transparent 75%)',
             pulse: 'rgba(99,102,241,.7)',
-            drop: undefined,
           };
 
   return (
-    <div className="relative flex h-[280px] items-end justify-center sm:h-[320px]" data-testid="mascot-stage">
+    <div
+      className="relative flex h-[280px] items-end justify-center sm:h-[320px]"
+      data-testid="mascot-stage"
+    >
       <div
         className="pointer-events-none absolute bottom-6 h-[90px] w-[280px] rounded-[50%] blur-md sm:w-[340px]"
         style={{ background: glow.floor }}
@@ -44,14 +75,7 @@ function MascotStage({ themeKey, variant }: { themeKey: string; variant: 'neon' 
         style={{ background: glow.pulse }}
         aria-hidden
       />
-      <div
-        className="relative animate-gg-float"
-        style={glow.drop ? { filter: glow.drop } : undefined}
-      >
-        <VisualStage width={360} height={280} data-testid="mascot-stage-inner">
-          <PhaserGame scenes={[MascotScene]} width={360} height={280} transparent themeKey={themeKey} />
-        </VisualStage>
-      </div>
+      <div className="relative flex items-end justify-center">{children}</div>
     </div>
   );
 }
@@ -97,7 +121,6 @@ function FeaturedGamesSection({ gridClass, titleClass }: { gridClass: string; ti
 }
 
 export default function LandingPage() {
-  const themeKey = useThemeKey();
   const layout = useThemeLayout();
 
   if (layout.isMarquee) {
@@ -106,12 +129,11 @@ export default function LandingPage() {
         <NeonMarqueeSign />
         <section className="flex flex-col items-center gap-8 px-2 text-center sm:gap-10">
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14">
-            <img
+            <HeroSprite
               src="/assets/sprites/royal-goblin/idle.webp"
-              alt=""
-              width={80}
-              height={80}
-              className="pixelated image-pixelated hidden h-[100px] w-[100px] -scale-x-100 animate-gg-float object-contain sm:block sm:h-[120px] sm:w-[120px] [filter:drop-shadow(0_0_14px_rgba(244,63,94,.7))]"
+              mirror
+              glow="drop-shadow(0 0 14px rgba(244,63,94,.7))"
+              className="hidden h-[120px] w-[96px] sm:block"
             />
             <div className="flex flex-col items-center gap-4">
               <HeroCtas />
@@ -119,7 +141,12 @@ export default function LandingPage() {
                 Virtual currency only. The goblins keep the real gold.
               </p>
             </div>
-            <MascotStage themeKey={themeKey} variant="marquee" />
+            <HeroSprite
+              src="/assets/sprites/gilded-knight/idle.webp"
+              glow="drop-shadow(0 0 14px rgba(139,92,246,.7))"
+              animationDelay="0.6s"
+              className="hidden h-[140px] w-[112px] sm:block"
+            />
           </div>
           <p className={cn(layout.bodyTextClass, 'text-center')}>
             Bet your Gobbie Gold on six provably-fair games, or challenge a friend — richest goblin
@@ -138,7 +165,27 @@ export default function LandingPage() {
     return (
       <div className={cn(layout.pageClass, layout.sectionGap)}>
         <section className="flex flex-col items-center gap-6 px-2 py-4 text-center sm:gap-8 sm:py-8">
-          <MascotStage themeKey={themeKey} variant="emerald" />
+          <HeroGlowStage variant="emerald">
+            <div className="flex items-end justify-center gap-4 sm:gap-8">
+              <HeroSprite
+                src="/assets/sprites/tiny-pirate/idle.webp"
+                mirror
+                glow="drop-shadow(0 0 10px rgba(236,194,78,.6))"
+                className="hidden h-[88px] w-[72px] sm:block"
+              />
+              <HeroSprite
+                src="/assets/sprites/royal-goblin/jump.webp"
+                glow="drop-shadow(0 0 14px rgba(132,155,73,.8)) drop-shadow(0 10px 24px rgba(0,0,0,.7))"
+                className="h-[160px] w-[128px] sm:h-[200px] sm:w-[160px]"
+              />
+              <HeroSprite
+                src="/assets/sprites/gilded-knight/idle.webp"
+                glow="drop-shadow(0 0 10px rgba(236,194,78,.5))"
+                animationDelay="0.5s"
+                className="hidden h-[100px] w-[80px] sm:block"
+              />
+            </div>
+          </HeroGlowStage>
           <span className="gg-eyebrow font-mono text-[11px] uppercase tracking-[2.5px] text-primary">
             Provably fair · 1% house edge · no real money
           </span>
@@ -181,7 +228,27 @@ export default function LandingPage() {
             Virtual currency only. The goblins keep the real gold.
           </p>
         </div>
-        <MascotStage themeKey={themeKey} variant="neon" />
+        <HeroGlowStage variant="neon">
+          <div className="flex items-end justify-center gap-3 sm:gap-6">
+            <HeroSprite
+              src="/assets/sprites/royal-goblin/run.webp"
+              glow="drop-shadow(0 0 12px rgba(99,102,241,.7))"
+              className="hidden h-[88px] w-[72px] sm:block"
+            />
+            <HeroSprite
+              src="/assets/sprites/royal-goblin/idle.webp"
+              glow="drop-shadow(0 0 18px rgba(99,102,241,.7)) drop-shadow(0 12px 30px rgba(0,0,0,.6))"
+              className="h-[180px] w-[144px] sm:h-[230px] sm:w-[184px]"
+            />
+            <HeroSprite
+              src="/assets/sprites/tiny-pirate/idle.webp"
+              mirror
+              glow="drop-shadow(0 0 12px rgba(244,63,94,.7))"
+              animationDelay="0.4s"
+              className="hidden h-[88px] w-[72px] sm:block"
+            />
+          </div>
+        </HeroGlowStage>
       </section>
       <FeaturedGamesSection
         gridClass={layout.gamesGridClass}
