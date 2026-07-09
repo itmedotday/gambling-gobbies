@@ -124,29 +124,35 @@ export function RngDiceBoard({
     <div
       className={`w-full max-w-xl glass-panel rounded-3xl p-4 sm:p-5 flex flex-col items-center transition-[box-shadow,transform] duration-300 ${glow}`}
     >
-      <InteractiveTrack
-        rollTarget={target}
-        isRollOver={rollOver}
-        isRolling={isRolling}
-        onMouseDown={() => {}}
-        onTouchStart={() => {}}
-        trackRef={trackRef}
-        thumbStyles={thumbStyles}
-      >
-        <OutcomeBadge
-          style={{
-            left: badgeStyles.leftPercent.to((p) => `${p}%`),
-            transform: 'translateX(-50%)',
-            opacity: badgeStyles.opacity,
-            scale: badgeStyles.scale,
-            top: badgeStyles.y,
-          }}
+      {/* Display only: the target is driven by the control panel Slider, not
+          this track. Wrapping in pointer-events-none neutralises the package's
+          built-in grab/pointer affordances, and aria-hidden keeps the real
+          slider (right panel) as the single accessible control. */}
+      <div className="w-full pointer-events-none select-none" aria-hidden="true">
+        <InteractiveTrack
+          rollTarget={target}
+          isRollOver={rollOver}
           isRolling={isRolling}
-          cyclingNumber={cyclingNumber}
-          rollOutcome={displayRoll}
-          rollStatus={status}
-        />
-      </InteractiveTrack>
+          onMouseDown={() => {}}
+          onTouchStart={() => {}}
+          trackRef={trackRef}
+          thumbStyles={thumbStyles}
+        >
+          <OutcomeBadge
+            style={{
+              left: badgeStyles.leftPercent.to((p) => `${p}%`),
+              transform: 'translateX(-50%)',
+              opacity: badgeStyles.opacity,
+              scale: badgeStyles.scale,
+              top: badgeStyles.y,
+            }}
+            isRolling={isRolling}
+            cyclingNumber={cyclingNumber}
+            rollOutcome={displayRoll}
+            rollStatus={status}
+          />
+        </InteractiveTrack>
+      </div>
     </div>
   );
 }

@@ -42,3 +42,28 @@ export {
   ChartLegendContent,
   type ChartConfig,
 } from '@/components/ui/chart';
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/8bit/alert-dialog';
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/8bit/sheet';
+export { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/8bit/popover';
