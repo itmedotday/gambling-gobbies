@@ -673,6 +673,22 @@ body {
   }
 }
 
+/*
+ * TextFx preview uses inline `animation` on spans inside [data-testid="fx-preview"].
+ * Disable motion effects when reduce motion is on (settings toggle or system pref).
+ */
+html.motion-reduce [data-testid='fx-preview'],
+html.motion-reduce [data-testid='fx-preview'] span {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-testid='fx-preview'],
+  [data-testid='fx-preview'] span {
+    animation: none !important;
+  }
+}
+
 /* Game page layout */
 .gg-game-grid {
   display: grid;
