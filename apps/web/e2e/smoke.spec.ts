@@ -37,6 +37,28 @@ test.describe('Gambling Gobbies smoke', () => {
     await expect(toggle).toBeChecked();
   });
 
+  test('TextFx preview respects reduce motion setting', async ({ page }) => {
+    await page.goto('/settings');
+    const toggle = page.getByTestId('setting-reduced-motion');
+    const previewChar = page.locator('[data-testid="fx-preview"] span span').first();
+
+    await expect(previewChar).toBeVisible();
+
+    if (await toggle.isChecked()) {
+      await toggle.click();
+      await expect(page.locator('html')).not.toHaveClass(/motion-reduce/);
+    }
+
+    const animatedName = await previewChar.evaluate((el) => getComputedStyle(el).animationName);
+    expect(animatedName).not.toBe('none');
+
+    await toggle.click();
+    await expect(page.locator('html')).toHaveClass(/motion-reduce/);
+
+    const staticName = await previewChar.evaluate((el) => getComputedStyle(el).animationName);
+    expect(staticName).toBe('none');
+  });
+
   test('theme toggle switches light and dark', async ({ page }) => {
     await page.goto('/');
     const toggle = page.getByTestId('theme-toggle');

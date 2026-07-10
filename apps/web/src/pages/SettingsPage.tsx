@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, Label, Slider, Switch } from '@/components/kit';
 import { useSettingsStore } from '@/stores/settingsStore';
+import { NameStylerCard } from '@/components/settings/NameStylerCard';
 import { ThemeToggleSwitch } from '@/components/theme/ThemeToggle';
 import { ThemeStyleSelect } from '@/components/theme/ThemeStyleSelect';
 import { useThemeLayout } from '@/components/theme/useThemeLayout';
@@ -12,6 +13,8 @@ export default function SettingsPage() {
   return (
     <div className="mx-auto flex w-full max-w-xl flex-col gap-8">
       <h1 className={cn(layout.pageTitleClass, 'text-lg sm:text-xl')}>Settings</h1>
+
+      <NameStylerCard />
 
       <Card>
         <CardHeader>
@@ -73,8 +76,8 @@ export default function SettingsPage() {
             <div className="flex flex-col gap-1">
               <Label htmlFor="reduced-motion">Reduce motion</Label>
               <span className="text-xs text-muted-foreground">
-                Disables screen shake, particle effects, marquee ticker scroll, and Phaser mascot
-                loops.
+                Disables screen shake, particle effects, marquee ticker scroll, display-name TextFx
+                preview animations, and Phaser mascot loops.
               </span>
             </div>
             <Switch

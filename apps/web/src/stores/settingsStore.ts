@@ -10,11 +10,14 @@ interface SettingsState {
   musicVolume: number;
   sfxVolume: number;
   reducedMotion: boolean;
+  /** Styled display-name tag, e.g. `wave:rainbow:Gobbo`. */
+  nameTag: string;
   setThemeStyle: (style: ThemeStyle) => void;
   setMuted: (muted: boolean) => void;
   setMusicVolume: (volume: number) => void;
   setSfxVolume: (volume: number) => void;
   setReducedMotion: (reduced: boolean) => void;
+  setNameTag: (tag: string) => void;
 }
 
 const prefersReducedMotion =
@@ -37,11 +40,13 @@ export const useSettingsStore = create<SettingsState>()(
       musicVolume: 0.5,
       sfxVolume: 0.8,
       reducedMotion: prefersReducedMotion,
+      nameTag: 'wave:rainbow:Gobbo',
       setThemeStyle: (themeStyle) => set({ themeStyle }),
       setMuted: (muted) => set({ muted }),
       setMusicVolume: (musicVolume) => set({ musicVolume }),
       setSfxVolume: (sfxVolume) => set({ sfxVolume }),
       setReducedMotion: (reducedMotion) => set({ reducedMotion }),
+      setNameTag: (nameTag) => set({ nameTag }),
     }),
     { name: 'gobbies-settings' },
   ),
